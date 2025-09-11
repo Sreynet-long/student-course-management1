@@ -1,7 +1,7 @@
 import { Button } from '@mui/material'
 import React from 'react'
 
-function Home() {
+function HomePage() {
   return (
     <div>
       
@@ -9,4 +9,4 @@ function Home() {
   )
 }
 
-export default Home
+export default HomePage
