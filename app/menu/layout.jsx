@@ -25,7 +25,7 @@ function Layout({ children }) {
       >
         <SideNavbar />
       </Box>
-
+     
       {/* Main content area */}
       <Box 
         component="main" 
