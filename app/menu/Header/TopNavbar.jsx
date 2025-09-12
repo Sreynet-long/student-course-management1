@@ -17,9 +17,15 @@ import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import Divider from '@mui/material/Divider';
-import { Drawer } from '@mui/material';
+import { Drawer, List, ListItem, ListItemText, Button } from '@mui/material';
 import { MdAddShoppingCart } from "react-icons/md";
-
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import HomeIcon from '@mui/icons-material/Home';
+import InfoIcon from '@mui/icons-material/Info';
+import ContactPageIcon from '@mui/icons-material/ContactPage';
+import StoreIcon from '@mui/icons-material/Store';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -51,7 +57,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: 'inherit',
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create('width'),
     width: '100%',
@@ -64,6 +69,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function PrimarySearchAppBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -83,6 +89,13 @@ export default function PrimarySearchAppBar() {
 
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
+  };
+
+  const toggleDrawer = (open) => (event) => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+    setIsDrawerOpen(open);
   };
 
   const menuId = 'primary-search-account-menu';
@@ -128,14 +141,12 @@ export default function PrimarySearchAppBar() {
       <MenuItem>
         <IconButton
           size="large"
-          aria-label="show 17 new notifications"
           color="success"
         >
           <Badge badgeContent={2} color="error">
             <MdAddShoppingCart />
           </Badge>
         </IconButton>
-        {/* <p>Notifications</p> */}
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
@@ -151,18 +162,66 @@ export default function PrimarySearchAppBar() {
       </MenuItem>
     </Menu>
   );
-// Add this line inside PrimarySearchAppBar function
-const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
-// Add this function inside PrimarySearchAppBar function
-const toggleDrawer = (open) => (event) => {
-  if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-    return;
-  }
-  setIsDrawerOpen(open);
-};
+
+  const list = () => (
+    <Box
+      justifyContent="center"
+      alignItems="center"
+      sx={{ width: 230 }}
+      role="presentation"
+      onClick={toggleDrawer(false)}
+      onKeyDown={toggleDrawer(false)}
+    >
+      <List>
+        <ListItem disablePadding>
+          <ListItemButton>
+            <ListItemIcon>
+              <HomeIcon />
+            </ListItemIcon>
+            <ListItemText primary="Home" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton>
+            <ListItemIcon>
+              <StoreIcon />
+            </ListItemIcon>
+            <ListItemText primary="Products" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton>
+            <ListItemIcon>
+              <InfoIcon />
+            </ListItemIcon>
+            <ListItemText primary="About" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton>
+            <ListItemIcon>
+              <ContactPageIcon />
+            </ListItemIcon>
+            <ListItemText primary="Contact" />
+          </ListItemButton>
+        </ListItem>
+      </List>
+      <Divider sx={{ mt: 70}}/>
+      <List>
+        <ListItem disablePadding>
+          <ListItemButton>
+            <ListItemIcon>
+              <SettingsIcon/>
+            </ListItemIcon>
+            <ListItemText primary="Setting" />
+          </ListItemButton>
+        </ListItem>
+      </List>
+    </Box>
+  );
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1 }} className='app-top-bar'> 
       <AppBar position="static" className='app-bar'>
         <Toolbar>
           <IconButton
@@ -170,7 +229,7 @@ const toggleDrawer = (open) => (event) => {
             edge="start"
             color="inherit"
             aria-label="open drawer"
-            sx={{ mr: 2 }}
+            sx={{ mr: 2, display: { xs: 'block', sm: 'none' } }} // Show on small screens
             onClick={toggleDrawer(true)}
           >
             <MenuIcon />
@@ -184,9 +243,9 @@ const toggleDrawer = (open) => (event) => {
           >
             FreshMart
           </Typography>
-          <Search>
+          <Search className='search-bar' sx={{ display: { xs: 'none', sm: 'block' }}} >
             <SearchIconWrapper>
-              <SearchIcon color='#259525'/>
+              <SearchIcon sx={{ color: '#259525' }}/>
             </SearchIconWrapper>
             <StyledInputBase
               placeholder="Search…"
@@ -194,15 +253,23 @@ const toggleDrawer = (open) => (event) => {
             />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
+          {/* Main navigation buttons for larger screens */}
+          <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
+            <Button variant="text" sx={{ color: 'white' }}>Home</Button>
+            <Button variant="text" sx={{ color: 'white' }}>Products</Button>
+            <Button variant="text" sx={{ color: 'white' }}>About</Button>
+            <Button variant="text" sx={{ color: 'white' }}>Contact</Button>
+          </Box>
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             
             <IconButton
               size="large"
-              // aria-label="show 17 new notifications"
               color="inherit"
             >
               <Badge badgeContent={2} color="error">
-                <MdAddShoppingCart color='#259525' />
+                
+                <MdAddShoppingCart />
+                
               </Badge>
             </IconButton>
             <IconButton
@@ -233,50 +300,20 @@ const toggleDrawer = (open) => (event) => {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
-      
+      <Drawer
+        anchor="left"
+        open={isDrawerOpen}
+        onClose={toggleDrawer(false)}
+      >
+        
+          <Toolbar>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} className='text-logo'>
+              FreshMart
+            </Typography>
+          </Toolbar>
+          <Divider sx={{mt: 1.5}}/>
+        {list()}
+      </Drawer>
     </Box>
   );
 }
-
-// // app/menu/TopNavbar.jsx
-// 'use client';
-
-// import React, { useState, useEffect } from "react";
-// import { AppBar, Box, Toolbar, Typography, Button } from "@mui/material";
-// import MenuIcon from "@mui/icons-material/Menu";
-// import IconButton from "@mui/material/IconButton";
-
-// export default function TopNavbar() {
-//   const [width, setWidth] = useState(0);
-
-//   useEffect(() => {
-//   if (typeof window !== 'undefined') {
-//       const handleResize = () => setWidth(window.innerWidth);
-//       window.addEventListener("resize", handleResize);
-//       handleResize();
-//       return () => window.removeEventListener("resize", handleResize);
-//     }
-//   }, []);
-
-//   return (
-//     <AppBar position="fixed" className="app-bar">
-//       <Toolbar className="toolbar">
-//         <Box>
-//           <Typography variant="h6" component="div">
-//             <IconButton className={width < 1400 ? "image-container-mobile" : "image-container"}>
-//               <img src="/images/AuraLogo.png" alt="logo" className="logo" width="120px" height="90px" />
-//             </IconButton>
-//           </Typography>
-//         </Box>
-//         <Box className="nav-links">
-//           <Button color="inherit">Home</Button>
-//           <Button color="inherit">Products</Button>
-//           <Button color="inherit">About</Button>
-//         </Box>
-//         <Box className="menu-icon-container">
-//           <MenuIcon className="menu-icon" />
-//         </Box>
-//       </Toolbar>
-//     </AppBar>
-//   );
-// }
