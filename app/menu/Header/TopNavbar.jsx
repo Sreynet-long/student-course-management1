@@ -229,7 +229,7 @@ export default function PrimarySearchAppBar() {
             edge="start"
             color="inherit"
             aria-label="open drawer"
-            sx={{ mr: 2, display: { xs: 'block', sm: 'none' } }} // Show on small screens
+            sx={{ mr: 2, display: { xs: 'block', sm: 'none' } }} 
             onClick={toggleDrawer(true)}
           >
             <MenuIcon />
@@ -243,7 +243,7 @@ export default function PrimarySearchAppBar() {
           >
             FreshMart
           </Typography>
-          <Search className='search-bar' sx={{ display: { xs: 'none', sm: 'block' }}} >
+          {/* <Search className='search-bar' sx={{ display: { xs: 'none', sm: 'block' }}} >
             <SearchIconWrapper>
               <SearchIcon sx={{ color: '#259525' }}/>
             </SearchIconWrapper>
@@ -251,7 +251,25 @@ export default function PrimarySearchAppBar() {
               placeholder="Search…"
               inputProps={{ 'aria-label': 'search' }}
             />
-          </Search>
+          </Search> */}
+          <TextField
+            variant="outlined"
+            placeholder="Search…"
+            size="small"
+            sx={{
+              backgroundColor: 'white',
+              borderRadius: 1,
+              width: { xs: '100%', sm: '300px' },
+              display: { xs: 'none', sm: 'block' },
+            }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <SearchIcon sx={{ color: '#259525' }}/>
+                </InputAdornment>
+              ),
+            }}
+          />
           <Box sx={{ flexGrow: 1 }} />
           {/* Main navigation buttons for larger screens */}
           <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
