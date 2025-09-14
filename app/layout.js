@@ -1,7 +1,9 @@
+import 'bootstrap/dist/css/bootstrap.css';
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import TobNavbar from "./menu/Header/TopNavbar";
 import Topbar from "./menu/Header/TopNavbar";
+import Hero from './components/Home/page';
 
 
 const geistSans = Geist({
@@ -22,12 +24,10 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <header>
-          <TobNavbar/>
+           <TobNavbar/>
           {/* <Topbar/> */}
-        </header>
-
         
+          <Hero/>
         {children}
       </body>
     </html>
