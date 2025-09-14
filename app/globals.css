@@ -1,6 +1,6 @@
 /* globals.css */
-@import "tailwindcss"; 
-@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+/* @import "tailwindcss";  */
+/* @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap"); */
 
 :root {
   --background: #ece8e8;
@@ -30,4 +30,17 @@ body {
   height: 100vh;
   align-items: center;
   border-radius: 20px;
+}
+.app-bar {
+  background-color: rgb(0, 100, 0);
+  color: white;
+  padding: 3px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  
 }
