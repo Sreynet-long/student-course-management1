@@ -165,8 +165,8 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: white;
-    text-align: center;
+    color: white !important;
+    text-align: left !important;
 }
 .some-class-name {
   color: #333;
