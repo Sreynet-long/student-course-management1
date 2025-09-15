@@ -17,7 +17,7 @@ import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import Divider from '@mui/material/Divider';
-import { Drawer, List, ListItem, ListItemText, Button } from '@mui/material';
+import { Drawer, List, ListItem, ListItemText, Button ,TextField , InputAdornment} from '@mui/material';
 import { MdAddShoppingCart } from "react-icons/md";
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -222,7 +222,7 @@ export default function PrimarySearchAppBar() {
 
   return (
     <Box sx={{ flexGrow: 1 }} className='app-top-bar'> 
-      <AppBar position="static" className='app-bar'>
+      <AppBar position="sticky" className='app-bar'>
         <Toolbar>
           <IconButton
             size="large"
@@ -243,15 +243,17 @@ export default function PrimarySearchAppBar() {
           >
             FreshMart
           </Typography>
-          {/* <Search className='search-bar' sx={{ display: { xs: 'none', sm: 'block' }}} >
+          <Search className='search-bar' sx={{ display: { xs: 'none', sm: 'block' }}} > 
             <SearchIconWrapper>
               <SearchIcon sx={{ color: '#259525' }}/>
             </SearchIconWrapper>
             <StyledInputBase
+              sx={{ color: 'black' }}
               placeholder="Search…"
               inputProps={{ 'aria-label': 'search' }}
             />
-          </Search> */}
+          </Search>
+          {/* <Box>
           <TextField
             variant="outlined"
             placeholder="Search…"
@@ -270,6 +272,7 @@ export default function PrimarySearchAppBar() {
               ),
             }}
           />
+          </Box> */}
           <Box sx={{ flexGrow: 1 }} />
           {/* Main navigation buttons for larger screens */}
           <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>

@@ -43,4 +43,4 @@ function Layout({ children }) {
     </Box>
   );
 }
-export default layout
+export default Layout

@@ -5,13 +5,12 @@ function Hero() {
   return (
     <section className="container-content">
         <div className="hero-content-wrapper"> 
-        <div>
-          <div>
+          <div className="hero-text center ">
             <h1 className='text-one'>We bring the Store to your door</h1><br />
             <p className='text-one'>Experience the convenience of online shopping with FreshMart. Get fresh groceries delivered to your doorstep in no time.</p>
             <Button variant="contained" className='btn-banner'>Shop Now</Button>
           </div>
-        </div>
+        
       </div>
 
       {/* SVG for the bottom curve */}

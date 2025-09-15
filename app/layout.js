@@ -27,7 +27,7 @@ export default function RootLayout({ children }) {
            <TobNavbar/>
           {/* <Topbar/> */}
         
-          <Hero/>
+          {/* <Hero/> */}
         {children}
       </body>
     </html>
