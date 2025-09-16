@@ -49,9 +49,9 @@ const categoriesData = [
 export default function CategoryList() {
   return (
     <Box sx={{ bgcolor: '#f9fafb', p: 4, borderRadius: 2 }} className="p-6"> 
-      <Typography variant="h5" align="center" gutterBottom sx={{ fontWeight: 'bold', mb: 4 }}>
+      {/* <Typography variant="h5" align="justify" gutterBottom sx={{ fontWeight: 'bold', mb: 4 }}>
         Explore Our Products    
-      </Typography>
+      </Typography> */}
       <Stack direction="row" spacing={2} sx={{ overflowX: 'auto', pb: 2 }} alignItems="center" justifyContent="center">
         {categoriesData.map((category) => (
           <Box key={category.id} sx={{ minWidth: 245 }}>

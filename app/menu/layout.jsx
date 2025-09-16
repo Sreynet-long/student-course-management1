@@ -1,6 +1,7 @@
 import React from 'react'
 import SideNavbar from "./SideNavbar";
 import TopNavbar from "./TopNavbr";
+import Footer from "./Footer";
 
 function Layout({ children }) {
   const theme = useTheme();
@@ -31,7 +32,7 @@ function Layout({ children }) {
         component="main" 
         sx={{
           flexGrow: 1,
-          ml: { sm: sidebarWidth }, // Add left margin on screens >= 'sm'
+          ml: { sm: sidebarWidth }, 
           p: 0,
         }}
       >
@@ -39,6 +40,7 @@ function Layout({ children }) {
         <Box sx={{ p: 4 }}>
           {children}
         </Box>
+        <Footer />
       </Box>
     </Box>
   );

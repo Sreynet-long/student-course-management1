@@ -26,6 +26,10 @@ import InfoIcon from '@mui/icons-material/Info';
 import ContactPageIcon from '@mui/icons-material/ContactPage';
 import StoreIcon from '@mui/icons-material/Store';
 import SettingsIcon from '@mui/icons-material/Settings';
+import Image from '@mui/icons-material/Image';
+// import Lottie from "lottie-react";
+// import groceryAnim from "../public/animations/grocery.json";
+import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -234,14 +238,27 @@ export default function PrimarySearchAppBar() {
           >
             <MenuIcon />
           </IconButton>
-
+            {/* <Box sx={{ width: 50, height: 50, mr: 2 }}>
+            <Lottie animationData={groceryAnim} loop={true} />
+            </Box> */}  
+          <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            mr: 2,
+            animation: "spin 3s linear infinite",
+          }}
+        >
+          {/* <Image src="/icons/grocery-cart.png" alt="Grocery" style={{ width: 40, height: 40 }} /> */}
+          <ShoppingBasketIcon fontSize="large" color="white" />
+        </Box>
           <Typography
             variant="h6"
             noWrap
             component="div"
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
-            FreshMart
+            FreshMart 
           </Typography>
           <Search className='search-bar' sx={{ display: { xs: 'none', sm: 'block' }}} > 
             <SearchIconWrapper>

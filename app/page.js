@@ -5,14 +5,15 @@ import CategoryList from './components/Home/categoryLists/page'
 import Hero from './components/Home/page'
 import AddToCard from './components/feature/AddToCart'
 import { Add } from '@mui/icons-material'
+import ProductCart from './components/Cart/ProductCart'
 
 function HomePage() {
   return (
     <main>
       <Hero/>
-      <CategoryList />
+      <CategoryList/>
       <AddToCard/>
-      
+    
     </main>
   )
 }

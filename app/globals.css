@@ -212,3 +212,32 @@ align-items: justify !important;
 /* .text-name {
   text-align: justify !important;
 } */
+.item-name {
+  font-weight: bold;
+  font-size: 22px;
+  margin-top: 10px;
+  color: #333;
+}
+
+.box-card {
+  background-color: white !important;
+  /* border-radius: 20px !important; */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  border-bottom-left-radius: 30px !important;
+  border-bottom-right-radius: 30px !important;
+}
+/* .item-row {
+  display: grid;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+} */
+ .add-to-cart-button :hover{
+  background-color: rgb(79, 175, 66) !important;
+  color: white !important;
+  scale: 1;
+  /* transition: transform 0.3s, box-shadow 0.3s; */
+  border-radius: 12px !important;
+ }
