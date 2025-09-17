@@ -1,25 +1,20 @@
 import React from 'react';
-import { Button } from '@mui/material';
+import { Button, Section, Typography,Stack } from '@mui/material';
 
 function Hero() {
   return (
-    <section className="container-content">
-        <div className="hero-content-wrapper"> 
-          <div className="hero-text center ">
-            <h1 className='text-one'>We bring the Store to your door</h1><br />
-            <p className='text-one'>Experience the convenience of online shopping with FreshMart. Get fresh groceries delivered to your doorstep in no time.</p>
-            <Button variant="contained" className='btn-banner'>Shop Now</Button>
-          </div>
-        
-      </div>
-
-      {/* SVG for the bottom curve */}
-      {/* <div className="svg-wave-bottom">
-        <svg viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 50C240 100 480 0 720 50C960 100 1200 0 1440 50V100H0V50Z" fill="white"/> 
-        </svg>
-      </div> */}
-    </section>
+    <Stack sx={{ p: 2, bgcolor: '#f9fafb' }} className="container-content">
+      <Typography spacing={2} variant="h5" align="justify" gutterBottom sx={{ fontWeight: 'bold', mb: 4 , mx: 5}}>
+        We bring the Store to your door
+      </Typography>
+      <Typography spacing={2} variant="body1" align="justify" gutterBottom sx={{ mb: 4 , mx: 5}}>
+        Experience the convenience of online shopping with FreshMart. Get fresh groceries delivered to your doorstep in no time.
+      </Typography>
+      <Button variant="contained" className='btn-banner' sx={{ mx: 5, mb: 4, width: '150px', height: '45px'}}>
+        Shop Now
+      </Button>
+    </Stack>
+    
   );
 }
 

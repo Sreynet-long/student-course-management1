@@ -4,6 +4,7 @@ import "./globals.css";
 import TobNavbar from "./menu/Header/TopNavbar";
 import Topbar from "./menu/Header/TopNavbar";
 import Hero from './components/Home/page';
+import Footer from './menu/footer/page';
 
 
 const geistSans = Geist({
@@ -29,6 +30,7 @@ export default function RootLayout({ children }) {
         
           {/* <Hero/> */}
         {children}
+        <Footer/>
       </body>
     </html>
   );

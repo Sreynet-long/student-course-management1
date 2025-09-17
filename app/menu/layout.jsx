@@ -1,7 +1,10 @@
-import React from 'react'
+import React from 'react';
 import SideNavbar from "./SideNavbar";
 import TopNavbar from "./TopNavbr";
-import Footer from "./Footer";
+import Footer from './footer/page';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { Box } from '@mui/material';
 
 function Layout({ children }) {
   const theme = useTheme();
@@ -11,7 +14,14 @@ function Layout({ children }) {
   const sidebarHiddenOnMobile = { display: isMobile ? 'none' : 'block' };
 
   return (
-    <Box sx={{ display: 'flex', bgcolor: '#f0f2f5', minHeight: '100vh', width: '100%' }}>
+  <Box sx={{ 
+      display: 'flex', 
+      bgcolor: '#f0f2f5', 
+      minHeight: '100vh', 
+      width: '100%',
+      // Change to column to stack TopNavbar, children, and Footer
+      flexDirection: 'column'
+    }}>
       {/* Sidebar: Fixed position, hidden on mobile */}
       <Box 
         sx={{
@@ -22,22 +32,33 @@ function Layout({ children }) {
           height: '100%',
           top: 0,
           left: 0,
+          zIndex: theme.zIndex.drawer, 
         }}
       >
         <SideNavbar />
       </Box>
-     
+      
       {/* Main content area */}
       <Box 
         component="main" 
         sx={{
-          flexGrow: 1,
+          // Use flexGrow to push the Footer down
+          flexGrow: 1, 
+          position: 'fixed',
+          display: 'flex', 
+          flexDirection: 'column', 
           ml: { sm: sidebarWidth }, 
-          p: 0,
         }}
       >
         <TopNavbar />
-        <Box sx={{ p: 4 }}>
+        <Box 
+          sx={{ 
+            p: 4, 
+            flexGrow: 1, 
+            display: 'flex', 
+            flexDirection: 'column',
+          }}
+        >
           {children}
         </Box>
         <Footer />
@@ -45,4 +66,5 @@ function Layout({ children }) {
     </Box>
   );
 }
-export default Layout
+
+export default Layout;

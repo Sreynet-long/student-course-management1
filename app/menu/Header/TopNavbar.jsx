@@ -30,6 +30,7 @@ import Image from '@mui/icons-material/Image';
 // import Lottie from "lottie-react";
 // import groceryAnim from "../public/animations/grocery.json";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
+import Link from 'next/link';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -226,7 +227,7 @@ export default function PrimarySearchAppBar() {
 
   return (
     <Box sx={{ flexGrow: 1 }} className='app-top-bar'> 
-      <AppBar position="sticky" className='app-bar'>
+      <AppBar position="fixed" className='app-bar' overflow="hidden">
         <Toolbar>
           <IconButton
             size="large"
@@ -293,8 +294,11 @@ export default function PrimarySearchAppBar() {
           <Box sx={{ flexGrow: 1 }} />
           {/* Main navigation buttons for larger screens */}
           <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
+
             <Button variant="text" sx={{ color: 'white' }}>Home</Button>
-            <Button variant="text" sx={{ color: 'white' }}>Products</Button>
+            <Link href="/product">
+              <Button variant="text" sx={{ color: 'white' }}>Products</Button>
+            </Link>
             <Button variant="text" sx={{ color: 'white' }}>About</Button>
             <Button variant="text" sx={{ color: 'white' }}>Contact</Button>
           </Box>
@@ -327,7 +331,7 @@ export default function PrimarySearchAppBar() {
               size="large"
               aria-label="show more"
               aria-controls={mobileMenuId}
-              aria-haspopup="true"
+              aria-haspopup="true"  
               onClick={handleMobileMenuOpen}
               color="inherit"
             >

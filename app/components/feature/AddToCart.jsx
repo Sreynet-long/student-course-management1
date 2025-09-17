@@ -21,7 +21,7 @@ function AddToCard() {
     {id: 10 , name: "Coke", image:"/images/coke.png" ,desc: "1 can",price: 3.5},
   ];
   return (
-    <Stack sx={{ p: 2, bgcolor: '#f9fafb', borderRadius: 2 }} className="box-card">
+    <Stack sx={{ p: 2, bgcolor: '#f9fafb' }} className="box-container">
       <Typography spacing={2} variant="h5" align="justify" gutterBottom sx={{ fontWeight: 'bold', mb: 4 , mx: 5}}>
         You might need     
       </Typography>
