@@ -262,3 +262,19 @@ align-items: justify !important;
 .box-payment {
   margin-top: 35px !important;
 }
+/* ===============AddButton=============== */
+.addBtn {
+    background: "#AAFFAA";
+    padding: "6px 12px";
+    cursor : "pointer";
+    border: "1 solid #ccc";
+    font-size: "16px";
+}
+.addBtn-box {
+  background: "#AAFFAA";
+    padding: "6px 12px";
+    border-radius: "6px";
+    cursor : "pointer";
+    border: "1 solid #ccc";
+    font-size: "16px";
+}

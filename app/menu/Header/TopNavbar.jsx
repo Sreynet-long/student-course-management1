@@ -31,6 +31,7 @@ import Image from '@mui/icons-material/Image';
 // import groceryAnim from "../public/animations/grocery.json";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import Link from 'next/link';
+import ShopCart from '@/app/components/feature/ShopCart';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -294,25 +295,21 @@ export default function PrimarySearchAppBar() {
           <Box sx={{ flexGrow: 1 }} />
           {/* Main navigation buttons for larger screens */}
           <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
-
-            <Button variant="text" sx={{ color: 'white' }}>Home</Button>
-            <Link href="/product">
-              <Button variant="text" sx={{ color: 'white' }}>Products</Button>
-            </Link>
+            
+            <Button variant="text" sx={{ color: 'white' }}>
+              <Link href="/" variant="text">Home</Link>
+            </Button>
+            
+          <Button variant="text" sx={{ color: 'white' }}>
+            <Link href="/product"> Products</Link>
+          </Button>
             <Button variant="text" sx={{ color: 'white' }}>About</Button>
             <Button variant="text" sx={{ color: 'white' }}>Contact</Button>
           </Box>
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             
-            <IconButton
-              size="large"
-              color="inherit"
-            >
-              <Badge badgeContent={2} color="error">
-                
-                <MdAddShoppingCart />
-                
-              </Badge>
+            <IconButton>
+              <ShopCart />
             </IconButton>
             <IconButton
               size="large"

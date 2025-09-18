@@ -3,11 +3,14 @@ import React, {useState}  from 'react'
 import { Box, Typography, Stack, Grid,Card,CardContent, CardMedia, Image,IconButton } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { StackedBarChart } from '@mui/icons-material';
+import UseCart from '@/app/hook/useCart';
+
 function AddToCard() {
-  const [count, setCount] = useState(0);
-  const handleIncrement = () => {
-    setCount(count + 1);
-  }
+  const [addedItems, setAddedItems] = useState({});
+  const handleAddItem = (itemId) => {
+    setAddedItems(prev => ({ ...prev, [itemId]: true }));
+  };
+
   const items = [
     {id: 1 , name: "Carrot",image:"/images/carrot.png" ,desc: "500g", price: 2.5},
     {id: 2 , name: "Beef",image:"/images/beef.png" ,desc: "500g", price: 1.5},
@@ -20,6 +23,8 @@ function AddToCard() {
     {id: 9 , name: "Red Onions",image:"/images/redOnion.png" ,desc: "500g", price: 1.0},
     {id: 10 , name: "Coke", image:"/images/coke.png" ,desc: "1 can",price: 3.5},
   ];
+
+  
   return (
     <Stack sx={{ p: 2, bgcolor: '#f9fafb' }} className="box-container">
       <Typography spacing={2} variant="h5" align="justify" gutterBottom sx={{ fontWeight: 'bold', mb: 4 , mx: 5}}>
@@ -48,9 +53,15 @@ function AddToCard() {
                   ${item.price.toFixed(2)}
                 </Typography>
               </CardContent>
-              <IconButton color="primary" sx={{  mb: 1 }} className='add-to-cart-button'>
-                <AddCircleOutlineIcon onChange={handleIncrement}/>
-              </IconButton>
+              <Box sx={{ p: 1 }}>
+                {addedItems[item.id] ? (
+                  <UseCart />
+                ) : (
+                  <IconButton color="primary" sx={{ mb: 1 }} className='add-to-cart-button' onClick={() => handleAddItem(item.id)}>
+                    <AddCircleOutlineIcon/>
+                  </IconButton>
+                )}
+              </Box>
             </Card>
           </Grid>
         ))}

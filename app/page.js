@@ -13,6 +13,7 @@ function HomePage() {
       <Hero/>
       <CategoryList/>
       <AddToCard/>
+      
     
     </main>
   )
