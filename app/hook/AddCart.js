@@ -1,5 +1,6 @@
+// 'use Client';
 import * as React from 'react';
-import {Badge,Box, ButtonGroup,Button, Typography} from '@mui/material';
+import {Badge,Box, ButtonGroup,Button} from '@mui/material';
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import { styled } from '@mui/material/styles';
@@ -16,15 +17,14 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 }));
 
 
-export default function ShopCart() {
-    const [count, setCount] = React.useState(1);
+export default function ShopCart({count = 0}) {
+    
   return (  
     <Box
-      
       sx={{
         color: 'action.active',
         display: 'flex',
-        flexDirection: 'column',
+        // flexDirection: 'column',
         '& > *': {
           marginBottom: 2,
         },
@@ -34,19 +34,13 @@ export default function ShopCart() {
       }}
     >
       <div>
+     
+          <Badge color="secondary" badgeContent={count}>
+            <ShoppingCartIcon />
+          </Badge>
 
-        <ButtonGroup
-        variant="contained"
-        disableElevation
-        sx={{
-          "& .MuiButtonGroup-grouped": {
-            borderRadius: "6px !important", 
-            margin: "0 8px",                
-          },
-        }}
-        >
+        {/* <ButtonGroup>
           <Button
-            color='inherit'
             aria-label="reduce"
             onClick={() => {
               setCount(Math.max(count - 1, 0));
@@ -54,9 +48,7 @@ export default function ShopCart() {
           >
             <RemoveIcon fontSize="small" />
           </Button>
-          <Typography variant='text'>{count}</Typography>
           <Button
-            color='inherit'
             aria-label="increase"
             onClick={() => {
               setCount(count + 1);
@@ -64,10 +56,14 @@ export default function ShopCart() {
           >
             <AddIcon fontSize="small" />
           </Button>
-        </ButtonGroup>
+        </ButtonGroup> */}
       </div> 
       
     </Box>
-
+    // <IconButton aria-label="cart">
+    //   <StyledBadge badgeContent={0} color="secondary" showZero>
+    //     <ShoppingCartIcon />
+    //   </StyledBadge>
+    // </IconButton>
   );
 }

@@ -40,7 +40,7 @@ export default function SeeAllCard() {
             mb: 2,
           }}
         >
-          <FaArrowRight color="black" size={30} />
+          <FaArrowRight color="black" size={30}/>
         </Box>
         <Typography variant="body2" sx={{ fontWeight: 'bold', color: 'gray.800' }}>
           See all

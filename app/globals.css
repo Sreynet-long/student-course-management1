@@ -42,6 +42,7 @@ body {
   top: 0;
   position: fixed !important;
   overflow: hidden !important;
+
 }
 /* .app-bar-drawer {
   background-color: rgb(1, 88, 1) !important;
@@ -88,9 +89,11 @@ body {
   font-size: 16px;
   border-radius: 20px;
 }
-/* .search-bar{
+.search-bar{
   background-color: white !important;
-} */
+  align-items: center !important;
+  
+}
 
 /* ===========================section 1=========================== */
 #section1 {
@@ -124,7 +127,7 @@ body {
     background-repeat: no-repeat;
     height: 50vh;
     /* width: 100%; */
-    max-width: 100%;
+    /* max-width: 100%; */
    
     position: relative; 
     /* No overflow: hidden here if SVG is outside */
@@ -135,7 +138,7 @@ body {
     text-align: center;
     color: white;
     border-radius: 10px;
-    margin: 72px 3px 0 3px !important ;
+    margin: 77px 3px 0 3px !important ;
 
 }
 
@@ -186,18 +189,18 @@ body {
 }
 .some-class-name {
   color: #333;
-  font-size: 16px;
+  font-size: 20px;
 }
 .btn-banner {
 background-color: rgb(79, 175, 66) !important;
 color: white;
 padding: 10px 20px; 
 border-radius: 12px !important;
-text-decoration: none;
-font-weight: bold;
-transition: background-color 0.3s, color 0.3s;
-align-items: justify !important; 
-/* margin-top: 100px !important; */
+/* text-decoration: none;
+font-weight: bold; */
+/* transition: background-color 0.3s, color 0.3s; */
+align-items: center !important; 
+margin-top: 10% !important;
 }
 .btn-banner:hover {
   border-radius: 12px !important;
@@ -205,8 +208,8 @@ align-items: justify !important;
   background-color: white;
   color: rgb(255, 255, 255) !important;
   text-decoration: none;
-  cursor: pointer;
-  scale: 1.05;
+  cursor: pointer !important;
+  scale: 1.05 !important;
 }
 
 /* .img {
@@ -278,3 +281,16 @@ align-items: justify !important;
     border: "1 solid #ccc";
     font-size: "16px";
 }
+.go-shop {
+  background-color: "#AAFFAA";
+}
+
+/* =======================Dialog product================= */
+/* .dialog-container {
+  border-radius: 50px !important;
+} */
+
+ .drawer-close-icon {
+    font-size: 25px;
+    color: red;
+  }

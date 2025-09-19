@@ -31,7 +31,10 @@ import Image from '@mui/icons-material/Image';
 // import groceryAnim from "../public/animations/grocery.json";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import Link from 'next/link';
-import ShopCart from '@/app/components/feature/ShopCart';
+import AddCart from "@/app/hook/AddCart";
+import ProductMenu from './ProductMenu';
+import ShopCart from '@/app/hook/AddCart';
+
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -149,9 +152,7 @@ export default function PrimarySearchAppBar() {
           size="large"
           color="success"
         >
-          <Badge badgeContent={2} color="error">
-            <MdAddShoppingCart />
-          </Badge>
+          <ShopCart count={1} />
         </IconButton>
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
@@ -262,16 +263,7 @@ export default function PrimarySearchAppBar() {
           >
             FreshMart 
           </Typography>
-          <Search className='search-bar' sx={{ display: { xs: 'none', sm: 'block' }}} > 
-            <SearchIconWrapper>
-              <SearchIcon sx={{ color: '#259525' }}/>
-            </SearchIconWrapper>
-            <StyledInputBase
-              sx={{ color: 'black' }}
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </Search>
+          
           {/* <Box>
           <TextField
             variant="outlined"
@@ -293,23 +285,30 @@ export default function PrimarySearchAppBar() {
           />
           </Box> */}
           <Box sx={{ flexGrow: 1 }} />
+          <Search className='search-bar' sx={{ display: { xs: 'none', sm: 'block' }}} justifyContent="center"> 
+            <SearchIconWrapper>
+              <SearchIcon sx={{ color: '#259525' }}/>
+            </SearchIconWrapper>
+            <StyledInputBase
+              sx={{ color: 'black' }}
+              placeholder="Search…"
+              inputProps={{ 'aria-label': 'search' }}
+            />
+          </Search>
           {/* Main navigation buttons for larger screens */}
-          <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
+          <Box sx={{ display: { xs: 'none', sm: 'flex' } }} gap={2}>
             
             <Button variant="text" sx={{ color: 'white' }}>
               <Link href="/" variant="text">Home</Link>
             </Button>
-            
-          <Button variant="text" sx={{ color: 'white' }}>
-            <Link href="/product"> Products</Link>
-          </Button>
+            <ProductMenu/>
             <Button variant="text" sx={{ color: 'white' }}>About</Button>
             <Button variant="text" sx={{ color: 'white' }}>Contact</Button>
           </Box>
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             
             <IconButton>
-              <ShopCart />
+              <ShopCart count={1} />
             </IconButton>
             <IconButton
               size="large"
