@@ -5,7 +5,7 @@
 :root {
   --background: #ece8e8;
   --foreground: #171717;
-  --font-roboto: "Roboto", sans-serif, ;
+  --font-roboto: "Roboto", "sans-serif", "Siemreap";
 }
 
 
@@ -16,84 +16,68 @@
     
   }
 }
+@media (max-width: 600px) {
+  img {
+    width: 100%;
+  }
+}
+@media only screen and (max-width:800px) {
+  /* For tablets: */
+  .main {
+    width: 80%;
+    padding: 0;
+  }
+  .right {
+    width: 100%;
+  }
+}
+@media only screen and (max-width:500px) {
+  /* For mobile phones: */
+  .menu, .main, .right {
+    width: 100%;
+  }
+}
+/* ===================================== Responsive breakpoint ================================= */
+
+  /* Example media queries for breakpoints, add your styles inside */
+  @media (min-width: 1025px) and (max-width: 1650px) {
+    /* Add styles for large screens here */
+  }
+
+  @media (min-width: 769px) and (max-width: 1024px) {
+    /* Add styles for medium screens here */
+  }
+
+  @media (min-width: 426px) and (max-width: 768px) {
+    /* Add styles for small tablets here */
+  }
+
+  @media (min-width: 426px) and (max-width: 600px) {
+    /* Add styles for large phones here */
+  }
+
+  @media (min-width: 377px) and (max-width: 425px) {
+    /* Add styles for medium phones here */
+  }
+
+  @media (min-width: 0px) and (max-width: 376px) {
+    /* Add styles for small phones here */
+  }
+
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+  Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+a {
+  color: inherit;
+  text-decoration: none;
 }
 
-.sidebar {
-  width: 200px;
-  background-color: #fff;
-  color: rgba(255, 255, 255, 0.9);
-  height: 100vh;
-  align-items: center;
-  border-radius: 20px;
-}
-.app-bar {
-  background-color: rgb(1, 88, 1) !important;
-  color: white;
-  margin: 3px 5px 5px 20px !important;
-  padding: 1px;
-  font-size: 24px;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  top: 0;
-  position: fixed !important;
-  overflow: hidden !important;
 
-}
-/* .app-bar-drawer {
-  background-color: rgb(1, 88, 1) !important;
-  color: white;
-  padding: 3px;
-  font-size: 24px;
-  border-radius: 0 10px 10px 0 ;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  position: fixed;
-} */
-.search-bar {
-  background-color: white !important;
-  border-radius: 15px !important;
-  padding: 0 10px;
-  width: 300px;
-  height: 40px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  /* display: flex; */
-  /* align-items: center !important; */
-  justify-self: center !important;
-}
-.text-logo{
-  color: rgb(1, 88, 1);
-  font-weight: bold;
-  font-size: 26px;
-  text-align: center;
-  padding-top: 7px;
-
-}
-.menu-item {
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
-}
-.search-bar input {
-  border: none;
-  outline: none;
-  width: 100%;
-  height: 100%;
-  font-size: 16px;
-  border-radius: 20px;
-}
-.search-bar{
-  background-color: white !important;
-  align-items: center !important;
-  
-}
 
 /* ===========================section 1=========================== */
 #section1 {
@@ -211,7 +195,7 @@ margin-top: 10% !important;
   cursor: pointer !important;
   scale: 1.05 !important;
 }
-
+/* =========================add to card section======================= */
 /* .img {
   border-radius: 50%;
 } */
@@ -219,6 +203,13 @@ margin-top: 10% !important;
 /* .text-name {
   text-align: justify !important;
 } */
+.card-container{
+  display: grid;
+  gap: 50px 100px;
+  grid-template-columns: auto auto auto auto;
+  padding: 10px;
+  margin: 0 50px 0 50px !important;
+}
 .item-name {
   font-weight: bold;
   font-size: 22px;
@@ -230,7 +221,7 @@ margin-top: 10% !important;
   background-color: white !important;
   /* border-radius: 20px !important; */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition: transform 0.3s, box-shadow 0.3s;  
   border-bottom-left-radius: 30px !important;
   border-bottom-right-radius: 30px !important;
 }

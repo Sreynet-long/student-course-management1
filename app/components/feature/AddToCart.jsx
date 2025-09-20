@@ -32,7 +32,7 @@ function AddToCard() {
       <Typography spacing={2} variant="h5" align="justify" gutterBottom sx={{ fontWeight: 'bold', mb: 4 , mx: 5}}>
         You might need     
       </Typography>
-      <Grid container spacing={2} sx={{ justifyContent: 'center' }} display="flex">
+      <Grid container spacing={2} sx={{ justifyContent: 'center' }} display="flex" className='card-container'>
         {items.map((item, index) => (
           <Grid item xs={12} sm={6} md={2.4} key={index}>
             <Card sx={{ textAlign: 'center', p: 1 , minWidth: 170, maxWidth: 170, m: 1 }} className='box-card'>

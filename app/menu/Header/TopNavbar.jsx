@@ -34,6 +34,8 @@ import Link from 'next/link';
 import AddCart from "@/app/hook/AddCart";
 import ProductMenu from './ProductMenu';
 import ShopCart from '@/app/hook/AddCart';
+import styles from '../../components/styles/navbar.module.css';
+import { useRouter } from 'next/navigation';
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -75,7 +77,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function PrimarySearchAppBar() {
+export default function TopNavbar() {
+  const router = useRouter();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
@@ -171,65 +174,75 @@ export default function PrimarySearchAppBar() {
   );
 
   const list = () => (
-    <Box
-      justifyContent="center"
-      alignItems="center"
-      sx={{ width: 230 }}
-      role="presentation"
-      onClick={toggleDrawer(false)}
-      onKeyDown={toggleDrawer(false)}
-    >
-      <List>
+  <Box
+    justifyContent="center"
+    alignItems="center"
+    sx={{ width: 230 }}
+    role="presentation"
+    onClick={toggleDrawer(false)}
+    onKeyDown={toggleDrawer(false)}
+  >
+    <List>
+      <Link href="/" passHref legacyBehavior>
         <ListItem disablePadding>
-          <ListItemButton>
+          <ListItemButton selected={router.pathname === '/'}>
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
             <ListItemText primary="Home" />
           </ListItemButton>
         </ListItem>
+      </Link>
+      <Link href="/products" passHref legacyBehavior>
         <ListItem disablePadding>
-          <ListItemButton>
+          <ListItemButton selected={router.pathname === '/products'}>
             <ListItemIcon>
               <StoreIcon />
             </ListItemIcon>
             <ListItemText primary="Products" />
           </ListItemButton>
         </ListItem>
+      </Link>
+      <Link href="/about" passHref legacyBehavior>
         <ListItem disablePadding>
-          <ListItemButton>
+          <ListItemButton selected={router.pathname === '/about'}>
             <ListItemIcon>
               <InfoIcon />
             </ListItemIcon>
             <ListItemText primary="About" />
           </ListItemButton>
         </ListItem>
+      </Link>
+      <Link href="/contact" passHref legacyBehavior>
         <ListItem disablePadding>
-          <ListItemButton>
+          <ListItemButton selected={router.pathname === '/contact'}>
             <ListItemIcon>
               <ContactPageIcon />
             </ListItemIcon>
             <ListItemText primary="Contact" />
           </ListItemButton>
         </ListItem>
-      </List>
-      <Divider sx={{ mt: 70}}/>
-      <List>
+      </Link>
+    </List>
+    <Divider sx={{ mt: 70 }} />
+    <List>
+      <Link href="/settings" passHref legacyBehavior>
         <ListItem disablePadding>
-          <ListItemButton>
+          <ListItemButton selected={router.pathname === '/settings'}>
             <ListItemIcon>
-              <SettingsIcon/>
+              <SettingsIcon />
             </ListItemIcon>
             <ListItemText primary="Setting" />
           </ListItemButton>
         </ListItem>
-      </List>
-    </Box>
-  );
+      </Link>
+    </List>
+  </Box>
+);
 
   return (
-    <Box sx={{ flexGrow: 1 }} className='app-top-bar'> 
-      <AppBar position="fixed" className='app-bar' overflow="hidden">
+    <Box sx={{ flexGrow: 1 }} className="app-top-bar"> 
+      <AppBar position="fixed" className={styles['app-bar']} overflow="hidden">
         <Toolbar>
           <IconButton
             size="large"
@@ -285,7 +298,7 @@ export default function PrimarySearchAppBar() {
           />
           </Box> */}
           <Box sx={{ flexGrow: 1 }} />
-          <Search className='search-bar' sx={{ display: { xs: 'none', sm: 'block' }}} justifyContent="center"> 
+          <Search className={styles['search-bar']} sx={{ display: { xs: 'none', sm: 'block' }}} justifyContent="center"> 
             <SearchIconWrapper>
               <SearchIcon sx={{ color: '#259525' }}/>
             </SearchIconWrapper>
@@ -296,14 +309,17 @@ export default function PrimarySearchAppBar() {
             />
           </Search>
           {/* Main navigation buttons for larger screens */}
-          <Box sx={{ display: { xs: 'none', sm: 'flex' } }} gap={2}>
-            
-            <Button variant="text" sx={{ color: 'white' }}>
-              <Link href="/" variant="text">Home</Link>
-            </Button>
-            <ProductMenu/>
-            <Button variant="text" sx={{ color: 'white' }}>About</Button>
-            <Button variant="text" sx={{ color: 'white' }}>Contact</Button>
+          <Box sx={{ display: { xs: 'none', sm: 'flex' } }} gap={2} className={styles.navList}>
+            <Link href="/" >
+              <Button variant="text" sx={{ color: 'white' }} className={router.pathname === '/' ? styles.activeLink : ''}>Home</Button>
+            </Link>
+            <ProductMenu />
+            <Link href="/about" >
+              <Button variant="text" sx={{ color: 'white' }} className={router.pathname === '/about' ? styles.activeLink : ''}>About</Button>
+            </Link>
+            <Link href="/contact" >
+              <Button variant="text" sx={{ color: 'white' }} className={router.pathname === '/contact' ? styles.activeLink : ''}>Contact</Button>
+            </Link>
           </Box>
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             
@@ -343,9 +359,8 @@ export default function PrimarySearchAppBar() {
         open={isDrawerOpen}
         onClose={toggleDrawer(false)}
       >
-        
           <Toolbar>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} className='text-logo'>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} className={styles['text-logo']}>
               FreshMart
             </Typography>
           </Toolbar>

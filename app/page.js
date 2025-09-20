@@ -6,6 +6,7 @@ import Hero from './components/Home/page'
 import AddToCard from './components/feature/AddToCart'
 import { Add } from '@mui/icons-material'
 import ProductCart from './components/Cart/ProductCart'
+import FeatureStore from './components/feature/FeatureStore'
 
 function HomePage() {
   return (
@@ -13,6 +14,7 @@ function HomePage() {
       <Hero/>
       <CategoryList/>
       <AddToCard/>
+      <FeatureStore/>
       
     
     </main>

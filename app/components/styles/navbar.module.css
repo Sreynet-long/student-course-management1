@@ -1,0 +1,104 @@
+.sidebar {
+  width: 200px;
+  background-color: #fff;
+  color: rgba(255, 255, 255, 0.9);
+  height: 100vh;
+  align-items: center;
+  border-radius: 20px;
+}
+.app-bar {
+  background-color: rgb(1, 88, 1) !important;
+  color: white;
+  margin: 3px 5px 5px 20px !important;
+  padding: 1px;
+  font-size: 24px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  top: 0;
+  position: fixed !important;
+  overflow: hidden !important;
+
+}
+/* .app-bar-drawer {
+  background-color: rgb(1, 88, 1) !important;
+  color: white;
+  padding: 3px;
+  font-size: 24px;
+  border-radius: 0 10px 10px 0 ;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: fixed;
+} */
+.search-bar {
+  background-color: white !important;
+  border-radius: 15px !important;
+  padding: 0 10px;
+  width: 300px;
+  height: 40px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  /* display: flex; */
+  /* align-items: center !important; */
+  justify-self: center !important;
+}
+.text-logo{
+  color: rgb(1, 88, 1);
+  font-weight: bold;
+  font-size: 26px;
+  text-align: center;
+  padding-top: 7px;
+
+}
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+.search-bar input {
+  border: none;
+  outline: none;
+  width: 100%;
+  height: 100%;
+  font-size: 16px;
+  border-radius: 20px;
+}
+.search-bar{
+  background-color: white !important;
+  align-items: center !important;
+  
+}
+/* components/Navbar.module.css */
+
+.navbar {
+  background-color: #333;
+  padding: 1rem;
+}
+
+.navList {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+}
+
+.link {
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s ease-in-out;
+}
+
+.activeLink {
+  color: #0070f3 !important; 
+  font-weight: bold !important;
+  text-decoration: underline !important;
+}
+.activeLink :hover {
+    color: #6503e6;
+}
+
+.link:hover {
+  color: #45a049 !important;
+}
