@@ -54,14 +54,14 @@ export default function CategoryList() {
       </Typography> */}
       <Stack direction="row" spacing={2} sx={{ overflowX: 'auto', pb: 2 }} alignItems="center" justifyContent="center">
         {categoriesData.map((category) => (
-          <Box key={category.id} sx={{ minWidth: 245 }}>
+          <Box key={category.id} sx={{ minWidth: 180 }}>
             <CategoryCard category={category} />
           </Box>
         ))}
         {/* "See all" card */}
-        <Box sx={{ minWidth: 150 }}>
+        {/* <Box sx={{ minWidth: 150 }}>
           <SeeAllCard />
-        </Box>
+        </Box> */}
       </Stack>
     </Box>
 

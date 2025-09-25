@@ -35,7 +35,8 @@ import AddCart from "@/app/hook/AddCart";
 import ProductMenu from './ProductMenu';
 import ShopCart from '@/app/hook/AddCart';
 import styles from '../../components/styles/navbar.module.css';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -78,7 +79,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function TopNavbar() {
-  const router = useRouter();
+  // const router = useRouter();
+  const pathname = usePathname();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
@@ -183,9 +185,9 @@ export default function TopNavbar() {
     onKeyDown={toggleDrawer(false)}
   >
     <List>
-      <Link href="/" passHref legacyBehavior>
+      <Link href="/" passHref style={{ textDecoration: 'none' }}>
         <ListItem disablePadding>
-          <ListItemButton selected={router.pathname === '/'}>
+          <ListItemButton selected={pathname === '/'}>
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
@@ -193,9 +195,9 @@ export default function TopNavbar() {
           </ListItemButton>
         </ListItem>
       </Link>
-      <Link href="/products" passHref legacyBehavior>
+      <Link href="/products" passHref style={{ textDecoration: 'none' }}>
         <ListItem disablePadding>
-          <ListItemButton selected={router.pathname === '/products'}>
+          <ListItemButton selected={pathname === '/products'}>
             <ListItemIcon>
               <StoreIcon />
             </ListItemIcon>
@@ -203,9 +205,9 @@ export default function TopNavbar() {
           </ListItemButton>
         </ListItem>
       </Link>
-      <Link href="/about" passHref legacyBehavior>
+      <Link href="/about" passHref style={{ textDecoration: 'none' }}>
         <ListItem disablePadding>
-          <ListItemButton selected={router.pathname === '/about'}>
+          <ListItemButton selected={pathname === '/about'}>
             <ListItemIcon>
               <InfoIcon />
             </ListItemIcon>
@@ -213,26 +215,13 @@ export default function TopNavbar() {
           </ListItemButton>
         </ListItem>
       </Link>
-      <Link href="/contact" passHref legacyBehavior>
+      <Link href="/contact" passHref style={{ textDecoration: 'none' }}>
         <ListItem disablePadding>
-          <ListItemButton selected={router.pathname === '/contact'}>
+          <ListItemButton selected={pathname === '/contact'}>
             <ListItemIcon>
               <ContactPageIcon />
             </ListItemIcon>
             <ListItemText primary="Contact" />
-          </ListItemButton>
-        </ListItem>
-      </Link>
-    </List>
-    <Divider sx={{ mt: 70 }} />
-    <List>
-      <Link href="/settings" passHref legacyBehavior>
-        <ListItem disablePadding>
-          <ListItemButton selected={router.pathname === '/settings'}>
-            <ListItemIcon>
-              <SettingsIcon />
-            </ListItemIcon>
-            <ListItemText primary="Setting" />
           </ListItemButton>
         </ListItem>
       </Link>
@@ -311,14 +300,14 @@ export default function TopNavbar() {
           {/* Main navigation buttons for larger screens */}
           <Box sx={{ display: { xs: 'none', sm: 'flex' } }} gap={2} className={styles.navList}>
             <Link href="/" >
-              <Button variant="text" sx={{ color: 'white' }} className={router.pathname === '/' ? styles.activeLink : ''}>Home</Button>
+              <Button variant="text" sx={{ color: 'white' }} className={pathname === '/' ? styles.activeLink : ''}>Home</Button>
             </Link>
             <ProductMenu />
             <Link href="/about" >
-              <Button variant="text" sx={{ color: 'white' }} className={router.pathname === '/about' ? styles.activeLink : ''}>About</Button>
+              <Button variant="text" sx={{ color: 'white' }} className={pathname === '/about' ? styles.activeLink : ''}>About</Button>
             </Link>
             <Link href="/contact" >
-              <Button variant="text" sx={{ color: 'white' }} className={router.pathname === '/contact' ? styles.activeLink : ''}>Contact</Button>
+              <Button variant="text" sx={{ color: 'white' }} className={pathname === '/contact' ? styles.activeLink : ''}>Contact</Button>
             </Link>
           </Box>
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>

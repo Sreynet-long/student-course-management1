@@ -30,8 +30,8 @@ export default function CategoryCard({ category }) {
         <Box
           sx={{
             position: 'relative',
-            width: 64,
-            height: 64,
+            width: 58,
+            height: 58,
             mb: 2,
             borderRadius: '50%',
             overflow: 'hidden',
@@ -41,7 +41,7 @@ export default function CategoryCard({ category }) {
             justifyContent: 'center',
             }}
         >
-            <Image src={icon} alt={name}  width={40} height={40}  />
+            <Image src={icon} alt={name}  width={40} height={40} />
         </Box>
         <Typography className='text-name' variant="subtitle1" sx={{ fontWeight: 'bold', textAlign: 'center' }}>
           {name}

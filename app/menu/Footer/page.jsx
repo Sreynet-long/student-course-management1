@@ -27,8 +27,8 @@ const Footer = () => {
                 Payment Methods:
               </Typography>
               {/* <PaymentIcon sx={{ color: 'text.secondary' }} /> */}
-              <img src="/payments/visa.png" alt="Visa" style={{ height: 20, marginLeft: 8 }} />
-              <img src="/payments/card.png" alt="Mastercard" style={{ height: 20, marginLeft: 8 }} />
+              <img src="/payments/visa.png" alt="Visa" style={{ height: 25, width: 25, marginLeft: 8 }} />
+              <img src="/payments/card.png" alt="Mastercard" style={{ height: 25, width:25,  marginLeft: 8 }} />
             </Box>
           </Grid>
 
