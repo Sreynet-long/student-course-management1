@@ -177,7 +177,7 @@ export default function ContactPage() {
       {/* Location (Optional Footer Block) */}
       <Divider sx={{ my: 6 }} />
       <Stack alignItems="center" spacing={2}>
-        <PublicIcon color="action" sx={{ fontSize: 40 }} />
+        <PublicIcon color="action" sx={{ fontSize: 40 }}/>
         <Typography variant="h6">FreshMart Fulfillment Center</Typography>
         <Typography color="text.secondary">No.69, Preah Monivong Blvd. Sangkat Srah Chak, Khan Daun Penh ,Phnom Penh,1200</Typography>
         <Typography variant="caption" color="error">Note: This is a fulfillment center, not a public retail location.</Typography>
