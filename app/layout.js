@@ -8,7 +8,6 @@ import Hero from './components/Home/page';
 import Footer from './menu/footer/page';
 
 
-
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],

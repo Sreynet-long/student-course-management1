@@ -1,21 +1,20 @@
-import React from 'react';
-import { Button, Section, Typography,Stack } from '@mui/material';
+// src/components/Hero.jsx
+import React from "react";
+import style from "../styles/hero.module.css";
 
-function Hero() {
+const Hero = () => {
   return (
-    <Stack sx={{ p: 2, bgcolor: '#f9fafb' }} className="container-content">
-      <Typography spacing={2} variant="h5" align="justify" gutterBottom sx={{ fontWeight: 'bold', mb: 4 , mx: 5, mt:6}} fontSize="50px" textAlign="justify">
-        We bring the Store to your door
-      </Typography>
-      <Typography spacing={2} variant="body1" align="justify" gutterBottom sx={{ mb: 4 , mx: 5}} fontSize="20px">
-        Experience the convenience of online shopping with FreshMart. Get fresh groceries delivered to your doorstep in no time.
-      </Typography>
-      <Button variant="contained" className='btn-banner' sx={{ mx: 5, mb: 4, width: '150px', height: '45px'}}>
-        Shop Now
-      </Button>
-    </Stack>
-    
+    <div className={style["hero-banner"]}>
+      <div className={style["hero-overlay"]}>
+        <h1>Welcome to Freshmart</h1>
+        <p>
+          Freshmart brings you the freshest groceries right to your doorstep.
+          Enjoy our hand-picked products and special offers every day.
+        </p>
+        <button className={style["btn-banner"]}>Get Started</button>
+      </div>
+    </div>
   );
-}
+};
 
 export default Hero;

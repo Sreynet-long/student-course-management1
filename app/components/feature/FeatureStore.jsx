@@ -1,142 +1,139 @@
-import React from 'react'
-import {Box, Typography, Grid , Stack , Avatar, Card, CardActionArea, CardMedia, CardContent} from "@mui/material";
-import Link from 'next/link';
-import { FaArrowRight } from 'react-icons/fa';
-import Image from 'next/image';
-import styles from '../styles/featureStore.module.css';
-import { purple } from '@mui/material/colors';
-import { ArrowRight } from 'iconsax-react';
+"use client";
+import React from "react";
+import {
+  Box,
+  Typography,
+  Grid,
+  Stack,
+  Avatar,
+  Card,
+  CardActionArea,
+  CardMedia,
+  CardContent,
+} from "@mui/material";
+import Link from "next/link";
+import Image from "next/image";
+import { ArrowRight } from "iconsax-react";
+
+const stores = [
+  {
+    id: 1,
+    name: "J&T Express",
+    logo: "/logos/j&t.jpg",
+    cover: "/logos/j&t.jpg",
+    delivery: "Delivery in 12 minutes",
+  },
+  {
+    id: 2,
+    name: "Grab",
+    logo: "/logos/grab.png",
+    cover: "/logos/grab.png",
+    delivery: "Delivery in 15 minutes",
+  },
+  {
+    id: 3,
+    name: "FedEx",
+    logo: "/logos/fedex.jpg",
+    cover: "/logos/fedex.jpg",
+    delivery: "Delivery in 10 minutes",
+  },
+];
 
 function FeatureStore() {
   return (
-    <Stack justifyContent="center" sx={{ p: 2, bgcolor: '#f9fafb',  }} alignItems="justify"  >
-        <Stack direction="row" justifyContent="space-between">
-            <Typography className='text-featureStore' style={{ fontSize: 20}} spacing={2} variant="h5" align="justify" gutterBottom sx={{ fontWeight: 'bold', mb: 4 , mx: 4}}>Featured Store</Typography>
-            <Link href="/" style={{ textDecoration: purple}}> 
-            <Typography>
-                Visit all Stores 
-                <ArrowRight size="20" color="#ba68c8"/>
-            </Typography>   
-            </Link>
+    <Box sx={{ py: 6, px: { xs: 2, sm: 4 }, bgcolor: "#f9fafb" }}>
+      <Stack sx={{ maxWidth: "1200px", mx: "auto" }}>
+        {/* Header */}
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+          sx={{ mb: 4 }}
+        >
+          <Typography
+            variant="h5"
+            sx={{ fontWeight: "bold", fontSize: 22 }}
+          >
+            Featured Store
+          </Typography>
+
+          <Link href="/" style={{ textDecoration: "none" }}>
+            <Stack direction="row" alignItems="center" spacing={0.5}>
+              <Typography
+                variant="body2"
+                sx={{ fontWeight: 500, color: "primary.main" }}
+              >
+                Visit all Stores
+              </Typography>
+              <ArrowRight size="18" color="#7b1fa2" />
+            </Stack>
+          </Link>
         </Stack>
 
-        {/* <Stack direction="row" justifyContent="space-between" className={styles["feature-store-card"]} display="flex"> */}
-            <Grid container spacing={2} justifyContent="center" sx={{ maxWidth: "1200px"}}>
-                <Grid item xs={12} sm={6} md={4}>
-                    <Card sx={{ maxWidth: 345 }} className={styles['card-feature']}>
-                        <CardActionArea position="relative">
-                            <CardMedia
-                            component="img"
-                            height="140"
-                            image="/logos/j&t.jpg"
-                            alt="j&t"
-                            />
-                                <Avatar
-                                alt='J&T Express' 
-                                src='/logos/j&t.jpg' 
-                                className='card-avatar' 
-                                sx={{
-                                    width: 56, 
-                                    height: 56 ,
-                                    position: 'absolute', 
-                                    top: '55%',          
-                                    left: '25%',         
-                                    transform: 'translate(-50%, -50%)', 
-                                    border: '3px solid white' 
-                                    }}
-                                />
-                            <CardContent>
-                            
-                                <Typography gutterBottom variant="h5" component="div">
-                                    J&T Express
-                                </Typography>
-                                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                    <Image src='/icons/light.png' width={24} height={24} alt="Light icon"/>
-                                    delivery in 12 minute
-                                </Typography>
-                            </CardContent>
-                        </CardActionArea>
-                    </Card>
-                </Grid>
-            
-
-                <Grid item xs={12} sm={6} md={4}>
-                    <Card sx={{ maxWidth: 345 }} className={styles['card-feature']}>
-                        <CardActionArea position="relative">
-                            <CardMedia
-                            component="img"
-                            height="140"
-                            image="/logos/grab.png"
-                            alt="j&t"
-                            />
-                                <Avatar
-                                alt='J&T Express' 
-                                src='/logos/grab.png' 
-                                sx={{
-                                    width: 56, 
-                                    height: 56 ,
-                                    position: 'absolute', 
-                                    top: '55%',          
-                                    left: '25%',         
-                                    transform: 'translate(-50%, -50%)', 
-                                    border: '3px solid white' 
-                                    }}
-                                className='card-avatar'/>
-                            <CardContent>
-                            
-                                <Typography gutterBottom variant="h5" component="div">
-                                    Grab
-                                </Typography>
-                                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                    <Image src='/icons/light.png' width={24} height={24} alt="Light icon" />
-                                    delivery in 12 minute
-                                </Typography>
-                            </CardContent>
-                        </CardActionArea>
-                    </Card>
-                </Grid>
-                <Grid item xs={12} sm={6} md={4}>
-                    <Card sx={{ maxWidth: 345 }} className={styles['card-feature']}>
-                        <CardActionArea position="relative">
-                            <CardMedia
-                            component="img"
-                            height="140"
-                            image="/logos/fedex.jpg"
-                            alt="j&t"
-                            />
-                                <Avatar
-                                alt='J&T Express' 
-                                src='/logos/fedex.jpg' 
-                                sx={{
-                                    width: 56, 
-                                    height: 56 ,
-                                    position: 'absolute', 
-                                    top: '55%',          
-                                    left: '25%',         
-                                    transform: 'translate(-50%, -50%)', 
-                                    border: '3px solid white' 
-                                    }}
-                                className='card-avatar'/>
-                            <CardContent>
-                            
-                                <Typography gutterBottom variant="h5" component="div">
-                                    FedEx
-                                </Typography>
-                                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                    <Image src='/icons/light.png' width={24} height={24} alt="Light icon" />
-                                    delivery in 12 minute
-                                </Typography>
-                            </CardContent>
-                        </CardActionArea>
-                    </Card>
-                </Grid>
+        {/* Store Cards */}
+        <Grid container spacing={3} justifyContent="center">
+          {stores.map((store) => (
+            <Grid item xs={12} sm={6} md={4} key={store.id}>
+              <Card
+                sx={{
+                  borderRadius: 2,
+                  boxShadow: 2,
+                  transition: "transform 0.2s, box-shadow 0.2s",
+                  "&:hover": { transform: "translateY(-4px)", boxShadow: 4 },
+                }}
+              >
+                <CardActionArea sx={{ position: "relative" }}>
+                  <CardMedia
+                    component="img"
+                    height="140"
+                    image={store.cover}
+                    alt={store.name}
+                  />
+                  <Avatar
+                    src={store.logo}
+                    alt={store.name}
+                    sx={{
+                      width: 56,
+                      height: 56,
+                      position: "absolute",
+                      top: "60%",
+                      left: "20%",
+                      transform: "translate(-50%, -50%)",
+                      border: "3px solid white",
+                      boxShadow: 2,
+                    }}
+                  />
+                  <CardContent sx={{ textAlign: "left" }}>
+                    <Typography
+                      gutterBottom
+                      variant="h6"
+                      sx={{ fontWeight: "bold" }}
+                    >
+                      {store.name}
+                    </Typography>
+                    <Stack direction="row" alignItems="center" spacing={1}>
+                      <Image
+                        src="/icons/light.png"
+                        width={20}
+                        height={20}
+                        alt="Delivery Icon"
+                      />
+                      <Typography
+                        variant="body2"
+                        sx={{ color: "text.secondary" }}
+                      >
+                        {store.delivery}
+                      </Typography>
+                    </Stack>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
             </Grid>
-        {/* </Stack> */}
-        
-
-        
-    </Stack>
-  )
+          ))}
+        </Grid>
+      </Stack>
+    </Box>
+  );
 }
 
-export default FeatureStore
+export default FeatureStore;
