@@ -10,6 +10,7 @@ const categories = [
   "Fruits",
   "Milk & Dairy",
   "Meats",
+  "Drinks",
 ];
 
 const products = [
@@ -18,7 +19,14 @@ const products = [
   { id: 3, name: "French Baguette", category: "Snacks & Breads", price: "$1.50", image: "/images/bread.png" },
   { id: 4, name: "Apple", category: "Fruits", price: "$3.00", image: "/images/apple.png" },
   { id: 5, name: "Whole Milk", category: "Milk & Dairy", price: "$2.20", image: "/images/milk.png" },
-  { id: 6, name: "Chicken Breast", category: "Meats", price: "$6.00", image: "/images/chicken.png" },
+  { id: 6, name: "Chicken Breast", category: "Meats", price: "$6.00", image: "/images/chicken1.png" },
+  { id: 7, name: "Coca Cola", category: "Drinks", price: "$0.50", image: "/images/coke.png" },
+  { id: 8, name: "Fresh Carrot", category: "Vegetables", price: "$2.00", image: "/images/carrot.png" },
+  { id: 9, name: "French Baguette", category: "Snacks & Breads", price: "$1.50", image: "/images/bread.png" },
+  { id: 10, name: "Apple", category: "Fruits", price: "$3.00", image: "/images/apple.png" },
+  { id: 11, name: "Whole Milk", category: "Milk & Dairy", price: "$2.20", image: "/images/milk.png" },
+  { id: 12, name: "Chicken Breast", category: "Meats", price: "$6.00", image: "/images/chicken1.png" },
+  { id: 13, name: "Fresh Carrot", category: "Vegetables", price: "$2.00", image: "/images/carrot.png" },
 ];
 
 export default function SellProductList() {
@@ -36,10 +44,9 @@ export default function SellProductList() {
           variant="h5"
           sx={{ fontWeight: "bold", mb: 3, textAlign: { xs: "center", md: "left" } }}
         >
-          Weekly Selling Products
+          Weekly Selling Products 👇
         </Typography>
 
-        {/* Category Buttons */}
         <Stack
           direction="row"
           flexWrap="wrap"
@@ -67,16 +74,16 @@ export default function SellProductList() {
           ))}
         </Stack>
 
-        {/* Product Grid */}
-        <Grid container spacing={3}>
+        <Grid container spacing={3} justifyContent="center">
           {filteredProducts.map((product) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
-              <Card sx={{ borderRadius: 2, boxShadow: 2, "&:hover": { boxShadow: 4 } }}>
+            <Grid item xs={6} sm={6} md={4} lg={3} key={product.id}>
+              <Card sx={{ borderRadius: 2, boxShadow: 2, "&:hover": { boxShadow: 4 }, width: "170px", height: "270px" ,textAlign: "center", p: 1,}}>
                 <CardMedia
                   component="img"
-                  height="160"
+                  height="130"
                   image={product.image}
                   alt={product.name}
+                  sx={{ objectFit: "contain", p: 1 }}
                 />
                 <CardContent sx={{ textAlign: "center" }}>
                   <Typography variant="subtitle1" fontWeight="bold">
@@ -86,6 +93,7 @@ export default function SellProductList() {
                     {product.price}
                   </Typography>
                   <Button
+                    color="success"
                     variant="contained"
                     size="small"
                     sx={{ mt: 1, borderRadius: "20px", textTransform: "none" }}

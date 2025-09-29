@@ -11,7 +11,7 @@ const Hero = () => {
           Freshmart brings you the freshest groceries right to your doorstep.
           Enjoy our hand-picked products and special offers every day.
         </p>
-        <button className={style["btn-banner"]}>Get Started</button>
+        <button className={style["btn-banner"]}>🛒 Get Started</button>
       </div>
     </div>
   );

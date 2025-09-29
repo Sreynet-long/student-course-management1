@@ -8,7 +8,6 @@ import { Add } from "@mui/icons-material";
 import ProductCart from "./components/Cart/ProductCart";
 import FeatureStore from "./components/feature/FeatureStore";
 import SellProductList from "./components/Home/sellProductList/page";
-import ScrollToTop from "./components/scroll/ScrollToTop";
 import WhyShopWithUs from "./components/feature/WhyShopWithUs";
 import CustomerReviews from "./components/feature/CustomerReviews";
 import Newsletter from "./components/feature/NewsLetter";
@@ -28,7 +27,7 @@ function HomePage() {
       <Newsletter />
       <SpecialOffer />
 
-      <ScrollToTop />
+      
     </main>
   );
 }

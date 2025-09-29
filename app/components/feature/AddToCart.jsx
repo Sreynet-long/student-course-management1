@@ -61,50 +61,49 @@ const items = [
 
 export default function AddToCard() {
   return (
-    <Box sx={{ p: { xs: 2, md: 4 }, bgcolor: "#f9fafb" }}>
-      <Stack sx={{ maxWidth: "1200px", mx: "auto" }}></Stack>
-      <Typography
-        variant="h5"
-        sx={{
-          fontWeight: "bold",
-          mb: 3,
-          mx: 5,
-          textAlign: { xs: "center", md: "left" },
-        }}
-      >
-        You might need
-      </Typography>
+    <Box sx={{ py: 6, px: { xs: 2, md: 4 }, bgcolor: "background.paper" }}>
+      <Stack sx={{ maxWidth: "1200px", mx: "auto" }}>
+        <Typography
+          variant="h5"
+          sx={{
+            fontWeight: "bold",
+            mb: 3,
+            textAlign: { xs: "center", md: "left" },
+          }}
+        >
+          You might need ♥
+        </Typography>
 
-      <Grid container spacing={2} justifyContent="center">
-        {items.map((item) => (
-          <Grid key={item.id} item xs={6} sm={4} md={2}>
-            <Card sx={{ textAlign: "center", p: 1 }}>
-              <CardMedia
-                component="img"
-                height="130"
-                image={item.image}
-                alt={item.name}
-                sx={{ objectFit: "contain", p: 1 }}
-              />
-              <CardContent sx={{ p: 1 }}>
-                <Typography variant="body1" fontWeight="bold">
-                  {item.name}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {item.desc}
-                </Typography>
-                <Typography fontSize="16px" variant="h6" mt={1}>
-                  ${item.price.toFixed(2)}
-                </Typography>
-              </CardContent>
-              <Box sx={{ p: 1 }}>
-                <ProductDetail />
-              </Box>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
-      <Stack />
+        <Grid container spacing={2} justifyContent="center">
+          {items.map((item) => (
+            <Grid key={item.id} item xs={6} sm={6} md={4} lg={3}>
+              <Card sx={{ borderRadius: 2, boxShadow: 2, "&:hover": { boxShadow: 4 },textAlign: "center", p: 1 , width: 170, height: 300,p: 1 }}>
+                <CardMedia
+                  component="img"
+                  height="130"
+                  image={item.image}
+                  alt={item.name}
+                  sx={{ objectFit: "contain", p: 1 }}
+                />
+                <CardContent sx={{ p: 1 }}>
+                  <Typography variant="body1" fontWeight="bold">
+                    {item.name}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {item.desc}
+                  </Typography>
+                  <Typography fontSize="16px" variant="h6" mt={1}>
+                    ${item.price.toFixed(2)}
+                  </Typography>
+                </CardContent>
+                <Box sx={{ p: 1 }}>
+                  <ProductDetail />
+                </Box>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Stack>
     </Box>
   );
 }

@@ -41,7 +41,7 @@ const stores = [
 
 function FeatureStore() {
   return (
-    <Box sx={{ py: 6, px: { xs: 2, sm: 4 }, bgcolor: "#f9fafb" }}>
+    <Box sx={{ py: 6, px: { xs: 2, sm: 4 }, bgcolor: "background.paper" }}>
       <Stack sx={{ maxWidth: "1200px", mx: "auto" }}>
         {/* Header */}
         <Stack
@@ -54,7 +54,7 @@ function FeatureStore() {
             variant="h5"
             sx={{ fontWeight: "bold", fontSize: 22 }}
           >
-            Featured Store
+            Delivery & Pickup 🚛
           </Typography>
 
           <Link href="/" style={{ textDecoration: "none" }}>
@@ -96,7 +96,7 @@ function FeatureStore() {
                       width: 56,
                       height: 56,
                       position: "absolute",
-                      top: "60%",
+                      top: "55%",
                       left: "20%",
                       transform: "translate(-50%, -50%)",
                       border: "3px solid white",

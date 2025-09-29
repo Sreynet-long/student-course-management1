@@ -6,7 +6,7 @@ import TobNavbar from "./menu/Header/TopNavbar";
 import Topbar from "./menu/Header/TopNavbar";
 import Hero from './components/Home/page';
 import Footer from './menu/footer/page';
-
+import ScrollToTop from "./components/scroll/ScrollToTop";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,6 +38,7 @@ export default function RootLayout({ children }) {
           {children}
         </Box>
         <Footer/>
+        <ScrollToTop />
       </body>
     </html>
   );

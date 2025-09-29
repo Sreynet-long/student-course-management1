@@ -14,22 +14,22 @@ import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 
 export default function Footer() {
   return (
-    <Box component="footer" sx={{ py: 6, bgcolor: "#f5f5f5" }}>
+    <Box component="footer" sx={{ py: 6 }} className="app-footer">
       <Container maxWidth="lg">
         <Grid container spacing={4}>
           {/* Company */}
           <Grid item xs={12} sm={6} md={4}>
             <Stack spacing={2}>
               <Typography variant="h6">
-                <ShoppingBasketIcon sx={{ mr: 1 }} />
+                <ShoppingBasketIcon sx={{ mr: 1 }}/>
                 FreshMart
               </Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body2" color="text.white">
                 Your one-stop shop for fresh groceries delivered right to your
                 door.
               </Typography>
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body2" color="text.white">
                   Payment Methods:
                 </Typography>
                 <img
@@ -51,35 +51,41 @@ export default function Footer() {
             <Typography variant="h6" gutterBottom>
               Quick Links
             </Typography>
-            <Link href="#" display="block" gutterBottom>
+            <Link href="/about" display="block" sx={{ textDecoration: "none", color: "white"}} gutterBottom>
               About Us
             </Link>
-            <Link href="#" display="block" gutterBottom>
+            <Link href="/contact" display="block" sx={{ textDecoration: "none",color: "white"}} gutterBottom>
               Contact
             </Link>
-            <Link href="#" display="block" gutterBottom>
+            <Link href="#" display="block" sx={{ textDecoration: "none",color: "white"}} gutterBottom>
               FAQ
             </Link>
-            <Link href="#" display="block" gutterBottom>
+            <Link href="#" display="block" sx={{ textDecoration: "none",color: "white"}} gutterBottom>
               Careers
+            </Link>
+            <Link href="#" display="block" sx={{ textDecoration: "none",color: "white"}} gutterBottom>
+              Terms & Conditions
+            </Link>
+            <Link href="#" display="block" sx={{ textDecoration: "none",color: "white"}} gutterBottom>
+              Privacy Policy
             </Link>
           </Grid>
 
           {/* Categories */}
           <Grid item xs={6} sm={3} md={2}>
-            <Typography variant="h6" gutterBottom>
+            <Typography variant="h6" sx={{ textDecoration: "none",color: "white"}} gutterBottom>
               Categories
             </Typography>
-            <Link href="#" display="block" gutterBottom>
+            <Link href="#" display="block" sx={{ textDecoration: "none",color: "white"}} gutterBottom>
               Vegetables
             </Link>
-            <Link href="#" display="block" gutterBottom>
+            <Link href="#" display="block" sx={{ textDecoration: "none", color: "white"}} gutterBottom>
               Fruits
             </Link>
-            <Link href="#" display="block" gutterBottom>
+            <Link href="#" display="block" sx={{ textDecoration: "none",color: "white"}} gutterBottom>
               Dairy
             </Link>
-            <Link href="#" display="block" gutterBottom>
+            <Link href="#" display="block" sx={{ textDecoration: "none",color: "white"}} gutterBottom>
               Meat & Fish
             </Link>
           </Grid>
@@ -128,7 +134,7 @@ export default function Footer() {
 
         <Divider sx={{ my: 4 }} />
 
-        <Typography variant="body2" color="text.secondary" textAlign="center">
+        <Typography variant="body2" color="text.white" textAlign="center">
           &copy; {new Date().getFullYear()} FreshMart. All Rights Reserved.
         </Typography>
       </Container>

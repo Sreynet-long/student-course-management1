@@ -49,16 +49,16 @@ export default function CategoryList() {
   return (
     <Box
       sx={{
-        bgcolor: "#f9fafb",
-        py: 4,
+        bgcolor: "background.paper",
+        py: 6,
         px: { xs: 2, sm: 4 },
         position: "relative",
       }}
     >
       <Box
         sx={{
-          maxWidth: "1200px", // keep content centered on big screens
-          mx: "auto", // center horizontally
+          maxWidth: "1200px", 
+          mx: "auto",
           position: "relative",
         }}
       >
@@ -76,7 +76,7 @@ export default function CategoryList() {
               borderRadius: "50%",
               "&:hover": { bgcolor: "grey.100" },
               zIndex: 10,
-              display: { xs: "none", md: "flex" }, // hide arrows on mobile
+              // display: { xs: "none", md: "flex" }, 
             }}
           >
             <ArrowBackIos fontSize="small" />
@@ -92,7 +92,7 @@ export default function CategoryList() {
             overflowX: "auto",
             scrollSnapType: "x mandatory",
             "::-webkit-scrollbar": { display: "none" },
-            px: { xs: 0, md: 5 }, // padding for arrow space on desktop
+            px: { xs: 0, md: 5 },
           }}
         >
           {categoriesData.map((category) => (
@@ -123,7 +123,7 @@ export default function CategoryList() {
               borderRadius: "50%",
               "&:hover": { bgcolor: "grey.100" },
               zIndex: 10,
-              display: { xs: "none", md: "flex" }, // hide arrows on mobile
+              // display: { xs: "none", md: "flex" },
             }}
           >
             <ArrowForwardIos fontSize="small" />

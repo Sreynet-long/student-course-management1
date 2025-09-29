@@ -9,7 +9,7 @@ export default function ScrollToTop() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setVisible(window.scrollY > 300); // show after 300px scroll
+      setVisible(window.scrollY > 300); 
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -31,7 +31,7 @@ export default function ScrollToTop() {
           right: 24,
           zIndex: 1000,
           bgcolor: "#219721ff",
-          "&:hover": { bgcolor: "#e64a19" },
+          "&:hover": { bgcolor: "#3e5540" },
         }}
       >
         <KeyboardArrowUpIcon />

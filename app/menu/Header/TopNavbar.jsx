@@ -36,6 +36,7 @@ import Link from "next/link";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import Collapse from "@mui/material/Collapse";
+import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 
 export default function TopNavbar() {
   const pathname = usePathname();
@@ -63,7 +64,7 @@ export default function TopNavbar() {
 
   const navItems = [
     { label: "Home", path: "/", icon: <HomeIcon /> },
-    { label: "Products", path: "/products", icon: <StoreIcon /> }, // Used only for mobile drawer
+    { label: "Products", path: "/products", icon: <StoreIcon /> }, 
     { label: "About", path: "/about", icon: <InfoIcon /> },
     { label: "Contact", path: "/contact", icon: <ContactPageIcon /> },
   ];
@@ -171,6 +172,7 @@ const drawerList = (
             component="div"
             sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
           >
+            <ShoppingBasketIcon sx={{ mr: 1 }}/>
             FreshMart
           </Typography>
 
