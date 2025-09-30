@@ -37,6 +37,7 @@ import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import Collapse from "@mui/material/Collapse";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
+import SignUp from "@/app/components/Home/SignUp";
 
 export default function TopNavbar() {
   const pathname = usePathname();
@@ -225,7 +226,7 @@ const drawerList = (
               </Button>
             </Link>
 
-            <Link href="/contact">
+            <Link href="/contact">  
               <Button
                 sx={{
                   color: "white",
@@ -266,8 +267,12 @@ const drawerList = (
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
         transformOrigin={{ vertical: "top", horizontal: "right" }}
       >
-        <MenuItem onClick={handleProfileClose}>Profile</MenuItem>
-        <MenuItem onClick={handleProfileClose}>My Account</MenuItem>
+        <MenuItem onClick={handleProfileClose}>
+          <SignUp/>Profile
+        </MenuItem>
+        <MenuItem onClick={handleProfileClose}>
+          <Link href="/" style={{textDecoration: "none"}}>My Account</Link>
+        </MenuItem>
       </Menu>
 
       {/* <Menu

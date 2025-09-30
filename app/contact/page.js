@@ -11,16 +11,10 @@ import EmailIcon from '@mui/icons-material/Email';
 import PublicIcon from '@mui/icons-material/Public';
 import PermContactCalendarRoundedIcon from '@mui/icons-material/PermContactCalendarRounded';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
+import Contact from './Contact';
 
 export default function ContactPage() {
   
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    alert('Thank you for your message! We will get back to you soon.');
-
-  };
-
   return (
     <Box sx={{ p: { xs: 3, md: 6 }, maxWidth: 'lg', margin: '0 auto' }}>
       <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 4 }}>
@@ -68,59 +62,7 @@ export default function ContactPage() {
       </Card>
       
       <Grid container spacing={5}>
-        
-        {/*Contact Form (Left Column) */}
-        <Grid item xs={12} md={4}>
-          <Typography variant="h4" component="h2" mb={3} sx={{ fontWeight: '600' }}>
-            Send Us a Message
-          </Typography>
-          
-          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
-            <Stack spacing={3}>
-              <TextField 
-                required 
-                fullWidth 
-                label="Your Name" 
-                variant="outlined" 
-              />
-              <TextField 
-                required 
-                fullWidth 
-                label="Your Email" 
-                variant="outlined" 
-                type="email" 
-              />
-              <TextField 
-                required 
-                fullWidth 
-                label="Subject" 
-                variant="outlined" 
-                select 
-                // In a real app, define these menu items
-                SelectProps={{ native: true }}
-              >
-                <option value="General Inquiry">General Inquiry</option>
-                <option value="Order Issue">Order Issue (Please provide Order #)</option>
-                <option value="Partnership">Partnership Inquiry</option>
-                <option value="Feedback">Feedback</option>
-              </TextField>
-              <TextField
-                required
-                fullWidth
-                label="Your Message"
-                variant="outlined"
-                multiline
-                rows={5}
-              />
-              <Button type="submit" variant="contained" color="success" size="large">
-                Send Message
-              </Button>
-            </Stack>
-          </Box>
-        </Grid>
-
-        {/*Direct Contact Details & Specialized (Right Column) */}
-
+        <Contact/>
         <Grid item xs={12} md={4}>
           <Stack justifyContent="center">
             <Typography variant="h4" component="h2" mb={3} sx={{ fontWeight: '600' }}>
@@ -155,7 +97,6 @@ export default function ContactPage() {
               </CardContent>
             </Card>
             
-            {/* Specialized Contacts */}
             <Typography variant="h5" component="h3" mt={4} mb={2}>
               Business & Media
             </Typography>
@@ -174,7 +115,6 @@ export default function ContactPage() {
         </Grid>
       </Grid>
       
-      {/* Location (Optional Footer Block) */}
       <Divider sx={{ my: 6 }} />
       <Stack alignItems="center" spacing={2}>
         <PublicIcon color="action" sx={{ fontSize: 40 }}/>

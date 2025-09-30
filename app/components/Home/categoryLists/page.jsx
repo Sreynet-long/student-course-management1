@@ -29,7 +29,7 @@ export default function CategoryList() {
 
   const handleScroll = (direction) => {
     if (scrollRef.current) {
-      const scrollAmount = 280; // scroll step
+      const scrollAmount = 280;
       scrollRef.current.scrollBy({
         left: direction === "left" ? -scrollAmount : scrollAmount,
         behavior: "smooth",
@@ -62,7 +62,6 @@ export default function CategoryList() {
           position: "relative",
         }}
       >
-        {/* Left Arrow */}
         {canScrollLeft && (
           <IconButton
             onClick={() => handleScroll("left")}
@@ -83,7 +82,6 @@ export default function CategoryList() {
           </IconButton>
         )}
 
-        {/* Categories Scroll */}
         <Stack
           direction="row"
           spacing={2}
@@ -92,7 +90,7 @@ export default function CategoryList() {
             overflowX: "auto",
             scrollSnapType: "x mandatory",
             "::-webkit-scrollbar": { display: "none" },
-            px: { xs: 0, md: 5 },
+            px: { xs: 0, md: 6 },
           }}
         >
           {categoriesData.map((category) => (
@@ -108,8 +106,6 @@ export default function CategoryList() {
             </Box>
           ))}
         </Stack>
-
-        {/* Right Arrow */}
         {canScrollRight && (
           <IconButton
             onClick={() => handleScroll("right")}
