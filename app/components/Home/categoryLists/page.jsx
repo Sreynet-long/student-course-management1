@@ -1,18 +1,17 @@
 "use client";
-import { Box, Stack, IconButton } from "@mui/material";
+import { Box, Stack, IconButton, Typography } from "@mui/material";
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 import { useRef, useState, useEffect } from "react";
 import CategoryCard from "../../feature/CategoryCard";
 
 const categoriesData = [
-  { id: "1", name: "Vegetable", icon: "/icons/vegetable.png", slug: "vegetable" },
-  { id: "2", name: "Snacks & Breads", icon: "/icons/croissant.png", slug: "snacks-breads" },
-  { id: "3", name: "Fruits", icon: "/icons/fruit.png", slug: "fruits" },
-  { id: "4", name: "Chicken legs", icon: "/icons/chicken.png", slug: "chicken-legs" },
-  { id: "5", name: "Milk & Dairy", icon: "/icons/milk.png", slug: "milk-dairy" },
-  { id: "6", name: "Fruits", icon: "/icons/fruit.png", slug: "fruits" },
-  { id: "7", name: "Chicken legs", icon: "/icons/chicken.png", slug: "chicken-legs" },
-  { id: "8", name: "Milk & Dairy", icon: "/icons/milk.png", slug: "milk-dairy" },
+  { id: "1", name: "Vegetable",icon: "/icons/vegetable.png", slug: "vegetable",Link: "/categories/vegetable"},
+  { id: "2", name: "Snacks & Breads", icon: "/icons/croissant.png", slug: "snacks-breads",Link: "/categories/Snacks-breads" },
+  { id: "3", name: "Fruits", icon: "/icons/fruit.png", slug: "fruits" ,Link: "/categories/fruits"},
+  { id: "4", name: "Meats", icon: "/icons/meats.png", slug: "meats",Link: "/categories/meats" },
+  { id: "5", name: "Milk & Dairy", icon: "/icons/milk.png", slug: "milk-dairy",Link: "/categories/milk-dairy" },
+  { id: "6", name: "seafood", icon: "/icons/seafood.png", slug: "seafood" ,Link: "/categories/seafood"},
+  
 ];
 
 export default function CategoryList() {
@@ -62,6 +61,13 @@ export default function CategoryList() {
           position: "relative",
         }}
       >
+        <Stack>
+        <Typography
+         variant="h5" 
+         sx={{fontWeight: "bold", 
+          mb: 3,
+          textAlign: { xs: "center", md: "left" }, }}>Categories 📦</Typography>
+        </Stack>
         {canScrollLeft && (
           <IconButton
             onClick={() => handleScroll("left")}
@@ -75,7 +81,7 @@ export default function CategoryList() {
               borderRadius: "50%",
               "&:hover": { bgcolor: "grey.100" },
               zIndex: 10,
-              // display: { xs: "none", md: "flex" }, 
+              // display: { xs: "none", md: "flex" },
             }}
           >
             <ArrowBackIos fontSize="small" />
@@ -102,7 +108,9 @@ export default function CategoryList() {
                 scrollSnapAlign: "start",
               }}
             >
-              <CategoryCard category={category} />
+              <CategoryCard category={category} 
+                href={`/categories/${category.slug}`}
+              />
             </Box>
           ))}
         </Stack>

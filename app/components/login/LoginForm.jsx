@@ -4,11 +4,29 @@ import { CloseSquare } from "iconsax-react";
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 function LoginForm() {
+    const [open, setOpen] = React.useState(false);
+        
+          const handleClickOpen = () => {
+            setOpen(true);
+          };
+          const handleClose = () => {
+            setOpen(false);
+          };
+         const [showPassword, setShowPassword] = React.useState(false);
+         const handleClickShowPassword = () => setShowPassword((show) => !show);
+    
+         const handleMouseDownPassword = (event) => {
+            event.preventDefault();
+         };
+    
+         const handleMouseUpPassword = (event) => {
+            event.preventDefault();
+         };
   return (
     <Dialog>
         <Stack direction="column" display="flex" justifyContent="space-between">
             <Stack direction="row">
-                <Typography>Create account</Typography>
+                <Typography>Login</Typography>
                 <IconButton>
                     <CloseSquare/>
                 </IconButton>
@@ -17,23 +35,9 @@ function LoginForm() {
             <Stack direction="column" justifyContent="space-between">
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={12} md={12}>
-                        <Typography>Username</Typography>
+                        <Typography>Username or Email Address</Typography>
                         <TextField 
-                            placeholder='Name...'
-                            fullWidth
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={12} md={12}>
-                        <Typography>Phone number</Typography>
-                        <TextField 
-                            placeholder='Phone number'
-                            fullWidth
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={12} md={12}>
-                        <Typography>Email Address</Typography>
-                        <TextField 
-                            placeholder='email@example.com'
+                            placeholder='username or email address'
                             fullWidth
                         />
                     </Grid>
@@ -62,11 +66,11 @@ function LoginForm() {
                                 label="Password"
                             />
                         </FormControl>
-                        <CheckBox/>
+                        <CheckBox {...label} defaultChecked>Remember Me</CheckBox>
                     </Grid>
                 </Grid>
             </Stack>
-            <Button>Sign Up</Button>
+            <Button>Login</Button>
         </Stack>
     </Dialog>
   )

@@ -166,17 +166,18 @@ const drawerList = (
           >
             <MenuIcon />
           </IconButton>
-
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
-          >
-            <ShoppingBasketIcon sx={{ mr: 1 }}/>
-            FreshMart
-          </Typography>
-
+          <Link href="/" style={{textDecoration: "none"}}>
+            <Typography
+              color="white"
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+            >
+              <ShoppingBasketIcon sx={{ mr: 1 }}/>
+              FreshMart
+            </Typography>
+          </Link>
           <Box
             sx={{
               flexGrow: 1,
@@ -201,7 +202,7 @@ const drawerList = (
           </Box>
 
           <Box sx={{ display: { xs: "none", sm: "flex" }, gap: 2 }}>
-            <Link href="/">
+            {/* <Link href="/">
               <Button
                 sx={{
                   color: "white",
@@ -210,7 +211,7 @@ const drawerList = (
               >
                 Home
               </Button>
-            </Link>
+            </Link> */}
 
             <Product />
 
@@ -258,7 +259,7 @@ const drawerList = (
           </Box>
         </Toolbar>
       </AppBar>
-
+                
       <Menu
         id={menuId}
         anchorEl={anchorEl}
@@ -268,37 +269,12 @@ const drawerList = (
         transformOrigin={{ vertical: "top", horizontal: "right" }}
       >
         <MenuItem onClick={handleProfileClose}>
-          <SignUp/>Profile
+          <Link href="/signup" style={{textDecoration: "none"}}>Profile</Link>
         </MenuItem>
         <MenuItem onClick={handleProfileClose}>
           <Link href="/" style={{textDecoration: "none"}}>My Account</Link>
         </MenuItem>
       </Menu>
-
-      {/* <Menu
-        id={mobileMenuId}
-        anchorEl={mobileAnchor}
-        open={isMobileMenuOpen}
-        onClose={handleMobileMenuClose}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        transformOrigin={{ vertical: "top", horizontal: "right" }}
-      >
-        <MenuItem>
-          <IconButton color="inherit">
-            <Badge badgeContent={2} color="error">
-              <ShoppingCartIcon />
-            </Badge>
-          </IconButton>
-          <p>Cart</p>
-        </MenuItem>
-        <MenuItem onClick={handleProfileOpen}>
-          <IconButton color="inherit">
-            <AccountCircle />
-          </IconButton>
-          <p>Profile</p>
-        </MenuItem>
-      </Menu> */}
-
       <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
         {drawerList}
       </Drawer>
