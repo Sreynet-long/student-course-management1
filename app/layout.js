@@ -7,6 +7,7 @@ import Topbar from "./menu/Header/TopNavbar";
 import Hero from './components/Home/page';
 import Footer from './menu/footer/page';
 import ScrollToTop from "./components/scroll/ScrollToTop";
+import { CartProvider } from './context/CartContext';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,6 +28,7 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <TobNavbar/>
+        <CartProvider>
         <Box
           component="main" 
           sx={{ 
@@ -37,6 +39,7 @@ export default function RootLayout({ children }) {
         >
           {children}
         </Box>
+        </CartProvider>
         <Footer/>
         <ScrollToTop />
       </body>

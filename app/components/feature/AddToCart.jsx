@@ -77,7 +77,18 @@ export default function AddToCard() {
         <Grid container spacing={2} justifyContent="center">
           {items.map((item) => (
             <Grid key={item.id} item xs={6} sm={6} md={4} lg={3}>
-              <Card sx={{ borderRadius: 2, boxShadow: 2, "&:hover": { boxShadow: 4 },textAlign: "center", p: 1 , width: 170, height: 300,p: 1 }}>
+              <Card
+                sx={{
+                  borderRadius: 2,
+                  boxShadow: 2,
+                  "&:hover": { boxShadow: 4 },
+                  textAlign: "center",
+                  p: 1,
+                  width: 170,
+                  height: 380,
+                  p: 1,
+                }}
+              >
                 <CardMedia
                   component="img"
                   height="130"
