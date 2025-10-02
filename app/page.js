@@ -23,9 +23,9 @@ function HomePage() {
       <SellProductList />
       <FeatureStore />
       <WhyShopWithUs />
+      <SpecialOffer />
       <CustomerReviews />
       <Newsletter />
-      <SpecialOffer />
 
       
     </main>

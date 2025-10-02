@@ -12,6 +12,7 @@ import {
 import Image from "next/image";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 
+
 export default function Footer() {
   return (
     <Box component="footer" sx={{ py: 6 }} className="app-footer">
@@ -57,7 +58,7 @@ export default function Footer() {
             <Link href="/contact" display="block" sx={{ textDecoration: "none",color: "white"}} gutterBottom>
               Contact
             </Link>
-            <Link href="#" display="block" sx={{ textDecoration: "none",color: "white"}} gutterBottom>
+            <Link href="/faq" display="block" sx={{ textDecoration: "none",color: "white"}} gutterBottom>
               FAQ
             </Link>
             <Link href="#" display="block" sx={{ textDecoration: "none",color: "white"}} gutterBottom>

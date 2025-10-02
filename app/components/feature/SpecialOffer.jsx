@@ -5,11 +5,7 @@ export default function SpecialOffer() {
     <Box sx={{
        textAlign: "center", 
        py: 6, 
-       bgcolor: "#afddb3" , 
-       borderTopRightRadius: "170px", 
-       borderTopLeftRadius: "170px",
-       mt: "15px"
-      }}>
+       }}>
       <Stack sx={{ maxWidth: "1200px", mx: "auto" }}>
         <Typography variant="h4" gutterBottom>
           Special Offers 🛒 

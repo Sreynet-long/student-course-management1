@@ -8,6 +8,7 @@ import {
   CardMedia,
   CardContent,
   Stack,
+  Button,
 } from "@mui/material";
 import ProductDetail from "./ProductDetail";
 
@@ -108,7 +109,14 @@ export default function AddToCard() {
                   </Typography>
                 </CardContent>
                 <Box sx={{ p: 1 }}>
-                  <ProductDetail />
+                  <Button
+                    color="success"
+                    variant="contained"
+                    size="small"
+                    sx={{ mt: 1, borderRadius: "20px", textTransform: "none" }}
+                  >
+                    Add to Cart
+                  </Button>
                 </Box>
               </Card>
             </Grid>
