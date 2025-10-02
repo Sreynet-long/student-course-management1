@@ -13,12 +13,12 @@ import {
   Divider,
   Drawer,
   List,
-  ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
   TextField,
   InputAdornment,
+  Collapse,
 } from "@mui/material";
 
 import MenuIcon from "@mui/icons-material/Menu";
@@ -29,134 +29,163 @@ import HomeIcon from "@mui/icons-material/Home";
 import StoreIcon from "@mui/icons-material/Store";
 import InfoIcon from "@mui/icons-material/Info";
 import ContactPageIcon from "@mui/icons-material/ContactPage";
-import MoreIcon from "@mui/icons-material/MoreVert";
-import Product from "@/app/components/page/Product";
-import { usePathname } from "next/navigation";
-import Link from "next/link";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import Collapse from "@mui/material/Collapse";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
-import { useCart } from "../../context/CartContext";
+
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+import { useCart } from "../../context/CartContext"; // replace with your AuthContext if needed
 
 export default function TopNavbar() {
   const pathname = usePathname();
-  const { cart } = useCart();
+  const { cart, user, setUser } = useCart(); // user: null if not logged in
   const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [mobileAnchor, setMobileAnchor] = useState(null);
+  const [productMenuOpen, setProductMenuOpen] = useState(false);
+  const [drawerProductOpen, setDrawerProductOpen] = useState(false);
 
-  const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileAnchor);
+  const navItems = [
+    { label: "Home", path: "/", icon: <HomeIcon /> },
+    {
+      label: "Products",
+      path: "/products",
+      icon: <StoreIcon />,
+      subItems: [
+        { label: "Vegetables", path: "/products/vegetables" },
+        { label: "Fruits", path: "/products/fruits" },
+        { label: "Frozen Foods", path: "/products/frozen-foods" },
+        { label: "Drinks", path: "/products/drinks" },
+        { label: "Snacks", path: "/products/snacks" },
+        { label: "Meats", path: "/products/meats" },
+      ],
+    },
+    { label: "About", path: "/about", icon: <InfoIcon /> },
+    { label: "Contact", path: "/contact", icon: <ContactPageIcon /> },
+  ];
+
+  // Drawer toggle
+  const toggleDrawer = (open) => () => setDrawerOpen(open);
 
   // Profile menu
   const handleProfileOpen = (event) => setAnchorEl(event.currentTarget);
   const handleProfileClose = () => setAnchorEl(null);
 
-  // Mobile menu
-  const handleMobileMenuOpen = (event) => setMobileAnchor(event.currentTarget);
-  const handleMobileMenuClose = () => setMobileAnchor(null);
+  // Product menu (top nav)
+  const handleProductMenuOpen = (event) => setProductMenuOpen(event.currentTarget);
+  const handleProductMenuClose = () => setProductMenuOpen(null);
 
-  // Drawer
-  const toggleDrawer = (open) => () => setDrawerOpen(open);
+  // Drawer Product Collapse
+  const handleDrawerProductClick = () => setDrawerProductOpen(!drawerProductOpen);
 
-  const menuId = "account-menu";
-  const mobileMenuId = "mobile-menu";
+  // Logout
+  const handleLogout = () => {
+    if (setUser) setUser(null); // clear user in context
+    if (typeof window !== "undefined") localStorage.removeItem("user"); // optional
+    window.location.href = "/"; // redirect to home
+  };
 
-  const navItems = [
-    { label: "Home", path: "/", icon: <HomeIcon /> },
-    { label: "Products", path: "/products", icon: <StoreIcon /> },
-    { label: "About", path: "/about", icon: <InfoIcon /> },
-    { label: "Contact", path: "/contact", icon: <ContactPageIcon /> },
-  ];
-
-  const [productSubOpen, setProductSubOpen] = useState(false);
-  const handleProductClick = () => setProductSubOpen(!productSubOpen);
-
+  // Drawer List
   const drawerList = (
-    <Box sx={{ width: 240 }} role="presentation">
-      <Typography variant="h6" sx={{ m: 2 }}>
+    <Box sx={{ width: 250 }} role="presentation">
+      <Typography variant="h6" sx={{ m: 2, display: "flex", alignItems: "center" }}>
+        <ShoppingBasketIcon sx={{ mr: 1 }} />
         FreshMart
       </Typography>
+
+      <TextField
+        size="small"
+        fullWidth
+        placeholder="Search products..."
+        sx={{ mb: 2 }}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon sx={{ color: "green" }} />
+            </InputAdornment>
+          ),
+        }}
+      />
       <Divider />
       <List>
-        <Link
-          href="/"
-          style={{ textDecoration: "none", color: "inherit" }}
-          onClick={toggleDrawer(false)}
-        >
-          <ListItem disablePadding>
-            <ListItemButton selected={pathname === "/"}>
-              <ListItemIcon>
-                <HomeIcon />
-              </ListItemIcon>
-              <ListItemText primary="Home" />
-            </ListItemButton>
-          </ListItem>
-        </Link>
+        {navItems.map((item) =>
+          item.subItems ? (
+            <Box key={item.label}>
+              <ListItemButton onClick={handleDrawerProductClick}>
+                <ListItemIcon>{item.icon}</ListItemIcon>
+                <ListItemText primary={item.label} />
+                {drawerProductOpen ? <ExpandLess /> : <ExpandMore />}
+              </ListItemButton>
+              <Collapse in={drawerProductOpen} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                  {item.subItems.map((sub) => (
+                    <Link
+                      key={sub.path}
+                      href={sub.path}
+                      style={{ textDecoration: "none", color: "inherit" }}
+                      onClick={toggleDrawer(false)}
+                    >
+                      <ListItemButton
+                        sx={{ pl: 4 }}
+                        selected={pathname === sub.path} // highlight active product subitem
+                      >
+                        <ListItemText primary={sub.label} />
+                      </ListItemButton>
+                    </Link>
+                  ))}
+                </List>
+              </Collapse>
+            </Box>
+          ) : (
+            <Link
+              key={item.path}
+              href={item.path}
+              style={{ textDecoration: "none", color: "inherit" }}
+              onClick={toggleDrawer(false)}
+            >
+              <ListItemButton selected={pathname === item.path}>
+                <ListItemIcon>{item.icon}</ListItemIcon>
+                <ListItemText primary={item.label} />
+              </ListItemButton>
+            </Link>
+          )
+        )}
 
-        <ListItemButton onClick={handleProductClick}>
-          <ListItemIcon>
-            <StoreIcon />
-          </ListItemIcon>
-          <ListItemText primary="Products" />
-          {productSubOpen ? <ExpandLess /> : <ExpandMore />}
-        </ListItemButton>
-        <Collapse in={productSubOpen} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            {[
-              { label: "Vegetables", path: "/products/vegetables" },
-              { label: "Fruits", path: "/products/fruits" },
-              { label: "Frozen Foods", path: "/products/frozen-foods" },
-              { label: "Drinks", path: "/products/drinks" },
-              { label: "Snacks", path: "/products/snacks" },
-              { label: "Meats", path: "/products/meats" },
-            ].map((sub) => (
-              <Link
-                key={sub.path}
-                href={sub.path}
-                style={{ textDecoration: "none", color: "inherit" }}
-                onClick={toggleDrawer(false)}
-              >
-                <ListItemButton sx={{ pl: 4 }}>
-                  <ListItemText primary={sub.label} />
-                </ListItemButton>
-              </Link>
-            ))}
-          </List>
-        </Collapse>
-
-        <Link
-          href="/about"
-          style={{ textDecoration: "none", color: "inherit" }}
-          onClick={toggleDrawer(false)}
-        >
-          <ListItem disablePadding>
-            <ListItemButton selected={pathname === "/about"}>
-              <ListItemIcon>
-                <InfoIcon />
-              </ListItemIcon>
-              <ListItemText primary="About" />
+        {/* Conditional Auth Buttons in Drawer */}
+        <Divider />
+        {!user ? (
+          <>
+            <Link href="/signup" style={{ textDecoration: "none", color: "inherit" }} onClick={toggleDrawer(false)}>
+              <ListItemButton selected={pathname === "/signup"}>
+                <ListItemText primary="Sign Up" />
+              </ListItemButton>
+            </Link>
+            <Link href="/login" style={{ textDecoration: "none", color: "inherit" }} onClick={toggleDrawer(false)}>
+              <ListItemButton selected={pathname === "/login"}>
+                <ListItemText primary="Login" />
+              </ListItemButton>
+            </Link>
+          </>
+        ) : (
+          <>
+            <ListItemButton onClick={toggleDrawer(false)} selected={pathname === "/profile"}>
+              <ListItemText primary="Profile" />
             </ListItemButton>
-          </ListItem>
-        </Link>
-
-        <Link
-          href="/contact"
-          style={{ textDecoration: "none", color: "inherit" }}
-          onClick={toggleDrawer(false)}
-        >
-          <ListItem disablePadding>
-            <ListItemButton selected={pathname === "/contact"}>
-              <ListItemIcon>
-                <ContactPageIcon />
-              </ListItemIcon>
-              <ListItemText primary="Contact" />
+            <ListItemButton onClick={toggleDrawer(false)} selected={pathname === "/account"}>
+              <ListItemText primary="My Account" />
             </ListItemButton>
-          </ListItem>
-        </Link>
+            <ListItemButton
+              onClick={() => {
+                toggleDrawer(false)();
+                handleLogout();
+              }}
+            >
+              <ListItemText primary="Logout" />
+            </ListItemButton>
+          </>
+        )}
       </List>
     </Box>
   );
@@ -165,35 +194,32 @@ export default function TopNavbar() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="fixed" sx={{ bgcolor: "green" }}>
         <Toolbar>
+          {/* Mobile Menu Icon */}
           <IconButton
-            size="large"
             edge="start"
             color="inherit"
-            onClick={toggleDrawer(true)}
+            aria-label="menu"
             sx={{ mr: 2, display: { sm: "none" } }}
+            onClick={toggleDrawer(true)}
           >
             <MenuIcon />
           </IconButton>
-          <Link href="/" style={{ textDecoration: "none" }}  >
+
+          {/* Logo */}
+          <Link href="/" style={{ textDecoration: "none" }}>
             <Typography
               variant="h6"
               color="white"
               noWrap
-              component="div"
-              sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+              sx={{ display: { xs: "none", sm: "flex" }, alignItems: "center" }}
             >
               <ShoppingBasketIcon sx={{ mr: 1 }} />
               FreshMart
             </Typography>
           </Link>
-          <Box
-            sx={{
-              flexGrow: 1,
-              maxWidth: 300,
-              mx: 2,
-              display: { xs: "none", sm: "block" },
-            }}
-          >
+
+          {/* Search */}
+          <Box sx={{ flexGrow: 1, mx: 2, display: { xs: "none", sm: "block" }, maxWidth: 300 }}>
             <TextField
               size="small"
               fullWidth
@@ -209,101 +235,99 @@ export default function TopNavbar() {
             />
           </Box>
 
-          <Box sx={{ display: { xs: "none", sm: "flex" }, gap: 2 }}>
-            {/* <Link href="/">
-              <Button
-                sx={{
-                  color: "white",
-                  borderBottom: pathname === "/" ? "2px solid yellow" : "none",
-                }}
-              >
-                Home
-              </Button>
-            </Link> */}
+          {/* Desktop Menu */}
+          <Box sx={{ display: { xs: "none", sm: "flex" }, alignItems: "center", gap: 2 }}>
+            {navItems.map((item) =>
+              item.subItems ? (
+                <Box key={item.label}>
+                  <Button sx={{ color: "white" }} onClick={handleProductMenuOpen}>
+                    {item.label}
+                  </Button>
+                  <Menu
+                    anchorEl={productMenuOpen}
+                    open={Boolean(productMenuOpen)}
+                    onClose={handleProductMenuClose}
+                    anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+                    transformOrigin={{ vertical: "top", horizontal: "left" }}
+                  >
+                    {item.subItems.map((sub) => (
+                      <MenuItem
+                        key={sub.path}
+                        component={Link}
+                        href={sub.path}
+                        onClick={handleProductMenuClose}
+                        selected={pathname === sub.path} // highlight active product subitem
+                      >
+                        {sub.label}
+                      </MenuItem>
+                    ))}
+                  </Menu>
+                </Box>
+              ) : (
+                <Button
+                  key={item.path}
+                  component={Link}
+                  href={item.path}
+                  sx={{ color: "white" }}
+                  variant={pathname === item.path ? "outlined" : "text"} // highlight active
+                >
+                  {item.label}
+                </Button>
+              )
+            )}
 
-            <Product />
+            {/* Conditional Auth Buttons */}
+            {!user ? (
+              <>
+                <Button component={Link} href="/signup" sx={{ color: "white" }} variant={pathname === "/signup" ? "outlined" : "text"}>
+                  Sign Up
+                </Button>
+                <Button component={Link} href="/login" sx={{ color: "white" }} variant={pathname === "/login" ? "outlined" : "text"}>
+                  Login
+                </Button>
+              </>
+            ) : (
+              <IconButton color="inherit" onClick={handleProfileOpen}>
+                <AccountCircle />
+              </IconButton>
+            )}
 
-            <Link href="/about">
-              <Button
-                sx={{
-                  color: "white",
-                  borderBottom:
-                    pathname === "/about" ? "2px solid yellow" : "none",
-                }}
-              >
-                About
-              </Button>
-            </Link>
-
-            <Link href="/contact">
-              <Button
-                sx={{
-                  color: "white",
-                  borderBottom:
-                    pathname === "/contact" ? "2px solid yellow" : "none",
-                }}
-              >
-                Contact
-              </Button>
-            </Link>
-          </Box>
-
-          <Box sx={{ display: "flex" }}>
+            {/* Cart */}
             <IconButton color="inherit">
-               <Badge badgeContent={totalItems} color="error">
+              <Badge badgeContent={totalItems} color="error">
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>
-            <IconButton color="inherit" onClick={handleProfileOpen}>
-              <AccountCircle />
-            </IconButton>
-            {/* <IconButton
-              sx={{ display: { sm: "none" } }}
-              color="inherit"
-              onClick={handleMobileMenuOpen}
-            >
-              <MoreIcon />
-            </IconButton> */}
           </Box>
         </Toolbar>
       </AppBar>
 
+      {/* Profile Menu */}
       <Menu
-        id={menuId}
         anchorEl={anchorEl}
-        open={isMenuOpen}
+        open={Boolean(anchorEl)}
         onClose={handleProfileClose}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
         transformOrigin={{ vertical: "top", horizontal: "right" }}
       >
-        <MenuItem onClick={handleProfileClose}>Profile</MenuItem>
-        <MenuItem onClick={handleProfileClose}>My Account</MenuItem>
+        <MenuItem onClick={handleProfileClose} selected={pathname === "/profile"}>
+          Profile
+        </MenuItem>
+        <MenuItem onClick={handleProfileClose} selected={pathname === "/account"}>
+          My Account
+        </MenuItem>
+        <Divider />
+        <MenuItem
+          onClick={() => {
+            handleProfileClose();
+            handleLogout();
+          }}
+        >
+          Logout
+        </MenuItem>
       </Menu>
 
-      {/* <Menu
-        id={mobileMenuId}
-        anchorEl={mobileAnchor}
-        open={isMobileMenuOpen}
-        onClose={handleMobileMenuClose}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        transformOrigin={{ vertical: "top", horizontal: "right" }}
-      >
-        <MenuItem>
-          <IconButton color="inherit">
-            <Badge badgeContent={2} color="error">
-              <ShoppingCartIcon />
-            </Badge>
-          </IconButton>
-          <p>Cart</p>
-        </MenuItem>
-        <MenuItem onClick={handleProfileOpen}>
-          <IconButton color="inherit">
-            <AccountCircle />
-          </IconButton>
-          <p>Profile</p>
-        </MenuItem>
-      </Menu> */}
-
+      {/* Drawer */}
       <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
         {drawerList}
       </Drawer>

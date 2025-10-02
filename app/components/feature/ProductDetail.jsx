@@ -9,7 +9,8 @@ import {
   Rating,
 } from "@mui/material";
 import { Add, Remove, FavoriteBorder } from "@mui/icons-material";
-import { useCart } from "../../hook/useCart";
+// import { useCart } from "../../hook/useCart";
+import { useCart } from "../../context/CartContext";
 
 export default function ProductDetail({ product }) {
   const [qty, setQty] = useState(1);
@@ -27,7 +28,10 @@ export default function ProductDetail({ product }) {
         alignItems="center"
         justifyContent="center"
       >
-        <IconButton size="small" onClick={() => setQty((q) => Math.max(1, q - 1))}>
+        <IconButton
+          size="small"
+          onClick={() => setQty((q) => Math.max(1, q - 1))}
+        >
           <Remove />
         </IconButton>
         <Typography>{qty}</Typography>

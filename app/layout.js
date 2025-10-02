@@ -2,8 +2,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Box } from '@mui/material';
-import TobNavbar from "./menu/Header/TopNavbar";
-import Topbar from "./menu/Header/TopNavbar";
+import TopNavbar from "./menu/Header/TopNavbar";
 import Hero from './components/Home/page';
 import Footer from './menu/footer/page';
 import ScrollToTop from "./components/scroll/ScrollToTop";
@@ -19,31 +18,28 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-
-
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <TobNavbar/>
-        
-        <Box
-          component="main" 
-          sx={{ 
-            // paddingTop: TOP_NAVBAR_HEIGHT, 
-            paddingTop: "64px",
-            minHeight: '100vh', 
-          }}
-        >
-          <CartProvider>
-          {children}
-          </CartProvider>
-        </Box>
+        <CartProvider>
+          <TopNavbar/>
 
-        <Footer/>
-        <ScrollToTop />
+          <Box
+            component="main" 
+            sx={{ 
+              paddingTop: "64px",
+              minHeight: '100vh', 
+            }}
+          >
+            {children}
+          </Box>
+
+          <Footer/>
+          <ScrollToTop />
+        </CartProvider>
       </body>
     </html>
   );

@@ -61,13 +61,13 @@ export default function Footer() {
             <Link href="/faq" display="block" sx={{ textDecoration: "none",color: "white"}} gutterBottom>
               FAQ
             </Link>
-            <Link href="#" display="block" sx={{ textDecoration: "none",color: "white"}} gutterBottom>
+            <Link href="/career" display="block" sx={{ textDecoration: "none",color: "white"}} gutterBottom>
               Careers
             </Link>
-            <Link href="#" display="block" sx={{ textDecoration: "none",color: "white"}} gutterBottom>
+            <Link href="/term&condition" display="block" sx={{ textDecoration: "none",color: "white"}} gutterBottom>
               Terms & Conditions
             </Link>
-            <Link href="#" display="block" sx={{ textDecoration: "none",color: "white"}} gutterBottom>
+            <Link href="/privacy&policy" display="block" sx={{ textDecoration: "none",color: "white"}} gutterBottom>
               Privacy Policy
             </Link>
           </Grid>

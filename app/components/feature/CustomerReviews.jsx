@@ -9,7 +9,8 @@ import {
   Avatar,
   IconButton,
   Box,
-  Stack
+  Stack,
+  Rating,
 } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
@@ -24,11 +25,11 @@ import { race } from "rxjs";
 
 export default function CustomerReviews() {
   const reviews = [
-    { name: "Sangwon", review: "Freshmart always delivers the best quality vegetables!", avatar: "/avatars/sangwon.jpg" },
-    { name: "Dara", review: "Quick delivery and great service. Highly recommended!", avatar: "/avatars/avatar2.png" },
-    { name: "Sophea", review: "I love their fruits section — always fresh and sweet.", avatar: "/avatars/sangwon.jpg" },
-    { name: "Vanna", review: "Affordable and reliable. My go-to online mart!", avatar: "/avatars/user4.png" },
-    { name: "Ratha", review: "The dairy products are always fresh and safe.", avatar: "/avatars/avatar2.png" },
+    { name: "Sangwon", review: "Freshmart always delivers the best quality vegetables!", avatar: "/avatars/sangwon.jpg",rating: 5  },
+    { name: "Dara", review: "Quick delivery and great service. Highly recommended!", avatar: "/avatars/avatar2.png",rating: 4 },
+    { name: "Sophea", review: "I love their fruits section — always fresh and sweet.", avatar: "/avatars/sangwon.jpg",rating: 4.5 },
+    { name: "Vanna", review: "Affordable and reliable. My go-to online mart!", avatar: "/avatars/user4.png" ,rating: 4},
+    { name: "Ratha", review: "The dairy products are always fresh and safe.", avatar: "/avatars/avatar2.png",rating: 5 },
   ];
 
   return (
@@ -96,6 +97,13 @@ export default function CustomerReviews() {
                     <Typography variant="body1" gutterBottom textAlign="center">
                       "{rev.review}"
                     </Typography>
+                    <Rating
+                      name="read-only"
+                      value={rev.rating}
+                      precision={0.5}
+                      readOnly
+                      sx={{ mb: 1 }}
+                    />
                     <Typography variant="subtitle2" color="text.secondary">
                       - {rev.name}
                     </Typography>

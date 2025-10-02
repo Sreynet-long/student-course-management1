@@ -11,6 +11,7 @@ import {
   Button,
 } from "@mui/material";
 import ProductDetail from "./ProductDetail";
+import { useCart } from "../../context/CartContext";
 
 const items = [
   {
@@ -86,7 +87,7 @@ export default function AddToCard() {
                   textAlign: "center",
                   p: 1,
                   width: 170,
-                  height: 380,
+                  height: 300,
                   p: 1,
                 }}
               >
