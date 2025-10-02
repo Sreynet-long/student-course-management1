@@ -9,7 +9,7 @@ import {
   Rating,
 } from "@mui/material";
 import { Add, Remove, FavoriteBorder } from "@mui/icons-material";
-import { useCart } from "@/app/context/CartContext";
+import { useCart } from "../../hook/useCart";
 
 export default function ProductDetail({ product }) {
   const [qty, setQty] = useState(1);

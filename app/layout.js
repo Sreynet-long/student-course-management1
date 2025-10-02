@@ -28,7 +28,7 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <TobNavbar/>
-        <CartProvider>
+        
         <Box
           component="main" 
           sx={{ 
@@ -37,9 +37,11 @@ export default function RootLayout({ children }) {
             minHeight: '100vh', 
           }}
         >
+          <CartProvider>
           {children}
+          </CartProvider>
         </Box>
-        </CartProvider>
+
         <Footer/>
         <ScrollToTop />
       </body>

@@ -1,14 +1,9 @@
 "use client";
 import React, { createContext, useContext, useState } from "react";
 
-// Create context
 const CartContext = createContext();
 
-// Hook to use cart
-export const useCart = () => useContext(CartContext);
-
-// Provider
-export function CartProvider({ children }) {
+export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
 
   const addToCart = (product, qty = 1) => {
@@ -27,19 +22,16 @@ export function CartProvider({ children }) {
     setCart((prev) => prev.filter((item) => item.id !== id));
   };
 
-  const updateQty = (id, qty) => {
-    setCart((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, qty } : item))
-    );
-  };
-
   const clearCart = () => setCart([]);
 
   return (
-    <CartContext.Provider
-      value={{ cart, addToCart, removeFromCart, updateQty, clearCart }}
-    >
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart }}>
       {children}
     </CartContext.Provider>
   );
-}
+};
+
+
+export const useCart = () => {
+  return useContext(CartContext);
+};

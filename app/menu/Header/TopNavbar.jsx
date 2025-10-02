@@ -37,10 +37,12 @@ import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import Collapse from "@mui/material/Collapse";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
-import SignUp from "@/app/components/Home/SignUp";
+import { useCart } from "../../context/CartContext";
 
 export default function TopNavbar() {
   const pathname = usePathname();
+  const { cart } = useCart();
+  const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -65,7 +67,7 @@ export default function TopNavbar() {
 
   const navItems = [
     { label: "Home", path: "/", icon: <HomeIcon /> },
-    { label: "Products", path: "/products", icon: <StoreIcon /> }, 
+    { label: "Products", path: "/products", icon: <StoreIcon /> },
     { label: "About", path: "/about", icon: <InfoIcon /> },
     { label: "Contact", path: "/contact", icon: <ContactPageIcon /> },
   ];
@@ -73,85 +75,91 @@ export default function TopNavbar() {
   const [productSubOpen, setProductSubOpen] = useState(false);
   const handleProductClick = () => setProductSubOpen(!productSubOpen);
 
-const drawerList = (
-  <Box sx={{ width: 240 }} role="presentation">
-    <Typography variant="h6" sx={{ m: 2 }}>
-      FreshMart
-    </Typography>
-    <Divider />
-    <List>
+  const drawerList = (
+    <Box sx={{ width: 240 }} role="presentation">
+      <Typography variant="h6" sx={{ m: 2 }}>
+        FreshMart
+      </Typography>
+      <Divider />
+      <List>
+        <Link
+          href="/"
+          style={{ textDecoration: "none", color: "inherit" }}
+          onClick={toggleDrawer(false)}
+        >
+          <ListItem disablePadding>
+            <ListItemButton selected={pathname === "/"}>
+              <ListItemIcon>
+                <HomeIcon />
+              </ListItemIcon>
+              <ListItemText primary="Home" />
+            </ListItemButton>
+          </ListItem>
+        </Link>
 
-      <Link
-        href="/"
-        style={{ textDecoration: "none", color: "inherit" }}
-        onClick={toggleDrawer(false)} 
-      >
-        <ListItem disablePadding>
-          <ListItemButton selected={pathname === "/"}>
-            <ListItemIcon><HomeIcon /></ListItemIcon>
-            <ListItemText primary="Home" />
-          </ListItemButton>
-        </ListItem>
-      </Link>
+        <ListItemButton onClick={handleProductClick}>
+          <ListItemIcon>
+            <StoreIcon />
+          </ListItemIcon>
+          <ListItemText primary="Products" />
+          {productSubOpen ? <ExpandLess /> : <ExpandMore />}
+        </ListItemButton>
+        <Collapse in={productSubOpen} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            {[
+              { label: "Vegetables", path: "/products/vegetables" },
+              { label: "Fruits", path: "/products/fruits" },
+              { label: "Frozen Foods", path: "/products/frozen-foods" },
+              { label: "Drinks", path: "/products/drinks" },
+              { label: "Snacks", path: "/products/snacks" },
+              { label: "Meats", path: "/products/meats" },
+            ].map((sub) => (
+              <Link
+                key={sub.path}
+                href={sub.path}
+                style={{ textDecoration: "none", color: "inherit" }}
+                onClick={toggleDrawer(false)}
+              >
+                <ListItemButton sx={{ pl: 4 }}>
+                  <ListItemText primary={sub.label} />
+                </ListItemButton>
+              </Link>
+            ))}
+          </List>
+        </Collapse>
 
-      <ListItemButton onClick={handleProductClick}>
-        <ListItemIcon><StoreIcon /></ListItemIcon>
-        <ListItemText primary="Products" />
-        {productSubOpen ? <ExpandLess /> : <ExpandMore />}
-      </ListItemButton>
-      <Collapse in={productSubOpen} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          {[
-            { label: "Vegetables", path: "/products/vegetables" },
-            { label: "Fruits", path: "/products/fruits" },
-            { label: "Frozen Foods", path: "/products/frozen-foods" },
-            { label: "Drinks", path: "/products/drinks" },
-            { label: "Snacks", path: "/products/snacks" },
-            { label: "Meats", path: "/products/meats" },
-          ].map((sub) => (
-            <Link
-              key={sub.path}
-              href={sub.path}
-              style={{ textDecoration: "none", color: "inherit" }}
-              onClick={toggleDrawer(false)} 
-            >
-              <ListItemButton sx={{ pl: 4 }}>
-                <ListItemText primary={sub.label} />
-              </ListItemButton>
-            </Link>
-          ))}
-        </List>
-      </Collapse>
+        <Link
+          href="/about"
+          style={{ textDecoration: "none", color: "inherit" }}
+          onClick={toggleDrawer(false)}
+        >
+          <ListItem disablePadding>
+            <ListItemButton selected={pathname === "/about"}>
+              <ListItemIcon>
+                <InfoIcon />
+              </ListItemIcon>
+              <ListItemText primary="About" />
+            </ListItemButton>
+          </ListItem>
+        </Link>
 
-      <Link
-        href="/about"
-        style={{ textDecoration: "none", color: "inherit" }}
-        onClick={toggleDrawer(false)}
-      >
-        <ListItem disablePadding>
-          <ListItemButton selected={pathname === "/about"}>
-            <ListItemIcon><InfoIcon /></ListItemIcon>
-            <ListItemText primary="About" />
-          </ListItemButton>
-        </ListItem>
-      </Link>
-
-      <Link
-        href="/contact"
-        style={{ textDecoration: "none", color: "inherit" }}
-        onClick={toggleDrawer(false)}
-      >
-        <ListItem disablePadding>
-          <ListItemButton selected={pathname === "/contact"}>
-            <ListItemIcon><ContactPageIcon /></ListItemIcon>
-            <ListItemText primary="Contact" />
-          </ListItemButton>
-        </ListItem>
-      </Link>
-    </List>
-  </Box>
-);
-
+        <Link
+          href="/contact"
+          style={{ textDecoration: "none", color: "inherit" }}
+          onClick={toggleDrawer(false)}
+        >
+          <ListItem disablePadding>
+            <ListItemButton selected={pathname === "/contact"}>
+              <ListItemIcon>
+                <ContactPageIcon />
+              </ListItemIcon>
+              <ListItemText primary="Contact" />
+            </ListItemButton>
+          </ListItem>
+        </Link>
+      </List>
+    </Box>
+  );
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -166,15 +174,15 @@ const drawerList = (
           >
             <MenuIcon />
           </IconButton>
-          <Link href="/" style={{textDecoration: "none"}}>
+          <Link href="/" style={{ textDecoration: "none" }}  >
             <Typography
-              color="white"
               variant="h6"
+              color="white"
               noWrap
               component="div"
               sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
             >
-              <ShoppingBasketIcon sx={{ mr: 1 }}/>
+              <ShoppingBasketIcon sx={{ mr: 1 }} />
               FreshMart
             </Typography>
           </Link>
@@ -227,7 +235,7 @@ const drawerList = (
               </Button>
             </Link>
 
-            <Link href="/contact">  
+            <Link href="/contact">
               <Button
                 sx={{
                   color: "white",
@@ -240,9 +248,9 @@ const drawerList = (
             </Link>
           </Box>
 
-          <Box sx={{ display: "flex"}}>
+          <Box sx={{ display: "flex" }}>
             <IconButton color="inherit">
-              <Badge badgeContent={2} color="error">
+               <Badge badgeContent={totalItems} color="error">
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>
@@ -259,7 +267,7 @@ const drawerList = (
           </Box>
         </Toolbar>
       </AppBar>
-                
+
       <Menu
         id={menuId}
         anchorEl={anchorEl}
@@ -268,13 +276,34 @@ const drawerList = (
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
         transformOrigin={{ vertical: "top", horizontal: "right" }}
       >
-        <MenuItem onClick={handleProfileClose}>
-          <Link href="/signup" style={{textDecoration: "none"}}>Profile</Link>
-        </MenuItem>
-        <MenuItem onClick={handleProfileClose}>
-          <Link href="/" style={{textDecoration: "none"}}>My Account</Link>
-        </MenuItem>
+        <MenuItem onClick={handleProfileClose}>Profile</MenuItem>
+        <MenuItem onClick={handleProfileClose}>My Account</MenuItem>
       </Menu>
+
+      {/* <Menu
+        id={mobileMenuId}
+        anchorEl={mobileAnchor}
+        open={isMobileMenuOpen}
+        onClose={handleMobileMenuClose}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        transformOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <MenuItem>
+          <IconButton color="inherit">
+            <Badge badgeContent={2} color="error">
+              <ShoppingCartIcon />
+            </Badge>
+          </IconButton>
+          <p>Cart</p>
+        </MenuItem>
+        <MenuItem onClick={handleProfileOpen}>
+          <IconButton color="inherit">
+            <AccountCircle />
+          </IconButton>
+          <p>Profile</p>
+        </MenuItem>
+      </Menu> */}
+
       <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
         {drawerList}
       </Drawer>

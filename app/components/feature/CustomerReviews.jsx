@@ -9,7 +9,8 @@ import {
   Avatar,
   IconButton,
   Box,
-  Stack
+  Stack,
+  Rating
 } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
@@ -23,11 +24,11 @@ import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 
 export default function CustomerReviews() {
   const reviews = [
-    { name: "Sangwon", review: "Freshmart always delivers the best quality vegetables!", avatar: "/avatars/sangwon.jpg" },
-    { name: "Dara", review: "Quick delivery and great service. Highly recommended!", avatar: "/avatars/avatar2.png" },
-    { name: "Sophea", review: "I love their fruits section — always fresh and sweet.", avatar: "/avatars/sangwon.jpg" },
-    { name: "Vanna", review: "Affordable and reliable. My go-to online mart!", avatar: "/avatars/user4.png" },
-    { name: "Ratha", review: "The dairy products are always fresh and safe.", avatar: "/avatars/avatar2.png" },
+    { name: "Sangwon", review: "Freshmart always delivers the best quality vegetables!", avatar: "/avatars/sangwon.jpg",rating:4 },
+    { name: "Dara", review: "Quick delivery and great service. Highly recommended!", avatar: "/avatars/avatar2.png",rating:4 },
+    { name: "Sophea", review: "I love their fruits section — always fresh and sweet.", avatar: "/avatars/sangwon.jpg",rating:4 },
+    { name: "Vanna", review: "Affordable and reliable. My go-to online mart!", avatar: "/avatars/user4.png",rating:4 },
+    { name: "Ratha", review: "The dairy products are always fresh and safe.", avatar: "/avatars/avatar2.png",rating:4 },
   ];
 
   return (
@@ -76,13 +77,13 @@ export default function CustomerReviews() {
                 <Card
                   elevation={2}
                   sx={{
-                    maxWidth: 380,
-                    mx: "auto",
-                    my: 2,
-                    minHeight: 220,
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
+                  maxWidth: 400,
+                  mx: "auto",
+                  my: 2,
+                  minHeight: 240,
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
                   }}
                 >
                   <CardContent sx={{ flexGrow: 1, display: "flex", flexDirection: "column", alignItems: "center" }}>
@@ -91,9 +92,17 @@ export default function CustomerReviews() {
                       alt={rev.name}
                       sx={{ width: 64, height: 64, mb: 2 }}
                     />
+                    
                     <Typography variant="body1" gutterBottom textAlign="center">
                       "{rev.review}"
                     </Typography>
+                    <Rating
+                    name="read-only"
+                    value={rev.rating}
+                    precision={0.5}
+                    readOnly
+                    sx={{ mb: 1 }}
+                  />
                     <Typography variant="subtitle2" color="text.secondary">
                       - {rev.name}
                     </Typography>
