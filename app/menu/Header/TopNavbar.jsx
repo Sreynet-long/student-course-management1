@@ -48,7 +48,7 @@ export default function TopNavbar() {
   const [drawerProductOpen, setDrawerProductOpen] = useState(false);
 
   const navItems = [
-    { label: "Home", path: "/", icon: <HomeIcon /> },
+    // { label: "Home", path: "/", icon: <HomeIcon /> },
     {
       label: "Products",
       path: "/products",

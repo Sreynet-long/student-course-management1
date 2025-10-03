@@ -44,10 +44,21 @@ function SignUp() {
    
 
   return (
-    <Dialog>
+    <Dialog 
+        // open={open}
+        fullScreen
+        PaperProps={{
+            style: {
+                position: 'absolute',
+                borderRadius: '12px',
+                height: '680px',
+                width: '640px'
+            }
+        }}
+    >
         <Stack direction="column" display="flex" justifyContent="space-between">
             <Stack direction="row">
-                <Typography>Create account</Typography>
+                <Typography>Sign Up</Typography>
                 <IconButton onClick={handleClose}>
                     <CloseSquare/>
                 </IconButton>
@@ -103,6 +114,7 @@ function SignUp() {
                         </FormControl>
                         <CheckBox {...label} defaultChecked>I Agree with the Terms & Conditions</CheckBox>
                     </Grid>
+                    <Typography>Already have an account <Link>login</Link></Typography>
                 </Grid>
             </Stack>
             <Button>Sign Up</Button>
