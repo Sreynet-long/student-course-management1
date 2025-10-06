@@ -1,4 +1,3 @@
-// src/components/Hero.jsx
 import React from "react";
 import style from "../styles/hero.module.css";
 
@@ -6,14 +5,23 @@ const Hero = () => {
   return (
     <div className={style["hero-banner"]}>
       <div className={style["hero-overlay"]}>
-        <h1>Welcome to Freshmart</h1>
-        <p>
-          Freshmart brings you the freshest groceries right to your doorstep.
-          Enjoy our hand-picked products and special offers every day.
-        </p>
-        <button className={style["btn-banner"]}>🛒 Get Started</button>
+        <div className={style["hero-content"]}>
+          <div className={style["promo"]}>
+            <h1>Get 10% Cashback on Shopping $150</h1>
+            <p>Shopping made easy with fresh groceries delivered to your door.</p>
+            <button className={style["btn-banner"]}>Learn More</button>
+          </div>
+          <div className={style["hero-image-container"]}>
+            <img
+              src="/images/Freshmart-1.jpg"
+              alt="Promo"
+              className={style["hero-image"]}
+            />
+          </div>
+        </div>
       </div>
     </div>
+
   );
 };
 

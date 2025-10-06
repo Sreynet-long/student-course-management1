@@ -1,65 +1,59 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import {Stack, Box, Typography} from '@mui/material';
+import React from "react";
+import { Box, Typography } from "@mui/material";
+import Image from "next/image";
+import Link from "next/link";
 
-export default function CategoryCard({ category }) {
-  const { name, description, icon, slug } = category;
-
+export default function CategoryCard({ category, href }) {
   return (
-
-    <Link 
-    href={`/categories/${slug}`} style={{ textDecoration: 'none' }}>
+    <Link href={href} style={{ textDecoration: "none" }}>
       <Box
         sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            p: 2,
-            bgcolor: 'background.paper',
-            borderRadius: '10px',
+          bgcolor: "white",
+          borderRadius: "16px",
+          boxShadow: 1,
+          p: { xs: 1.5, sm: 2 },
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          transition: "all 0.25s ease",
+          cursor: "pointer",
+          "&:hover": {
+            transform: "translateY(-5px)",
             boxShadow: 3,
-            cursor: 'pointer',
-            // textDecoration: 'none',
-            // color: 'inherit',
-            transition: 'transform 0.3s ease-in-out',
-            '&:hover': { transform: 'scale(1.05)' },
+          },
         }}
-        >
-        
+      >
+        {/* Icon */}
         <Box
           sx={{
-            position: 'relative',
-            width: 58,
-            height: 58,
-            mb: 2,
-            borderRadius: '50%',
-            overflow: 'hidden',
-            bgcolor: '#f0f0f0',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            }}
+            width: { xs: 40, sm: 50, md: 60 },
+            height: { xs: 40, sm: 50, md: 60 },
+            position: "relative",
+            mb: 1,
+          }}
         >
-            <Image src={icon} alt={name}  width={40} height={40} />
+          <Image
+            src={category.icon}
+            alt={category.name}
+            fill
+            style={{ objectFit: "contain" }}
+          />
         </Box>
-        <Typography className='text-name' variant="subtitle1" sx={{ fontWeight: 'bold', textAlign: 'center' }}>
-          {name}
-        </Typography>
-        
-        <Typography className='text-name' variant="body2" sx={{ color: 'text.secondary', textAlign: 'center' }}>
-          {description}
+
+        {/* Label */}
+        <Typography
+          variant="body2"
+          sx={{
+            fontWeight: 500,
+            color: "text.primary",
+            textAlign: "center",
+            fontSize: { xs: "0.8rem", sm: "0.9rem" },
+          }}
+        >
+          {category.name}
         </Typography>
       </Box>
-    </Link>   
-    // <Link 
-    // href={`/categories/${slug}`} className="flex flex-col items-center justify-center min-w-[150px] 
-    // p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer">
-    //   <div className="relative w-16 h-16 mb-2">
-    //     <Image src={icon} alt={name} layout="fill" objectFit="contain"/>
-    //   </div>
-    //   <h3 className="text-sm font-semibold text-gray-800 text-center">{name}</h3>
-    //   <p className="text-xs text-gray-500 text-center">{description}</p>
-    // </Link>
+    </Link>
   );
 }

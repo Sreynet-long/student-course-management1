@@ -19,6 +19,7 @@ import {
   TextField,
   InputAdornment,
   Collapse,
+  Container,
 } from "@mui/material";
 
 import MenuIcon from "@mui/icons-material/Menu";
@@ -35,20 +36,19 @@ import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { useCart } from "../../context/CartContext"; // replace with your AuthContext if needed
+import { useCart } from "../../context/CartContext";
 
 export default function TopNavbar() {
   const pathname = usePathname();
-  const { cart, user, setUser } = useCart(); // user: null if not logged in
+  const { cart, user, setUser } = useCart();
   const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [productMenuOpen, setProductMenuOpen] = useState(false);
+  const [productMenuOpen, setProductMenuOpen] = useState(null);
   const [drawerProductOpen, setDrawerProductOpen] = useState(false);
 
   const navItems = [
-    // { label: "Home", path: "/", icon: <HomeIcon /> },
     {
       label: "Products",
       path: "/products",
@@ -66,35 +66,28 @@ export default function TopNavbar() {
     { label: "Contact", path: "/contact", icon: <ContactPageIcon /> },
   ];
 
-  // Drawer toggle
   const toggleDrawer = (open) => () => setDrawerOpen(open);
 
-  // Profile menu
   const handleProfileOpen = (event) => setAnchorEl(event.currentTarget);
   const handleProfileClose = () => setAnchorEl(null);
 
-  // Product menu (top nav)
   const handleProductMenuOpen = (event) => setProductMenuOpen(event.currentTarget);
   const handleProductMenuClose = () => setProductMenuOpen(null);
 
-  // Drawer Product Collapse
   const handleDrawerProductClick = () => setDrawerProductOpen(!drawerProductOpen);
 
-  // Logout
   const handleLogout = () => {
-    if (setUser) setUser(null); // clear user in context
-    if (typeof window !== "undefined") localStorage.removeItem("user"); // optional
-    window.location.href = "/"; // redirect to home
+    if (setUser) setUser(null);
+    if (typeof window !== "undefined") localStorage.removeItem("user");
+    window.location.href = "/";
   };
 
-  // Drawer List
   const drawerList = (
     <Box sx={{ width: 250 }} role="presentation">
       <Typography variant="h6" sx={{ m: 2, display: "flex", alignItems: "center" }}>
         <ShoppingBasketIcon sx={{ mr: 1 }} />
         FreshMart
       </Typography>
-
       <TextField
         size="small"
         fullWidth
@@ -127,10 +120,7 @@ export default function TopNavbar() {
                       style={{ textDecoration: "none", color: "inherit" }}
                       onClick={toggleDrawer(false)}
                     >
-                      <ListItemButton
-                        sx={{ pl: 4 }}
-                        selected={pathname === sub.path} // highlight active product subitem
-                      >
+                      <ListItemButton sx={{ pl: 4 }} selected={pathname === sub.path}>
                         <ListItemText primary={sub.label} />
                       </ListItemButton>
                     </Link>
@@ -152,8 +142,6 @@ export default function TopNavbar() {
             </Link>
           )
         )}
-
-        {/* Conditional Auth Buttons in Drawer */}
         <Divider />
         {!user ? (
           <>
@@ -193,113 +181,98 @@ export default function TopNavbar() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="fixed" sx={{ bgcolor: "green" }}>
-        <Toolbar>
-          {/* Mobile Menu Icon */}
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2, display: { sm: "none" } }}
-            onClick={toggleDrawer(true)}
-          >
-            <MenuIcon />
-          </IconButton>
+        <Container maxWidth="lg">
+          <Toolbar disableGutters sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            {/* Left: Logo */}
+            <Link href="/" style={{ textDecoration: "none" }}>
+              <Typography variant="h6" color="white" noWrap sx={{ display: "flex", alignItems: "center" }}>
+                <ShoppingBasketIcon sx={{ mr: 1 }} />
+                FreshMart
+              </Typography>
+            </Link>
 
-          {/* Logo */}
-          <Link href="/" style={{ textDecoration: "none" }}>
-            <Typography
-              variant="h6"
-              color="white"
-              noWrap
-              sx={{ display: { xs: "none", sm: "flex" }, alignItems: "center" }}
-            >
-              <ShoppingBasketIcon sx={{ mr: 1 }} />
-              FreshMart
-            </Typography>
-          </Link>
-
-          {/* Search */}
-          <Box sx={{ flexGrow: 1, mx: 2, display: { xs: "none", sm: "block" }, maxWidth: 300 }}>
-            <TextField
-              size="small"
-              fullWidth
-              placeholder="Search products..."
-              sx={{ bgcolor: "white", borderRadius: 1 }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon sx={{ color: "green" }} />
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </Box>
-
-          {/* Desktop Menu */}
-          <Box sx={{ display: { xs: "none", sm: "flex" }, alignItems: "center", gap: 2 }}>
-            {navItems.map((item) =>
-              item.subItems ? (
-                <Box key={item.label}>
-                  <Button sx={{ color: "white" }} onClick={handleProductMenuOpen}>
+            {/* Center: Menu */}
+            <Box sx={{ display: { xs: "none", sm: "flex" }, gap: 2, flexGrow: 1, justifyContent: "center" }}>
+              {navItems.map((item) =>
+                item.subItems ? (
+                  <Box key={item.label}>
+                    <Button sx={{ color: "white" }} onClick={handleProductMenuOpen}>
+                      {item.label}
+                    </Button>
+                    <Menu
+                      anchorEl={productMenuOpen}
+                      open={Boolean(productMenuOpen)}
+                      onClose={handleProductMenuClose}
+                      anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+                      transformOrigin={{ vertical: "top", horizontal: "left" }}
+                    >
+                      {item.subItems.map((sub) => (
+                        <MenuItem key={sub.path} component={Link} href={sub.path} onClick={handleProductMenuClose} selected={pathname === sub.path}>
+                          {sub.label}
+                        </MenuItem>
+                      ))}
+                    </Menu>
+                  </Box>
+                ) : (
+                  <Button
+                    key={item.path}
+                    component={Link}
+                    href={item.path}
+                    sx={{ color: "white" }}
+                    variant={pathname === item.path ? "outlined" : "text"}
+                  >
                     {item.label}
                   </Button>
-                  <Menu
-                    anchorEl={productMenuOpen}
-                    open={Boolean(productMenuOpen)}
-                    onClose={handleProductMenuClose}
-                    anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-                    transformOrigin={{ vertical: "top", horizontal: "left" }}
-                  >
-                    {item.subItems.map((sub) => (
-                      <MenuItem
-                        key={sub.path}
-                        component={Link}
-                        href={sub.path}
-                        onClick={handleProductMenuClose}
-                        selected={pathname === sub.path} // highlight active product subitem
-                      >
-                        {sub.label}
-                      </MenuItem>
-                    ))}
-                  </Menu>
-                </Box>
+                )
+              )}
+            </Box>
+
+            {/* Right: Search + Auth + Cart */}
+            <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+              <Box sx={{ display: { xs: "none", sm: "block" }, maxWidth: 200 }}>
+                <TextField
+                  size="small"
+                  fullWidth
+                  placeholder="Search products..."
+                  sx={{ bgcolor: "white", borderRadius: 1 }}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon sx={{ color: "green" }} />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </Box>
+
+              {!user ? (
+                <>
+                  <Button component={Link} href="/signup" sx={{ color: "white" }} variant={pathname === "/signup" ? "outlined" : "text"}>
+                    Sign Up
+                  </Button>
+                  <Button component={Link} href="/login" sx={{ color: "white" }} variant={pathname === "/login" ? "outlined" : "text"}>
+                    Login
+                  </Button>
+                </>
               ) : (
-                <Button
-                  key={item.path}
-                  component={Link}
-                  href={item.path}
-                  sx={{ color: "white" }}
-                  variant={pathname === item.path ? "outlined" : "text"} // highlight active
-                >
-                  {item.label}
-                </Button>
-              )
-            )}
+                <IconButton color="inherit" onClick={handleProfileOpen}>
+                  <AccountCircle />
+                </IconButton>
+              )}
 
-            {/* Conditional Auth Buttons */}
-            {!user ? (
-              <>
-                <Button component={Link} href="/signup" sx={{ color: "white" }} variant={pathname === "/signup" ? "outlined" : "text"}>
-                  Sign Up
-                </Button>
-                <Button component={Link} href="/login" sx={{ color: "white" }} variant={pathname === "/login" ? "outlined" : "text"}>
-                  Login
-                </Button>
-              </>
-            ) : (
-              <IconButton color="inherit" onClick={handleProfileOpen}>
-                <AccountCircle />
+              <IconButton color="inherit">
+                <Badge badgeContent={totalItems} color="error">
+                  <ShoppingCartIcon />
+                </Badge>
               </IconButton>
-            )}
 
-            {/* Cart */}
-            <IconButton color="inherit">
-              <Badge badgeContent={totalItems} color="error">
-                <ShoppingCartIcon />
-              </Badge>
-            </IconButton>
-          </Box>
-        </Toolbar>
+              {/* Mobile Menu Icon */}
+              <IconButton edge="end" color="inherit" sx={{ display: { sm: "none" } }} onClick={toggleDrawer(true)}>
+                <MenuIcon />
+              </IconButton>
+            </Box>
+          </Toolbar>
+        </Container>
       </AppBar>
 
       {/* Profile Menu */}

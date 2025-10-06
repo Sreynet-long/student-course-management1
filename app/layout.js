@@ -1,15 +1,14 @@
-import 'bootstrap/dist/css/bootstrap.css';
+import "bootstrap/dist/css/bootstrap.css";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Box } from '@mui/material';
+import { Box } from "@mui/material";
 import TopNavbar from "./menu/Header/TopNavbar";
-import Hero from './components/Home/page';
-import Footer from './menu/footer/page';
+import Hero from "./components/Home/page";
+import Footer from "./menu/footer/page";
 import ScrollToTop from "./components/scroll/ScrollToTop";
-import { CartProvider } from './context/CartContext';
-import { AuthProvider } from './context/AuthContext';
-import { ApolloWrapper } from './lib/apolloClient';
-
+import { CartProvider } from "./context/CartContext";
+import { AuthProvider } from "./context/AuthContext";
+import { ApolloWrapper } from "./lib/apolloClient";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,19 +29,19 @@ export default function RootLayout({ children }) {
         <ApolloWrapper children={children}>
           <AuthProvider>
             <CartProvider>
-              <TopNavbar/>
+              <TopNavbar />
 
-              {/* <Box
-                component="main" 
-                sx={{ 
+              <Box
+                component="main"
+                sx={{
                   paddingTop: "64px",
-                  minHeight: '100vh', 
+                  minHeight: "100vh",
                 }}
-              > */}
+              >
                 {children}
-              {/* </Box> */}
+              </Box>
 
-              <Footer/>
+              <Footer />
               <ScrollToTop />
             </CartProvider>
           </AuthProvider>

@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useState, useEffect } from "react"; // 🚨 Import useEffect 🚨
+import { createContext, useState, useEffect } from "react"; 
 
 const AuthContext = createContext();
 
