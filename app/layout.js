@@ -1,7 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import ApolloProviderWrapper from "./providers/ApolloProviderWrapper";
 import { Box } from '@mui/material';
 import TopNavbar from "./menu/Header/TopNavbar";
 import Hero from './components/Home/page';
@@ -9,6 +8,8 @@ import Footer from './menu/footer/page';
 import ScrollToTop from "./components/scroll/ScrollToTop";
 import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
+import { ApolloWrapper } from './lib/apolloClient';
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,26 +27,26 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ApolloProviderWrapper>
+        <ApolloWrapper children={children}>
           <AuthProvider>
             <CartProvider>
               <TopNavbar/>
 
-              <Box
+              {/* <Box
                 component="main" 
                 sx={{ 
                   paddingTop: "64px",
                   minHeight: '100vh', 
                 }}
-              >
+              > */}
                 {children}
-              </Box>
+              {/* </Box> */}
 
               <Footer/>
               <ScrollToTop />
             </CartProvider>
           </AuthProvider>
-        </ApolloProviderWrapper>
+        </ApolloWrapper>
       </body>
     </html>
   );

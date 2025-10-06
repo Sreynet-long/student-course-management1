@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-export const CREATE_CONTACT = gql`
+const CREATE_CONTACT = gql`
   mutation SubmitContactForm($input: ContactFormInput) {
     submitContactForm(input: $input) {
       isSuccess
@@ -9,3 +9,5 @@ export const CREATE_CONTACT = gql`
     }
   }
 `;
+
+
