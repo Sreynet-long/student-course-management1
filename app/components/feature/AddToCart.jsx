@@ -12,56 +12,14 @@ import {
 } from "@mui/material";
 import ProductDetail from "./ProductDetail";
 import { useCart } from "../../context/CartContext";
-
-const items = [
-  {
-    id: 1,
-    name: "Carrot",
-    image: "/images/carrot.png",
-    desc: "500g",
-    price: 2.5,
-  },
-  { id: 2, name: "Beef", image: "/images/beef.png", desc: "500g", price: 1.5 },
-  {
-    id: 3,
-    name: "Cabbage",
-    image: "/images/cabbage.png",
-    desc: "500g",
-    price: 3.0,
-  },
-  {
-    id: 4,
-    name: "Dragon Fruit",
-    image: "/images/dragon.png",
-    desc: "500g",
-    price: 5.0,
-  },
-  { id: 5, name: "Milk", image: "/images/milk.png", desc: "1 can", price: 6.0 },
-  {
-    id: 6,
-    name: "Frozen Strawberry",
-    image: "/images/freezeStrawberry.png",
-    desc: "500g",
-    price: 4.0,
-  },
-  {
-    id: 7,
-    name: "Dragon Fruit",
-    image: "/images/dragon.png",
-    desc: "500g",
-    price: 5.0,
-  },
-  { id: 8, name: "Milk", image: "/images/milk.png", desc: "1 can", price: 6.0 },
-  {
-    id: 9,
-    name: "Frozen Strawberry",
-    image: "/images/freezeStrawberry.png",
-    desc: "500g",
-    price: 4.0,
-  },
-];
+import { useQuery } from "@apollo/client/react";
+import { GET_PRODUCT_WITH_PAGINATION, GET_ALL_PRODUCT } from "@/app/schema/Product";
 
 export default function AddToCard() {
+  const {loading, error, data} = useQuery(GET_ALL_PRODUCT);
+
+  if (loading) return <p>loading...</p>
+  if (error) return <p>Error: {error.message}</p>
   return (
     <Box sx={{ py: 6, px: { xs: 2, md: 4 }, bgcolor: "background.paper" }}>
       <Stack sx={{ maxWidth: "1200px", mx: "auto" }}>
@@ -77,8 +35,8 @@ export default function AddToCard() {
         </Typography>
 
         <Grid container spacing={2} justifyContent="center">
-          {items.map((item) => (
-            <Grid key={item.id} item xs={6} sm={6} md={4} lg={3}>
+          {data?.getAllproducts?.map((product) => (
+            <Grid key={product.id} item xs={6} sm={6} md={4} lg={3}>
               <Card
                 sx={{
                   borderRadius: 2,
@@ -94,19 +52,19 @@ export default function AddToCard() {
                 <CardMedia
                   component="img"
                   height="130"
-                  image={item.image}
-                  alt={item.name}
+                  image={product.imageUrl}
+                  alt={product.name}
                   sx={{ objectFit: "contain", p: 1 }}
                 />
                 <CardContent sx={{ p: 1 }}>
                   <Typography variant="body1" fontWeight="bold">
-                    {item.name}
+                    {product.name}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {item.desc}
+                    {product.desc}
                   </Typography>
                   <Typography fontSize="16px" variant="h6" mt={1}>
-                    ${item.price.toFixed(2)}
+                    ${product.price.toFixed(2)}
                   </Typography>
                 </CardContent>
                 <Box sx={{ p: 1 }}>
@@ -127,3 +85,51 @@ export default function AddToCard() {
     </Box>
   );
 }
+
+// const items = [
+//   {
+//     id: 1,
+//     name: "Carrot",
+//     image: "/images/carrot.png",
+//     desc: "500g",
+//     price: 2.5,
+//   },
+//   { id: 2, name: "Beef", image: "/images/beef.png", desc: "500g", price: 1.5 },
+//   {
+//     id: 3,
+//     name: "Cabbage",
+//     image: "/images/cabbage.png",
+//     desc: "500g",
+//     price: 3.0,
+//   },
+//   {
+//     id: 4,
+//     name: "Dragon Fruit",
+//     image: "/images/dragon.png",
+//     desc: "500g",
+//     price: 5.0,
+//   },
+//   { id: 5, name: "Milk", image: "/images/milk.png", desc: "1 can", price: 6.0 },
+//   {
+//     id: 6,
+//     name: "Frozen Strawberry",
+//     image: "/images/freezeStrawberry.png",
+//     desc: "500g",
+//     price: 4.0,
+//   },
+//   {
+//     id: 7,
+//     name: "Dragon Fruit",
+//     image: "/images/dragon.png",
+//     desc: "500g",
+//     price: 5.0,
+//   },
+//   { id: 8, name: "Milk", image: "/images/milk.png", desc: "1 can", price: 6.0 },
+//   {
+//     id: 9,
+//     name: "Frozen Strawberry",
+//     image: "/images/freezeStrawberry.png",
+//     desc: "500g",
+//     price: 4.0,
+//   },
+// ];
