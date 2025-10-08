@@ -1,3 +1,5 @@
+"use client";
+
 import "bootstrap/dist/css/bootstrap.css";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -9,6 +11,7 @@ import ScrollToTop from "./components/scroll/ScrollToTop";
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/AuthContext";
 import { ApolloWrapper } from "./lib/apolloClient";
+import { usePathname } from "next/navigation"; 
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,20 +24,18 @@ const geistMono = Geist_Mono({
 });
 
 export default function RootLayout({ children }) {
+
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <ApolloWrapper children={children}>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <ApolloWrapper>
           <AuthProvider>
             <CartProvider>
               <TopNavbar />
-
               <Box
                 component="main"
                 sx={{
-                  paddingTop: "64px",
+                  paddingTop: { xs: "56px", sm: "64px" },
                   minHeight: "100vh",
                 }}
               >

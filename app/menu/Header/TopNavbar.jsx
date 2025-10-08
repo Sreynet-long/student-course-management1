@@ -40,8 +40,7 @@ import { useCart } from "../../context/CartContext";
 
 export default function TopNavbar() {
   const pathname = usePathname();
-  const { cart, user, setUser } = useCart();
-  const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+  const { cart, user, setUser, totalItems } = useCart();
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);

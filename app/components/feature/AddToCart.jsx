@@ -53,18 +53,20 @@ export default function AddToCard() {
                   component="img"
                   height="130"
                   image={product.imageUrl}
-                  alt={product.name}
+                  alt={product.productName}
                   sx={{ objectFit: "contain", p: 1 }}
                 />
                 <CardContent sx={{ p: 1 }}>
                   <Typography variant="body1" fontWeight="bold">
-                    {product.name}
+                    {product.productName}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
                     {product.desc}
                   </Typography>
                   <Typography fontSize="16px" variant="h6" mt={1}>
-                    ${product.price.toFixed(2)}
+                    ${product.price != null
+                        ? Number(product.price).toFixed(2)
+                       : "0.00"}
                   </Typography>
                 </CardContent>
                 <Box sx={{ p: 1 }}>
@@ -86,50 +88,3 @@ export default function AddToCard() {
   );
 }
 
-// const items = [
-//   {
-//     id: 1,
-//     name: "Carrot",
-//     image: "/images/carrot.png",
-//     desc: "500g",
-//     price: 2.5,
-//   },
-//   { id: 2, name: "Beef", image: "/images/beef.png", desc: "500g", price: 1.5 },
-//   {
-//     id: 3,
-//     name: "Cabbage",
-//     image: "/images/cabbage.png",
-//     desc: "500g",
-//     price: 3.0,
-//   },
-//   {
-//     id: 4,
-//     name: "Dragon Fruit",
-//     image: "/images/dragon.png",
-//     desc: "500g",
-//     price: 5.0,
-//   },
-//   { id: 5, name: "Milk", image: "/images/milk.png", desc: "1 can", price: 6.0 },
-//   {
-//     id: 6,
-//     name: "Frozen Strawberry",
-//     image: "/images/freezeStrawberry.png",
-//     desc: "500g",
-//     price: 4.0,
-//   },
-//   {
-//     id: 7,
-//     name: "Dragon Fruit",
-//     image: "/images/dragon.png",
-//     desc: "500g",
-//     price: 5.0,
-//   },
-//   { id: 8, name: "Milk", image: "/images/milk.png", desc: "1 can", price: 6.0 },
-//   {
-//     id: 9,
-//     name: "Frozen Strawberry",
-//     image: "/images/freezeStrawberry.png",
-//     desc: "500g",
-//     price: 4.0,
-//   },
-// ];
