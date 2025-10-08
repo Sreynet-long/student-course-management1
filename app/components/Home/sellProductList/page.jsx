@@ -2,44 +2,55 @@
 import React, { useState } from "react";
 import { Stack, Button, Typography, Box, Grid, Card, CardMedia, CardContent } from "@mui/material";
 import styles from "@/app/components/styles/sellProduct.module.css";
+import { GET_PRODUCT_WITH_PAGINATION } from "@/app/schema/Product";
+import { useQuery } from "@apollo/client/react";
 
 const categories = [
-  "Frozen Foods",
-  "Vegetables",
-  "Snacks & Breads",
-  "Fruits",
-  "Milk & Dairy",
+  "Vegetable",
+  "Sneack_and_Bread",
+  "Fruit",
   "Meats",
+  "Milk_and_Diary",
+  "Seafood",
   "Drinks",
-];
-
-const products = [
-  { id: 1, name: "Frozen Pizza", category: "Frozen Foods", price: "$4.50", image: "/images/pizza.png" },
-  { id: 2, name: "Fresh Carrot", category: "Vegetables", price: "$2.00", image: "/images/carrot.png" },
-  { id: 3, name: "French Baguette", category: "Snacks & Breads", price: "$1.50", image: "/images/bread.png" },
-  { id: 4, name: "Apple", category: "Fruits", price: "$3.00", image: "/images/apple.png" },
-  { id: 5, name: "Whole Milk", category: "Milk & Dairy", price: "$2.20", image: "/images/milk.png" },
-  { id: 6, name: "Chicken Breast", category: "Meats", price: "$6.00", image: "/images/chicken1.png" },
-  { id: 7, name: "Coca Cola", category: "Drinks", price: "$0.50", image: "/images/coke.png" },
-  { id: 8, name: "Fresh Carrot", category: "Vegetables", price: "$2.00", image: "/images/carrot.png" },
-  { id: 9, name: "French Baguette", category: "Snacks & Breads", price: "$1.50", image: "/images/bread.png" },
-  { id: 10, name: "Apple", category: "Fruits", price: "$3.00", image: "/images/apple.png" },
-  { id: 11, name: "Whole Milk", category: "Milk & Dairy", price: "$2.20", image: "/images/milk.png" },
-  { id: 12, name: "Chicken Breast", category: "Meats", price: "$6.00", image: "/images/chicken1.png" },
-  { id: 13, name: "Fresh Carrot", category: "Vegetables", price: "$2.00", image: "/images/carrot.png" },
+  "Frozen_Food",
 ];
 
 export default function SellProductList() {
-  const [selectedCategory, setSelectedCategory] = useState("Vegetables");
+  const [selectedCategory, setSelectedCategory] = useState("Vegetable");
+  const {loading, error, data} = useQuery(GET_PRODUCT_WITH_PAGINATION,{
+    variables: {
+      page: 1,
+      limit: 12,
+      pagination: true,
+      keyword: "",
+      category: selectedCategory,
+    }
+  });
+  
 
-  const filteredProducts = products.filter(
-    (p) => p.category === selectedCategory
-  );
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
+  // Ensure we always have an array
+  const products = Array.isArray(data?.getProductWithPagination?.data)
+    ? data.getProductWithPagination.data
+    : [];
+  
+  const handleCategoryClick = (category) => {
+    setSelectedCategory(category);
+    refetch({
+      page: 1,
+      limit: 20,
+      pagination: true,
+      keyword: "",
+      category,
+    });
+  };
 
   return (
     <Box sx={{ py: 6, px: { xs: 2, sm: 4 }, bgcolor: "background.paper" }}>
       <Stack sx={{ maxWidth: "1200px", mx: "auto" }}>
-
         <Typography
           variant="h5"
           sx={{ fontWeight: "bold", mb: 3, textAlign: { xs: "center", md: "left" } }}
@@ -47,6 +58,7 @@ export default function SellProductList() {
           Weekly Selling Products 👇
         </Typography>
 
+        {/* Category Buttons */}
         <Stack
           direction="row"
           flexWrap="wrap"
@@ -59,7 +71,7 @@ export default function SellProductList() {
               key={cat}
               variant={selectedCategory === cat ? "contained" : "outlined"}
               size="small"
-              onClick={() => setSelectedCategory(cat)}
+              onClick={() => handleCategoryClick(cat)}
               className={styles["btn-product-list"]}
               sx={{
                 borderRadius: "20px",
@@ -69,28 +81,39 @@ export default function SellProductList() {
                 py: 1,
               }}
             >
-              {cat}
+              {cat.replace(/_/g, " ")}
             </Button>
           ))}
         </Stack>
 
+        {/* Products Grid */}
         <Grid container spacing={3} justifyContent="center">
-          {filteredProducts.map((product) => (
+          {products.map((product) => (
             <Grid item xs={6} sm={6} md={4} lg={3} key={product.id}>
-              <Card sx={{ borderRadius: 2, boxShadow: 2, "&:hover": { boxShadow: 4 }, width: "170px", height: "270px" ,textAlign: "center", p: 1,}}>
+              <Card
+                sx={{
+                  borderRadius: 2,
+                  boxShadow: 2,
+                  "&:hover": { boxShadow: 4 },
+                  width: "170px",
+                  height: "270px",
+                  textAlign: "center",
+                  p: 1,
+                }}
+              >
                 <CardMedia
                   component="img"
                   height="130"
-                  image={product.image}
-                  alt={product.name}
+                  image={product.imageUrl}
+                  alt={product.productName}
                   sx={{ objectFit: "contain", p: 1 }}
                 />
                 <CardContent sx={{ textAlign: "center" }}>
                   <Typography variant="subtitle1" fontWeight="bold">
-                    {product.name}
+                    {product.productName}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {product.price}
+                  <Typography fontSize="16px" variant="h6" mt={1}>
+                    ${product.price != null ? Number(product.price).toFixed(2) : "0.00"}
                   </Typography>
                   <Button
                     color="success"

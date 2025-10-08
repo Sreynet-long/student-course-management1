@@ -60,7 +60,7 @@ function Layout({ children }) {
           }}
         >
           {children}
-        </Box>
+        </Box> 
         <Footer />
       </Box>
     </Box>

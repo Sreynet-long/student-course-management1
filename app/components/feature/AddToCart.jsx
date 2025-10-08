@@ -18,7 +18,7 @@ import { GET_PRODUCT_WITH_PAGINATION, GET_ALL_PRODUCT } from "@/app/schema/Produ
 export default function AddToCard() {
   const {loading, error, data} = useQuery(GET_ALL_PRODUCT);
 
-  if (loading) return <p>loading...</p>
+  if (loading) return <p style={{justifyContent: "center"}}>loading...</p>
   if (error) return <p>Error: {error.message}</p>
   return (
     <Box sx={{ py: 6, px: { xs: 2, md: 4 }, bgcolor: "background.paper" }}>

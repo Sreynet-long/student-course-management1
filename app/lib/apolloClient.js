@@ -1,6 +1,6 @@
 'use client'
 import {ApolloProvider} from "@apollo/client/react";
-import { ApolloClient, InMemoryCache, HttpLink } from "@apollo/client";
+import {ApolloClient, InMemoryCache, HttpLink } from "@apollo/client";
 
 export function createApolloClient(){
     return new ApolloClient({
