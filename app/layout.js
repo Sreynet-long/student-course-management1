@@ -41,7 +41,6 @@ export default function RootLayout({ children }) {
               >
                 {children}
               </Box>
-
               <Footer />
               <ScrollToTop />
             </CartProvider>

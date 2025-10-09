@@ -40,7 +40,8 @@ import { useCart } from "../../context/CartContext";
 
 export default function TopNavbar() {
   const pathname = usePathname();
-  const { cart, user, setUser, totalItems } = useCart();
+  const { cart, user, setUser } = useCart();
+  const totalItems = typeof window !== "undefined" ? cart.length : 0;
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -57,8 +58,9 @@ export default function TopNavbar() {
         { label: "Fruits", path: "/products/fruits" },
         { label: "Frozen Foods", path: "/products/frozen-foods" },
         { label: "Drinks", path: "/products/drinks" },
-        { label: "Snacks", path: "/products/snacks" },
+        { label: "Snacks & Breads", path: "/products/snacks-bread" },
         { label: "Meats", path: "/products/meats" },
+        { label: "Seafoods", path: "/products/seafoods" },
       ],
     },
     { label: "About", path: "/about", icon: <InfoIcon /> },
@@ -213,7 +215,7 @@ export default function TopNavbar() {
                     </Menu>
                   </Box>
                 ) : (
-                  <Button
+                  <MenuItem
                     key={item.path}
                     component={Link}
                     href={item.path}
@@ -221,7 +223,7 @@ export default function TopNavbar() {
                     variant={pathname === item.path ? "outlined" : "text"}
                   >
                     {item.label}
-                  </Button>
+                  </MenuItem>
                 )
               )}
             </Box>
@@ -260,9 +262,10 @@ export default function TopNavbar() {
               )}
 
               <IconButton color="inherit">
-                <Badge badgeContent={totalItems} color="error">
+                <Badge badgeContent={totalItems || 0} color="error">
                   <ShoppingCartIcon />
                 </Badge>
+                
               </IconButton>
 
               {/* Mobile Menu Icon */}

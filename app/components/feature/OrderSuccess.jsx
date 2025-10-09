@@ -19,7 +19,7 @@ export default function OrderSuccess() {
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
           Your order has been placed successfully.  
-          We’ll notify you once it’s shipped 🚚.
+          We'll notify you once it's shipped 🚚.
         </Typography>
 
         <Stack spacing={2} direction="column" alignItems="center">
@@ -29,7 +29,7 @@ export default function OrderSuccess() {
             fullWidth
             onClick={() => router.push("/")}
           >
-            Continue Shopping
+            Continue Shopping 🛒
           </Button>
           <Button
             variant="outlined"
@@ -37,7 +37,7 @@ export default function OrderSuccess() {
             fullWidth
             onClick={() => router.push("/orders")}
           >
-            View My Orders
+            View My Orders 📝
           </Button>
         </Stack>
       </Paper>

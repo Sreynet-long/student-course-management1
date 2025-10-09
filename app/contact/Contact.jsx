@@ -63,7 +63,7 @@ function Contact() {
   });
 
   const validationSchema = Yup.object({
-    name: Yup.string().required(
+    contactName: Yup.string().required(
        "Your Name is Required!"
     ),
     email: Yup.string()
@@ -79,7 +79,7 @@ function Contact() {
 
   const formik = useFormik({
     initialValues: { 
-        name: "", 
+        contactName: "", 
         email: "", 
         subject: "", 
         message: "" 
@@ -129,11 +129,11 @@ function Contact() {
                   fullWidth
                   label= "Your Name"
                   name="name"
-                  value={values.name}
+                  value={values.contactName}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  error={touched.name && Boolean(errors.name)}
-                  helperText={touched.name && errors.name}
+                  error={touched.contactName && Boolean(errors.contactName)}
+                  helperText={touched.contactName && errors.contactName}
                 />
 
                 {/* Email */}

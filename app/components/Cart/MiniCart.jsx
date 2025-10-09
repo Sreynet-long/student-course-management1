@@ -1,12 +1,12 @@
 import { Drawer, Box, Button, Typography } from "@mui/material";
-import { useCart } from "../context/CartContext";
+import { useCart } from "../../context/CartContext";
 import { useMutation } from "@apollo/client";
-import { PLACE_ORDER } from "../schema/order";
+// import { PLACE_ORDER } from "../../schema/order";
 import toast from "react-hot-toast";
 
 export default function MiniCart({ userId }) {
   const { cart, isCartOpen, setCartOpen, setCart } = useCart();
-  const [placeOrder] = useMutation(PLACE_ORDER);
+  // const [placeOrder] = useMutation(PLACE_ORDER);
 
   const handleCheckout = async () => {
     const result = await placeOrder({ variables: { userId, paymentMethod: "Bank Transfer" } });
