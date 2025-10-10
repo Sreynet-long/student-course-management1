@@ -1,6 +1,6 @@
 "use client";
 import { createContext, useState, useEffect } from "react"; 
-
+import SessionProvider from "next-auth/react"
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
@@ -15,7 +15,7 @@ const AuthProvider = ({ children }) => {
   const setAlert = (open, alert, message) => {
     setOpen(open);
     setAlertStatus(alert);
-    setMessageAlert(message);
+    setMessageAlert(message); 
   };
 
   const alert = () => {
@@ -51,7 +51,11 @@ const AuthProvider = ({ children }) => {
     language,
   };
   
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={value}>
+            
+              {children}
+            
+          </AuthContext.Provider>;
 };
 
 export { AuthContext, AuthProvider };

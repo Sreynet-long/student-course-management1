@@ -24,13 +24,7 @@ import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import { race } from "rxjs";
 
 export default function CustomerReviews() {
-  const reviews = [
-    { name: "Sangwon", review: "Freshmart always delivers the best quality vegetables!", avatar: "/avatars/sangwon.jpg",rating: 5  },
-    { name: "Dara", review: "Quick delivery and great service. Highly recommended!", avatar: "/avatars/avatar2.png",rating: 4 },
-    { name: "Sophea", review: "I love their fruits section — always fresh and sweet.", avatar: "/avatars/sangwon.jpg",rating: 4.5 },
-    { name: "Vanna", review: "Affordable and reliable. My go-to online mart!", avatar: "/avatars/user4.png" ,rating: 4},
-    { name: "Ratha", review: "The dairy products are always fresh and safe.", avatar: "/avatars/avatar2.png",rating: 5 },
-  ];
+  
 
   return (
     <Container maxWidth="lg" sx={{ textAlign: "center", py: 6 }}>
@@ -178,3 +172,11 @@ export default function CustomerReviews() {
     </Container>
   );
 }
+
+const reviews = [
+    { name: "Sangwon", review: "Freshmart always delivers the best quality vegetables!", avatar: "/avatars/sangwon.jpg",rating: 5  },
+    { name: "Dara", review: "Quick delivery and great service. Highly recommended!", avatar: "/avatars/avatar2.png",rating: 4 },
+    { name: "Sophea", review: "I love their fruits section — always fresh and sweet.", avatar: "/avatars/sangwon.jpg",rating: 4.5 },
+    { name: "Vanna", review: "Affordable and reliable. My go-to online mart!", avatar: "/avatars/user4.png" ,rating: 4},
+    { name: "Ratha", review: "The dairy products are always fresh and safe.", avatar: "/avatars/avatar2.png",rating: 5 },
+  ];

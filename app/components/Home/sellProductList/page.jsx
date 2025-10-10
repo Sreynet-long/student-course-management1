@@ -137,6 +137,8 @@ export default function SellProductList() {
                     justifyContent: "space-between",
                     textAlign: "center",
                     p: 1,
+                    width: 170,
+                    height: 300, 
                   }}
                 >
                   <CardMedia
@@ -157,15 +159,17 @@ export default function SellProductList() {
                         : "0.00"}
                     </Typography>
                   </CardContent>
-                  <Button
-                    color="success"
-                    variant="contained"
-                    size="small"
-                    sx={{ mt: 1, borderRadius: "20px", textTransform: "none" }}
-                    onClick={() => addToCart(product)}
-                  >
-                    Add to Cart
-                  </Button>
+                  <Box sx={{p:1}}>
+                    <Button
+                      color="success"
+                      variant="contained"
+                      size="small"
+                      sx={{ mt: 1, borderRadius: "20px", textTransform: "none" }}
+                      onClick={() => addToCart(product)}
+                    >
+                      Add to Cart
+                    </Button>
+                  </Box>
                 </Card>
               </Grid>
             ))

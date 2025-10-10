@@ -1,4 +1,5 @@
 import { Box, Typography, Button, Stack } from "@mui/material";
+import style from "../styles/offer.module.css";
 
 export default function SpecialOffer() {
   return (
@@ -13,9 +14,12 @@ export default function SpecialOffer() {
         <Typography variant="body1" sx={{ mb: 3 }}>
           Grab your favorite groceries at discounted prices!
         </Typography>
-        <Button variant="contained" color="success" sx={{ width: 200, alignSelf: "center", borderRadius: "20px"}}>
-         🔖 Shop Offers
-        </Button>
+        <Stack className="banner-image-offer">
+          <img src="/" alt="offer" />
+          <Button variant="contained" color="success" sx={{ width: 200, alignSelf: "center", borderRadius: "20px"}}>
+          🔖 Shop Offers
+          </Button>
+        </Stack>
       </Stack>
     </Box>
   );

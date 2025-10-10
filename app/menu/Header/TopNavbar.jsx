@@ -265,7 +265,6 @@ export default function TopNavbar() {
                 <Badge badgeContent={totalItems || 0} color="error">
                   <ShoppingCartIcon />
                 </Badge>
-                
               </IconButton>
 
               {/* Mobile Menu Icon */}

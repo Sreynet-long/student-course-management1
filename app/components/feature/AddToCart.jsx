@@ -22,11 +22,11 @@ export default function AddToCard() {
   const {loading, error, data} = useQuery(GET_PRODUCT_WITH_PAGINATION,{
     variables: {
       page: 1,
-      limit: 24,
+      limit: 18,
       pagination: true,
       keyword: "",
       category: null
-    }
+    } 
   });
 
   const products = Array.isArray(data?.getProductWithPagination?.data)
