@@ -187,7 +187,6 @@ export default function SignupModal({ open, onClose }) {
                     onChange={handleChecked}
                     inputProps={{ 'aria-label': 'controlled' }}
                 />
-
                 <Button
                  type="submit" 
                  variant="contained" 
