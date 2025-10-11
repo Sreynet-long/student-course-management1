@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   AppBar,
   Toolbar,
@@ -38,10 +38,17 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useCart } from "../../context/CartContext";
 
+
 export default function TopNavbar() {
   const pathname = usePathname();
   const { cart, user, setUser } = useCart();
-  const totalItems = typeof window !== "undefined" ? cart.length : 0;
+  // const totalItems = typeof window !== "undefined" ? cart.length : 0;
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  
+  const totalItems = mounted ? cart.length : 0;
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -261,8 +268,8 @@ export default function TopNavbar() {
                 </IconButton>
               )}
 
-              <IconButton color="inherit">
-                <Badge badgeContent={totalItems || 0} color="error">
+              <IconButton color="inherit" component={Link} href="/cart">
+                <Badge badgeContent={totalItems} color="error">
                   <ShoppingCartIcon />
                 </Badge>
               </IconButton>

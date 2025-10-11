@@ -10,12 +10,13 @@ import {
   Stack,
   Button,
   Skeleton,
+  Icon,
+  IconButton,
 } from "@mui/material";
 import ProductDetail from "./ProductDetail";
 import { useCart } from "../../context/CartContext";
 import { useQuery } from "@apollo/client/react";
 import { GET_PRODUCT_WITH_PAGINATION} from "@/app/schema/Product";
-
 
 export default function AddToCard() {
   const {addToCart} = useCart();
@@ -102,7 +103,7 @@ export default function AddToCard() {
                       sx={{ mt: 1, borderRadius: "20px", textTransform: "none" }}
                       onClick={() => addToCart(product)}
                     >
-                      Add to Cart
+                      🛒 Add to Cart
                     </Button>
                   </Box>
                 </Card>

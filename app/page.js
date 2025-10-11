@@ -5,7 +5,7 @@ import CategoryList from "./components/Home/categoryLists/page";
 import Hero from "./components/Home/page";
 import AddToCard from "./components/feature/AddToCart";
 import { Add } from "@mui/icons-material";
-import ProductCart from "./components/Cart/ProductCart";
+import ProductCart from "./components/Cartbox/ProductCart";
 import FeatureStore from "./components/feature/FeatureStore";
 import SellProductList from "./components/Home/sellProductList/page";
 import WhyShopWithUs from "./components/feature/WhyShopWithUs";

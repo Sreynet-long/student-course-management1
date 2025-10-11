@@ -14,7 +14,7 @@ import {
 import styles from "@/app/components/styles/sellProduct.module.css";
 import { GET_PRODUCT_WITH_PAGINATION } from "@/app/schema/Product";
 import { useQuery } from "@apollo/client/react";
-import { useCart } from "@/app/context/CartContext";
+import {useCart} from "../../../context/CartContext";
 
 const categories = [
   "Vegetable",
@@ -152,6 +152,9 @@ export default function SellProductList() {
                     <Typography variant="subtitle1" fontWeight="bold">
                       {product.productName}
                     </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {product.desc}
+                   </Typography>
                     <Typography fontSize="16px" variant="h6" mt={1}>
                       $
                       {product.price != null
