@@ -38,6 +38,22 @@ export const GET_PRODUCT_WITH_PAGINATION = gql`
     }
   }
 `;
+export const GET_PRODUCT_BY_CATEGORY = gql`
+query GetProductsByCategory($category: Category!) {
+  getProductsByCategory(category: $category) {
+    id
+    productName
+    category
+    imageUrl
+    desc
+    price
+    qty
+    instock
+  }
+}
+
+`;
+
 
 export const GET_ALL_PRODUCT = gql`
   query GetAllproducts {

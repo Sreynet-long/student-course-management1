@@ -1,11 +1,12 @@
+"use client";
 import React from "react";
 import { Box, Typography } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function CategoryCard({ category, href }) {
+export default function CategoryCard({ category }) {
   return (
-    <Link href={href} style={{ textDecoration: "none" }}>
+    <Link href={`/categories/${category.slug}`} style={{ textDecoration: "none" }}>
       <Box
         sx={{
           bgcolor: "white",
@@ -24,33 +25,10 @@ export default function CategoryCard({ category, href }) {
           },
         }}
       >
-        {/* Icon */}
-        <Box
-          sx={{
-            width: { xs: 40, sm: 50, md: 60 },
-            height: { xs: 40, sm: 50, md: 60 },
-            position: "relative",
-            mb: 1,
-          }}
-        >
-          <Image
-            src={category.icon}
-            alt={category.name}
-            fill
-            style={{ objectFit: "contain" }}
-          />
+        <Box sx={{ width: { xs: 40, sm: 50, md: 60 }, height: { xs: 40, sm: 50, md: 60 }, position: "relative", mb: 1 }}>
+          <Image src={category.icon} alt={category.name} fill style={{ objectFit: "contain" }} />
         </Box>
-
-        {/* Label */}
-        <Typography
-          variant="body2"
-          sx={{
-            fontWeight: 500,
-            color: "text.primary",
-            textAlign: "center",
-            fontSize: { xs: "0.8rem", sm: "0.9rem" },
-          }}
-        >
+        <Typography variant="body2" sx={{ fontWeight: 500, color: "text.primary", textAlign: "center", fontSize: { xs: "0.8rem", sm: "0.9rem" } }}>
           {category.name}
         </Typography>
       </Box>

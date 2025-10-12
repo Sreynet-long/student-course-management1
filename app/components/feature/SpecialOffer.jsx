@@ -15,7 +15,7 @@ export default function SpecialOffer() {
           Grab your favorite groceries at discounted prices!
         </Typography>
         <Stack className="banner-image-offer">
-          <img src="/" alt="offer" />
+          {/* <img src="/" alt="offer" /> */}
           <Button variant="contained" color="success" sx={{ width: 200, alignSelf: "center", borderRadius: "20px"}}>
           🔖 Shop Offers
           </Button>
