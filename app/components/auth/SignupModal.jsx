@@ -16,6 +16,7 @@ import {
   IconButton,
   FormHelperText,
   Stack,
+  Divider,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useMutation } from "@apollo/client/react";
@@ -23,6 +24,7 @@ import { AuthContext } from "@/app/context/AuthContext";
 import { useFormik, FormikProvider, Form } from "formik";
 import * as Yup from "yup";
 import SIGN_UP_USER_FORM from "../../schema/User";
+import { Columns } from "lucide-react";
 
 export default function SignupModal({ open, onClose, onSwitchToLogin }) {
   const { setAlert } = useContext(AuthContext);
@@ -71,7 +73,7 @@ export default function SignupModal({ open, onClose, onSwitchToLogin }) {
       phoneNumber: "",
       email: "",
       password: "",
-      checked: false,
+      checked: true,
     },
     validationSchema,
     onSubmit: async (values) => {
@@ -204,6 +206,36 @@ export default function SignupModal({ open, onClose, onSwitchToLogin }) {
                   Login
                 </span>
               </Typography>
+            </Box>
+            <Divider sx={{ my: 2 }}>
+              <Typography variant="body2" color="textSecondary">
+                OR
+              </Typography>
+            </Divider>
+            <Box direction="column" sx={{ textAlign: "center", justifyContent: "center" }}>
+              <Box direction="row" sx={{ display: "flex", justifyContent: "center", flexWrap: "wrap" }}>
+                <Grid item xs={6} sm={6} md={6}>
+                  <Button variant="outlined" sx={{ textTransform: "none" }}>
+                    <img
+                      src="/icons/google.png"
+                      alt="Google"
+                      style={{ width: 20, marginRight: 8 }}
+                    />
+                    Sign up with Google
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    sx={{ textTransform: "none", ml: 2 , mt: { xs: 2, sm: 0 } }}
+                  >
+                    <img
+                      src="/icons/facebook.png"
+                      alt="Facebook"
+                      style={{ width: 20, marginRight: 8 }}
+                    />
+                    Sign up with Facebook
+                  </Button>
+                </Grid>
+              </Box>
             </Box>
           </DialogContent>
         </Form>
