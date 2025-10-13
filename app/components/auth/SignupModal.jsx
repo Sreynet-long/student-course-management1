@@ -15,13 +15,14 @@ import {
   InputAdornment,
   IconButton,
   FormHelperText,
+  Stack,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { useMutation } from "@apollo/client";
-import { AuthContext } from "../context/AuthContext";
+import { useMutation } from "@apollo/client/react";
+import { AuthContext } from "@/app/context/AuthContext";
 import { useFormik, FormikProvider, Form } from "formik";
 import * as Yup from "yup";
-import SIGN_UP_USER_FORM from "../schema/User";
+import SIGN_UP_USER_FORM from "../../schema/User";
 
 export default function SignupModal({ open, onClose, onSwitchToLogin }) {
   const { setAlert } = useContext(AuthContext);
@@ -57,8 +58,8 @@ export default function SignupModal({ open, onClose, onSwitchToLogin }) {
     email: Yup.string().email("Invalid email").required("Email is required"),
     password: Yup.string()
       .matches(
-        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{10,}$/,
-        "Password must be at least 10 characters, include uppercase, lowercase, and numbers"
+        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/,
+        "Password must be at least 8 characters, include uppercase, lowercase, and numbers"
       )
       .required("Password is required"),
     checked: Yup.bool().oneOf([true], "You must accept terms & conditions"),
@@ -76,12 +77,28 @@ export default function SignupModal({ open, onClose, onSwitchToLogin }) {
     onSubmit: async (values) => {
       setLoading(true);
       await signupUserForm({
-        variables: { input: values },
+        variables: {
+          input: {
+            username: values.username,
+            phoneNumber: values.phoneNumber,
+            email: values.email,
+            password: values.password,
+            checked: values.checked,
+          },
+        },
       });
     },
   });
 
-  const { values, handleChange, handleBlur, handleSubmit, touched, errors, resetForm } = formik;
+  const {
+    values,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    touched,
+    errors,
+    resetForm,
+  } = formik;
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="xs" fullWidth>
@@ -91,7 +108,9 @@ export default function SignupModal({ open, onClose, onSwitchToLogin }) {
             Create an Account
           </DialogTitle>
           <DialogContent>
-            <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 1 }}>
+            <Box
+              sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 1 }}
+            >
               <TextField
                 label="Username"
                 name="username"
@@ -126,7 +145,11 @@ export default function SignupModal({ open, onClose, onSwitchToLogin }) {
                 fullWidth
               />
 
-              <FormControl fullWidth size="small" error={Boolean(touched.password && errors.password)}>
+              <FormControl
+                fullWidth
+                size="small"
+                error={Boolean(touched.password && errors.password)}
+              >
                 <OutlinedInput
                   name="password"
                   type={showPassword ? "text" : "password"}
@@ -148,14 +171,17 @@ export default function SignupModal({ open, onClose, onSwitchToLogin }) {
               </FormControl>
 
               <Box display="flex" alignItems="center">
-                <Checkbox checked={checked} onChange={handleChecked} name="checked" />
+                <Checkbox
+                  checked={checked}
+                  onChange={handleChecked}
+                  name="checked"
+                  error={Boolean(touched.checked && errors.checked)}
+                  helperText={touched.checked && errors.checked}
+                />
                 <Typography variant="body2">
                   I agree to the terms & conditions
                 </Typography>
               </Box>
-              {touched.checked && errors.checked && (
-                <Typography color="error" variant="caption">{errors.checked}</Typography>
-              )}
 
               <Button
                 type="submit"

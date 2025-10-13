@@ -8,16 +8,16 @@ import {
   Button,
   Box,
   Typography,
-  CheckBox,
+  Checkbox,
 } from "@mui/material";
 import SIGN_UP_USER_FORM from '../schema/User';
 import { useMutation } from "@apollo/client/react";
 import { AuthContext } from "../context/AuthContext";
 import * as Yup from "yup";
 import { useFormik, FormikProvider, Form } from "formik";
-import { CheckBox } from "@mui/icons-material";
 
-export default function SignupModal({ open, onClose }) {
+
+export default function SignupModel({ open, onClose }) {
     const {setAlert} = useContext(AuthContext);
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = React.useState(false);
@@ -182,10 +182,11 @@ export default function SignupModal({ open, onClose }) {
                     error={touched.password && Boolean(errors.password)}
                     helperText={touched.password && errors.password}
                 /> */}
-                <CheckBox
-                    checked={checked}
-                    onChange={handleChecked}
-                    inputProps={{ 'aria-label': 'controlled' }}
+                <Checkbox
+                    checked={values.checked}
+                    onChange={handleChange}
+                    name="checked"
+                    inputProps={{ 'aria-label': 'accept terms' }}
                 />
                 <Button
                  type="submit" 

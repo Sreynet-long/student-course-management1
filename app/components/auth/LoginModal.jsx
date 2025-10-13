@@ -16,11 +16,11 @@ import {
   Checkbox,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client/react";
 import * as Yup from "yup";
 import { useFormik, Form, FormikProvider } from "formik";
-import LOGIN_USER_FORM from "../schema/User";
-import { AuthContext } from "../context/AuthContext";
+import LOGIN_USER_FORM from "../../schema/User";
+import { AuthContext } from "@/app/context/AuthContext";
 
 export default function LoginModal({ open, onClose, onSwitchToSignup }) {
   const { setAlert } = useContext(AuthContext);
@@ -59,24 +59,40 @@ export default function LoginModal({ open, onClose, onSwitchToSignup }) {
     onSubmit: async (values) => {
       setLoading(true);
       await loginUserForm({
-        variables: { input: values },
+        variables: {
+          input: {
+            email: values.email,
+            password: values.password,
+          },
+        },
       });
     },
   });
 
-  const { values, handleChange, handleBlur, handleSubmit, touched, errors, resetForm } = formik;
+  const {
+    values,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    touched,
+    errors,
+    resetForm,
+  } = formik;
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="xs" fullWidth>
       <FormikProvider value={formik}>
         <Form onSubmit={handleSubmit}>
-          <DialogTitle sx={{ textAlign: "center", color: "green" }}>Login</DialogTitle>
+          <DialogTitle sx={{ textAlign: "center", color: "green" }}>
+            Login
+          </DialogTitle>
           <DialogContent>
-            <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            <Box
+              sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 1 }}
+            >
               <TextField
                 label="Email"
                 name="email"
-                type="email"
                 fullWidth
                 value={values.email}
                 onChange={handleChange}
@@ -85,7 +101,11 @@ export default function LoginModal({ open, onClose, onSwitchToSignup }) {
                 helperText={touched.email && errors.email}
               />
 
-              <FormControl fullWidth size="small" error={Boolean(touched.password && errors.password)}>
+              <FormControl
+                fullWidth
+                size="small"
+                error={Boolean(touched.password && errors.password)}
+              >
                 <OutlinedInput
                   name="password"
                   type={showPassword ? "text" : "password"}
@@ -95,7 +115,10 @@ export default function LoginModal({ open, onClose, onSwitchToSignup }) {
                   placeholder="Enter your password"
                   endAdornment={
                     <InputAdornment position="end">
-                      <IconButton onClick={() => setShowPassword((prev) => !prev)} edge="end">
+                      <IconButton
+                        onClick={() => setShowPassword((prev) => !prev)}
+                        edge="end"
+                      >
                         {showPassword ? <VisibilityOff /> : <Visibility />}
                       </IconButton>
                     </InputAdornment>
@@ -125,7 +148,7 @@ export default function LoginModal({ open, onClose, onSwitchToSignup }) {
               </Button>
 
               <Typography variant="body2" textAlign="center">
-                Don’t have an account?{" "}
+                Don't have an account?{" "}
                 <span
                   style={{ color: "green", cursor: "pointer" }}
                   onClick={() => {

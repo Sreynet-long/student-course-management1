@@ -16,12 +16,11 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Collapse,
   TextField,
   InputAdornment,
-  Collapse,
   Container,
 } from "@mui/material";
-
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
@@ -33,27 +32,31 @@ import ContactPageIcon from "@mui/icons-material/ContactPage";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
-
-import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useCart } from "../../context/CartContext";
-
+import LoginModal from "@/app/components/auth/LoginModal";
+import SignupModal from "@/app/components/auth/SignupModal";
 
 export default function TopNavbar() {
   const pathname = usePathname();
   const { cart, user, setUser } = useCart();
-  // const totalItems = typeof window !== "undefined" ? cart.length : 0;
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-  
-  const totalItems = mounted ? cart.length : 0;
 
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const totalItems = mounted
+    ? cart.reduce((acc, item) => acc + (item.quantity || 1), 0)
+    : 0;
+
+  // Auth modals
+  const [openSignup, setOpenSignup] = useState(false);
+  const [openLogin, setOpenLogin] = useState(false);
+
+  // Drawer & menus
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [productMenuOpen, setProductMenuOpen] = useState(null);
-  const [drawerProductOpen, setDrawerProductOpen] = useState(false);
+  const [productAnchorEl, setProductAnchorEl] = useState(null);
+  const [profileAnchorEl, setProfileAnchorEl] = useState(null);
+  const [drawerCollapse, setDrawerCollapse] = useState({});
 
   const navItems = [
     {
@@ -74,15 +77,19 @@ export default function TopNavbar() {
     { label: "Contact", path: "/contact", icon: <ContactPageIcon /> },
   ];
 
+  // Drawer handlers
   const toggleDrawer = (open) => () => setDrawerOpen(open);
+  const toggleDrawerCollapse = (label) =>
+    setDrawerCollapse((prev) => ({ ...prev, [label]: !prev[label] }));
 
-  const handleProfileOpen = (event) => setAnchorEl(event.currentTarget);
-  const handleProfileClose = () => setAnchorEl(null);
+  // Profile menu
+  const handleProfileOpen = (event) => setProfileAnchorEl(event.currentTarget);
+  const handleProfileClose = () => setProfileAnchorEl(null);
 
-  const handleProductMenuOpen = (event) => setProductMenuOpen(event.currentTarget);
-  const handleProductMenuClose = () => setProductMenuOpen(null);
-
-  const handleDrawerProductClick = () => setDrawerProductOpen(!drawerProductOpen);
+  // Product menu (desktop)
+  const handleProductMenuOpen = (event) =>
+    setProductAnchorEl(event.currentTarget);
+  const handleProductMenuClose = () => setProductAnchorEl(null);
 
   const handleLogout = () => {
     if (setUser) setUser(null);
@@ -90,9 +97,13 @@ export default function TopNavbar() {
     window.location.href = "/";
   };
 
+  // Drawer list
   const drawerList = (
     <Box sx={{ width: 250 }} role="presentation">
-      <Typography variant="h6" sx={{ m: 2, display: "flex", alignItems: "center" }}>
+      <Typography
+        variant="h6"
+        sx={{ m: 2, display: "flex", alignItems: "center" }}
+      >
         <ShoppingBasketIcon sx={{ mr: 1 }} />
         FreshMart
       </Typography>
@@ -114,12 +125,16 @@ export default function TopNavbar() {
         {navItems.map((item) =>
           item.subItems ? (
             <Box key={item.label}>
-              <ListItemButton onClick={handleDrawerProductClick}>
+              <ListItemButton onClick={() => toggleDrawerCollapse(item.label)}>
                 <ListItemIcon>{item.icon}</ListItemIcon>
                 <ListItemText primary={item.label} />
-                {drawerProductOpen ? <ExpandLess /> : <ExpandMore />}
+                {drawerCollapse[item.label] ? <ExpandLess /> : <ExpandMore />}
               </ListItemButton>
-              <Collapse in={drawerProductOpen} timeout="auto" unmountOnExit>
+              <Collapse
+                in={drawerCollapse[item.label]}
+                timeout="auto"
+                unmountOnExit
+              >
                 <List component="div" disablePadding>
                   {item.subItems.map((sub) => (
                     <Link
@@ -128,7 +143,10 @@ export default function TopNavbar() {
                       style={{ textDecoration: "none", color: "inherit" }}
                       onClick={toggleDrawer(false)}
                     >
-                      <ListItemButton sx={{ pl: 4 }} selected={pathname === sub.path}>
+                      <ListItemButton
+                        sx={{ pl: 4 }}
+                        selected={pathname === sub.path}
+                      >
                         <ListItemText primary={sub.label} />
                       </ListItemButton>
                     </Link>
@@ -153,31 +171,30 @@ export default function TopNavbar() {
         <Divider />
         {!user ? (
           <>
-            <Link href="/signup" style={{ textDecoration: "none", color: "inherit" }} onClick={toggleDrawer(false)}>
-              <ListItemButton selected={pathname === "/signup"}>
-                <ListItemText primary="Sign Up" />
-              </ListItemButton>
-            </Link>
-            <Link href="/login" style={{ textDecoration: "none", color: "inherit" }} onClick={toggleDrawer(false)}>
-              <ListItemButton selected={pathname === "/login"}>
-                <ListItemText primary="Login" />
-              </ListItemButton>
-            </Link>
+            <ListItemButton onClick={() => setOpenSignup(true)}>
+              <ListItemText primary="Sign Up" />
+            </ListItemButton>
+            <ListItemButton onClick={() => setOpenLogin(true)}>
+              <ListItemText primary="Login" />
+            </ListItemButton>
           </>
         ) : (
           <>
-            <ListItemButton onClick={toggleDrawer(false)} selected={pathname === "/profile"}>
+            <ListItemButton
+              component={Link}
+              href="/profile"
+              selected={pathname === "/profile"}
+            >
               <ListItemText primary="Profile" />
             </ListItemButton>
-            <ListItemButton onClick={toggleDrawer(false)} selected={pathname === "/account"}>
+            <ListItemButton
+              component={Link}
+              href="/account"
+              selected={pathname === "/account"}
+            >
               <ListItemText primary="My Account" />
             </ListItemButton>
-            <ListItemButton
-              onClick={() => {
-                toggleDrawer(false)();
-                handleLogout();
-              }}
-            >
+            <ListItemButton onClick={handleLogout}>
               <ListItemText primary="Logout" />
             </ListItemButton>
           </>
@@ -187,42 +204,70 @@ export default function TopNavbar() {
   );
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <>
       <AppBar position="fixed" sx={{ bgcolor: "green" }}>
         <Container maxWidth="lg">
-          <Toolbar disableGutters sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            {/* Left: Logo */}
+          <Toolbar
+            disableGutters
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            {/* Logo */}
             <Link href="/" style={{ textDecoration: "none" }}>
-              <Typography variant="h6" color="white" noWrap sx={{ display: "flex", alignItems: "center" }}>
+              <Typography
+                variant="h6"
+                color="white"
+                noWrap
+                sx={{ display: "flex", alignItems: "center" }}
+              >
                 <ShoppingBasketIcon sx={{ mr: 1 }} />
                 FreshMart
               </Typography>
             </Link>
 
-            {/* Center: Menu */}
-            <Box sx={{ display: { xs: "none", sm: "flex" }, gap: 2, flexGrow: 1, justifyContent: "center" }}>
+            {/* Desktop Menu */}
+            <Box
+              sx={{
+                display: { xs: "none", sm: "flex" },
+                gap: 2,
+                flexGrow: 1,
+                justifyContent: "center",
+              }}
+            >
               {navItems.map((item) =>
                 item.subItems ? (
                   <Box key={item.label}>
-                    <Button sx={{ color: "white" }} onClick={handleProductMenuOpen}>
+                    <Button
+                      sx={{ color: "white" }}
+                      onClick={handleProductMenuOpen}
+                    >
                       {item.label}
                     </Button>
                     <Menu
-                      anchorEl={productMenuOpen}
-                      open={Boolean(productMenuOpen)}
+                      anchorEl={productAnchorEl}
+                      open={Boolean(productAnchorEl)}
                       onClose={handleProductMenuClose}
                       anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
                       transformOrigin={{ vertical: "top", horizontal: "left" }}
                     >
                       {item.subItems.map((sub) => (
-                        <MenuItem key={sub.path} component={Link} href={sub.path} onClick={handleProductMenuClose} selected={pathname === sub.path}>
+                        <MenuItem
+                          key={sub.path}
+                          component={Link}
+                          href={sub.path}
+                          onClick={handleProductMenuClose}
+                          selected={pathname === sub.path}
+                        >
                           {sub.label}
                         </MenuItem>
                       ))}
                     </Menu>
                   </Box>
                 ) : (
-                  <MenuItem
+                  <Button
                     key={item.path}
                     component={Link}
                     href={item.path}
@@ -230,13 +275,14 @@ export default function TopNavbar() {
                     variant={pathname === item.path ? "outlined" : "text"}
                   >
                     {item.label}
-                  </MenuItem>
+                  </Button>
                 )
               )}
             </Box>
 
             {/* Right: Search + Auth + Cart */}
             <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+              {/* Search */}
               <Box sx={{ display: { xs: "none", sm: "block" }, maxWidth: 200 }}>
                 <TextField
                   size="small"
@@ -253,12 +299,19 @@ export default function TopNavbar() {
                 />
               </Box>
 
+              {/* Auth */}
               {!user ? (
                 <>
-                  <Button component={Link} href="/signup" sx={{ color: "white" }} variant={pathname === "/signup" ? "outlined" : "text"}>
+                  <Button
+                    sx={{ color: "white" }}
+                    onClick={() => setOpenSignup(true)}
+                  >
                     Sign Up
                   </Button>
-                  <Button component={Link} href="/login" sx={{ color: "white" }} variant={pathname === "/login" ? "outlined" : "text"}>
+                  <Button
+                    sx={{ color: "white" }}
+                    onClick={() => setOpenLogin(true)}
+                  >
                     Login
                   </Button>
                 </>
@@ -268,14 +321,20 @@ export default function TopNavbar() {
                 </IconButton>
               )}
 
+              {/* Cart */}
               <IconButton color="inherit" component={Link} href="/cart">
                 <Badge badgeContent={totalItems} color="error">
                   <ShoppingCartIcon />
                 </Badge>
               </IconButton>
 
-              {/* Mobile Menu Icon */}
-              <IconButton edge="end" color="inherit" sx={{ display: { sm: "none" } }} onClick={toggleDrawer(true)}>
+              {/* Mobile menu */}
+              <IconButton
+                edge="end"
+                color="inherit"
+                sx={{ display: { sm: "none" } }}
+                onClick={toggleDrawer(true)}
+              >
                 <MenuIcon />
               </IconButton>
             </Box>
@@ -283,35 +342,46 @@ export default function TopNavbar() {
         </Container>
       </AppBar>
 
-      {/* Profile Menu */}
+      {/* Profile menu */}
       <Menu
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
+        anchorEl={profileAnchorEl}
+        open={Boolean(profileAnchorEl)}
         onClose={handleProfileClose}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
         transformOrigin={{ vertical: "top", horizontal: "right" }}
       >
-        <MenuItem onClick={handleProfileClose} selected={pathname === "/profile"}>
+        <MenuItem component={Link} href="/profile" onClick={handleProfileClose}>
           Profile
         </MenuItem>
-        <MenuItem onClick={handleProfileClose} selected={pathname === "/account"}>
+        <MenuItem component={Link} href="/account" onClick={handleProfileClose}>
           My Account
         </MenuItem>
         <Divider />
-        <MenuItem
-          onClick={() => {
-            handleProfileClose();
-            handleLogout();
-          }}
-        >
-          Logout
-        </MenuItem>
+        <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
 
       {/* Drawer */}
       <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
         {drawerList}
       </Drawer>
-    </Box>
+
+      {/* Auth Modals */}
+      <SignupModal
+       open={openSignup} 
+       onClose={() => setOpenSignup(false)} 
+       onSwitchToLogin={() => {
+        setOpenSignup(false);
+        setOpenLogin(true);
+       }}
+      />
+      <LoginModal
+       open={openLogin} 
+       onClose={() => setOpenLogin(false)} 
+        onSwitchToSignup={() => {
+        setOpenLogin(false);
+        setOpenSignup(true);
+        }}
+      />
+    </>
   );
 }

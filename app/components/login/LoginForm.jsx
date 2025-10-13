@@ -1,12 +1,12 @@
 import React, {useContext, useEffect, useState} from 'react';
-import { Stack, Dialog, DialogActions, DialogContent,CheckBox ,Grid , TextField,Divider, FormControl,Button, IconButton, Typography} from '@mui/material';
+import { Stack, Dialog, DialogActions, DialogContent,CheckBox ,Grid ,OutlinedInput ,InputAdornment , InputLabel,TextField,Divider, FormControl,Button, IconButton, Typography} from '@mui/material';
 import { CloseSquare } from "iconsax-react";
 import { useMutation } from '@apollo/client/react';
 import LOGIN_USER_FORM from "../../schema/User";
 import { AuthContext } from '@/app/context/AuthContext';
 import { Formik, FormikProvider, Form, useFormik } from 'formik';
 import * as Yup from "yup";
-import { useEffect } from 'react';
+import { Visibility, VisibilityOff } from "@mui/icons-material"; 
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 function LoginForm() {
@@ -35,7 +35,8 @@ function LoginForm() {
     const validationSchema = Yup.object({
         email: Yup.string().email("Invalid email format").required("Required!"),
         password: Yup.string()
-        .matches(passwordRules, "Password must contain at least 10 characters, including uppercase, lowercase and numbers"),
+        .matches(passwordRules, "Password must contain at least 10 characters, including uppercase, lowercase and numbers")
+        .required("Required!"),
     })
 
     const formik = useFormik({
