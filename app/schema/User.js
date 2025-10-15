@@ -1,5 +1,14 @@
 import { gql } from "@apollo/client";
 
+export const GET_USER_BY_ID = gql`
+    query GetUserbyId($id: ID!) {
+        getUserbyId(_id: $id) {
+            id
+            username
+            email
+        }
+        }
+`;
 export const GET_USER_WITH_PAGINATION = gql `
     query GetUserWithPagination($page: Int, $limit: Int, $pagination: Boolean, $keyword: String) {
         getUserWithPagination(page: $page, limit: $limit, pagination: $pagination, keyword: $keyword) {

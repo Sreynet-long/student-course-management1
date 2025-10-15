@@ -21,10 +21,24 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import { CREATE_REVIEW, GET_ALL_REVIEWS } from "../../schema/review";
 import { race } from "rxjs";
+import { useQuery, useMutation } from "@apollo/client/react";
 
 export default function CustomerReviews() {
-  
+  const { loading, error, data, refetch } = useQuery(GET_ALL_REVIEWS, {
+    variables: {
+      page: 1,
+      limit: 10,
+      pagination: true,
+      keyword: "",
+    },
+  });
+
+  const reviews = data?.getAllReviews?.reviews || [];
+
+  if (loading) return <p>Loading reviews...</p>;
+  if (error) return <p>Error loading reviews: {error.message}</p>;
 
   return (
     <Container maxWidth="lg" sx={{ textAlign: "center", py: 6 }}>
@@ -89,7 +103,7 @@ export default function CustomerReviews() {
                     />
                     
                     <Typography variant="body1" gutterBottom textAlign="center">
-                      "{rev.review}"
+                      "{rev.comment}"
                     </Typography>
                     <Rating
                       name="read-only"
@@ -173,10 +187,10 @@ export default function CustomerReviews() {
   );
 }
 
-const reviews = [
-    { name: "Sangwon", review: "Freshmart always delivers the best quality vegetables!", avatar: "/avatars/sangwon.jpg",rating: 5  },
-    { name: "Dara", review: "Quick delivery and great service. Highly recommended!", avatar: "/avatars/avatar2.png",rating: 4 },
-    { name: "Sophea", review: "I love their fruits section — always fresh and sweet.", avatar: "/avatars/sangwon.jpg",rating: 4.5 },
-    { name: "Vanna", review: "Affordable and reliable. My go-to online mart!", avatar: "/avatars/user4.png" ,rating: 4},
-    { name: "Ratha", review: "The dairy products are always fresh and safe.", avatar: "/avatars/avatar2.png",rating: 5 },
-  ];
+// const reviews = [
+//     { name: "Sangwon", review: "Freshmart always delivers the best quality vegetables!", avatar: "/avatars/sangwon.jpg",rating: 5  },
+//     { name: "Dara", review: "Quick delivery and great service. Highly recommended!", avatar: "/avatars/avatar2.png",rating: 4 },
+//     { name: "Sophea", review: "I love their fruits section — always fresh and sweet.", avatar: "/avatars/sangwon.jpg",rating: 4.5 },
+//     { name: "Vanna", review: "Affordable and reliable. My go-to online mart!", avatar: "/avatars/user4.png" ,rating: 4},
+//     { name: "Ratha", review: "The dairy products are always fresh and safe.", avatar: "/avatars/avatar2.png",rating: 5 },
+//   ];

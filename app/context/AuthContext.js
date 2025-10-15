@@ -1,61 +1,67 @@
 "use client";
-import { createContext, useState, useEffect } from "react"; 
-import SessionProvider from "next-auth/react"
+import { createContext, useState, useEffect, useContext } from "react";
+
+
 const AuthContext = createContext();
 
-const AuthProvider = ({ children }) => {
-  // ==================== Alert Message State ======================
-  const [open, setOpen] = useState(false);
-  const [alertStatus, setAlertStatus] = useState("");
-  const [messageAlert, setMessageAlert] = useState({
-    messageKh: "",
-    messageEn: "",
+export const AuthProvider = ({ children }) => {
+
+  const [user, setUser] = useState(null);
+
+  const [alert, setAlertState] = useState({
+    open: false,
+    status: "",
+    message: { messageKh: "", messageEn: "" },
   });
 
-  const setAlert = (open, alert, message) => {
-    setOpen(open);
-    setAlertStatus(alert);
-    setMessageAlert(message); 
-  };
-
-  const alert = () => {
-    return { open: open, status: alertStatus, message: messageAlert };
-  };
-  
-  // ==================== Language State ===============================
-  // 1. Initialize with a safe default on the server.
-  const [language, setLanguage] = useState("en"); 
-  
-  // 2. Use useEffect to load stored language only on the client.
   useEffect(() => {
-    // Check if running in a browser environment
-    if (typeof window !== 'undefined' && window.localStorage.getItem("language")) {
-      setLanguage(window.localStorage.getItem("language"));
+    try {
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) setUser(JSON.parse(storedUser));
+    } catch (err) {
+      console.error("Failed to load user from localStorage:", err);
     }
-  }, []); // Run only once on mount to load initial state.
-  
-  // 3. Update 'changeLanguage' to also save to localStorage.
-  const changeLanguage = (lang) => {
-    setLanguage(lang);
-    if (typeof window !== 'undefined') {
-        window.localStorage.setItem("language", lang); 
+  }, []);
+
+  const login = (userData) => {
+    try {
+      localStorage.setItem("user", JSON.stringify(userData));
+      setUser(userData);
+    } catch (err) {
+      console.error("Failed to save user to localStorage:", err);
     }
   };
 
-  // The now-obsolete handleGetLanguage function is removed.
-
-  const value = {
-    alert,
-    setAlert,
-    changeLanguage,
-    language,
+  const logout = () => {
+    try {
+      localStorage.removeItem("user");
+    } catch (err) {
+      console.error("Failed to remove user from localStorage:", err);
+    }
+    setUser(null);
   };
-  
-  return <AuthContext.Provider value={value}>
-            
-              {children}
-            
-          </AuthContext.Provider>;
+
+  const setAlert = (open = true, status = "", message = { messageKh: "", messageEn: "" }, duration = 3000) => {
+    setAlertState({ open, status, message });
+
+    if (open) {
+      setTimeout(() => {
+        setAlertState({ open: false, status: "", message: { messageKh: "", messageEn: "" } });
+      }, duration);
+    }
+  };
+
+  return (
+    <AuthContext.Provider value={{ user, login, logout, alert, setAlert }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
-export { AuthContext, AuthProvider };
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
+};

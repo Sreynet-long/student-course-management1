@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   AppBar,
   Toolbar,
@@ -21,32 +21,35 @@ import {
   InputAdornment,
   Container,
 } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import SearchIcon from "@mui/icons-material/Search";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import HomeIcon from "@mui/icons-material/Home";
-import StoreIcon from "@mui/icons-material/Store";
-import InfoIcon from "@mui/icons-material/Info";
-import ContactPageIcon from "@mui/icons-material/ContactPage";
-import ExpandLess from "@mui/icons-material/ExpandLess";
-import ExpandMore from "@mui/icons-material/ExpandMore";
-import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
+import {
+  Menu as MenuIcon,
+  Search as SearchIcon,
+  AccountCircle,
+  ShoppingCart as ShoppingCartIcon,
+  Home as HomeIcon,
+  Store as StoreIcon,
+  Info as InfoIcon,
+  ContactPage as ContactPageIcon,
+  ExpandLess,
+  ExpandMore,
+  ShoppingBasket as ShoppingBasketIcon,
+} from "@mui/icons-material";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useCart } from "../../context/CartContext";
+import { useCart } from "@/app/context/CartContext";
+import { useAuth } from "../../context/AuthContext";
+import { Snackbar, Alert } from "@mui/material";
 import LoginModal from "@/app/components/auth/LoginModal";
 import SignupModal from "@/app/components/auth/SignupModal";
 
 export default function TopNavbar() {
   const pathname = usePathname();
-  const { cart, user, setUser } = useCart();
+  const { cart } = useCart();
+  const { user, logout,  alert, closeAlert} = useAuth();
 
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
-  const totalItems = mounted
-    ? cart.reduce((acc, item) => acc + (item.quantity || 1), 0)
-    : 0;
+  const totalItems = mounted ? cart.reduce((acc, item) => acc + (item.quantity || 1), 0) : 0;
 
   // Auth modals
   const [openSignup, setOpenSignup] = useState(false);
@@ -87,25 +90,14 @@ export default function TopNavbar() {
   const handleProfileClose = () => setProfileAnchorEl(null);
 
   // Product menu (desktop)
-  const handleProductMenuOpen = (event) =>
-    setProductAnchorEl(event.currentTarget);
+  const handleProductMenuOpen = (event) => setProductAnchorEl(event.currentTarget);
   const handleProductMenuClose = () => setProductAnchorEl(null);
-
-  const handleLogout = () => {
-    if (setUser) setUser(null);
-    if (typeof window !== "undefined") localStorage.removeItem("user");
-    window.location.href = "/";
-  };
 
   // Drawer list
   const drawerList = (
     <Box sx={{ width: 250 }} role="presentation">
-      <Typography
-        variant="h6"
-        sx={{ m: 2, display: "flex", alignItems: "center" }}
-      >
-        <ShoppingBasketIcon sx={{ mr: 1 }} />
-        FreshMart
+      <Typography variant="h6" sx={{ m: 2, display: "flex", alignItems: "center" }}>
+        <ShoppingBasketIcon sx={{ mr: 1 }} /> FreshMart
       </Typography>
       <TextField
         size="small"
@@ -130,11 +122,7 @@ export default function TopNavbar() {
                 <ListItemText primary={item.label} />
                 {drawerCollapse[item.label] ? <ExpandLess /> : <ExpandMore />}
               </ListItemButton>
-              <Collapse
-                in={drawerCollapse[item.label]}
-                timeout="auto"
-                unmountOnExit
-              >
+              <Collapse in={drawerCollapse[item.label]} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
                   {item.subItems.map((sub) => (
                     <Link
@@ -143,10 +131,7 @@ export default function TopNavbar() {
                       style={{ textDecoration: "none", color: "inherit" }}
                       onClick={toggleDrawer(false)}
                     >
-                      <ListItemButton
-                        sx={{ pl: 4 }}
-                        selected={pathname === sub.path}
-                      >
+                      <ListItemButton sx={{ pl: 4 }} selected={pathname === sub.path}>
                         <ListItemText primary={sub.label} />
                       </ListItemButton>
                     </Link>
@@ -180,21 +165,13 @@ export default function TopNavbar() {
           </>
         ) : (
           <>
-            <ListItemButton
-              component={Link}
-              href="/profile"
-              selected={pathname === "/profile"}
-            >
+            <ListItemButton component={Link} href="/profile" selected={pathname === "/profile"}>
               <ListItemText primary="Profile" />
             </ListItemButton>
-            <ListItemButton
-              component={Link}
-              href="/account"
-              selected={pathname === "/account"}
-            >
+            <ListItemButton component={Link} href="/account" selected={pathname === "/account"}>
               <ListItemText primary="My Account" />
             </ListItemButton>
-            <ListItemButton onClick={handleLogout}>
+            <ListItemButton onClick={logout}>
               <ListItemText primary="Logout" />
             </ListItemButton>
           </>
@@ -207,60 +184,29 @@ export default function TopNavbar() {
     <>
       <AppBar position="fixed" sx={{ bgcolor: "green" }}>
         <Container maxWidth="lg">
-          <Toolbar
-            disableGutters
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
+          <Toolbar sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             {/* Logo */}
             <Link href="/" style={{ textDecoration: "none" }}>
-              <Typography
-                variant="h6"
-                color="white"
-                noWrap
-                sx={{ display: "flex", alignItems: "center" }}
-              >
-                <ShoppingBasketIcon sx={{ mr: 1 }} />
-                FreshMart
+              <Typography variant="h6" color="white" sx={{ display: "flex", alignItems: "center" }}>
+                <ShoppingBasketIcon sx={{ mr: 1 }} /> FreshMart
               </Typography>
             </Link>
 
             {/* Desktop Menu */}
-            <Box
-              sx={{
-                display: { xs: "none", sm: "flex" },
-                gap: 2,
-                flexGrow: 1,
-                justifyContent: "center",
-              }}
-            >
+            <Box sx={{ display: { xs: "none", sm: "flex" }, gap: 2, flexGrow: 1, justifyContent: "center" }}>
               {navItems.map((item) =>
                 item.subItems ? (
                   <Box key={item.label}>
-                    <Button
-                      sx={{ color: "white" }}
-                      onClick={handleProductMenuOpen}
-                    >
+                    <Button sx={{ color: "white" }} onClick={handleProductMenuOpen}>
                       {item.label}
                     </Button>
                     <Menu
                       anchorEl={productAnchorEl}
                       open={Boolean(productAnchorEl)}
                       onClose={handleProductMenuClose}
-                      anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-                      transformOrigin={{ vertical: "top", horizontal: "left" }}
                     >
                       {item.subItems.map((sub) => (
-                        <MenuItem
-                          key={sub.path}
-                          component={Link}
-                          href={sub.path}
-                          onClick={handleProductMenuClose}
-                          selected={pathname === sub.path}
-                        >
+                        <MenuItem key={sub.path} component={Link} href={sub.path} onClick={handleProductMenuClose}>
                           {sub.label}
                         </MenuItem>
                       ))}
@@ -280,61 +226,45 @@ export default function TopNavbar() {
               )}
             </Box>
 
-            {/* Right: Search + Auth + Cart */}
+            {/* Right Section */}
             <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-              {/* Search */}
-              <Box sx={{ display: { xs: "none", sm: "block" }, maxWidth: 200 }}>
-                <TextField
-                  size="small"
-                  fullWidth
-                  placeholder="Search products..."
-                  sx={{ bgcolor: "white", borderRadius: 1 }}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon sx={{ color: "green" }} />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              </Box>
+              <TextField
+                size="small"
+                placeholder="Search products..."
+                sx={{ bgcolor: "white", borderRadius: 1, display: { xs: "none", sm: "block" }, maxWidth: 200 }}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon sx={{ color: "green" }} />
+                    </InputAdornment>
+                  ),
+                }}
+              />
 
-              {/* Auth */}
               {!user ? (
                 <>
-                  <Button
-                    sx={{ color: "white" }}
-                    onClick={() => setOpenSignup(true)}
-                  >
+                  <Button sx={{ color: "white" }} onClick={() => setOpenSignup(true)}>
                     Sign Up
                   </Button>
-                  <Button
-                    sx={{ color: "white" }}
-                    onClick={() => setOpenLogin(true)}
-                  >
+                  <Button sx={{ color: "white" }} onClick={() => setOpenLogin(true)}>
                     Login
                   </Button>
                 </>
               ) : (
-                <IconButton color="inherit" onClick={handleProfileOpen}>
-                  <AccountCircle />
-                </IconButton>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                 <IconButton color="inherit" onClick={handleProfileOpen}>
+                    <AccountCircle />
+                  </IconButton>
+                </Box>
               )}
 
-              {/* Cart */}
               <IconButton color="inherit" component={Link} href="/cart">
                 <Badge badgeContent={totalItems} color="error">
                   <ShoppingCartIcon />
                 </Badge>
               </IconButton>
 
-              {/* Mobile menu */}
-              <IconButton
-                edge="end"
-                color="inherit"
-                sx={{ display: { sm: "none" } }}
-                onClick={toggleDrawer(true)}
-              >
+              <IconButton edge="end" color="inherit" sx={{ display: { sm: "none" } }} onClick={toggleDrawer(true)}>
                 <MenuIcon />
               </IconButton>
             </Box>
@@ -342,14 +272,8 @@ export default function TopNavbar() {
         </Container>
       </AppBar>
 
-      {/* Profile menu */}
-      <Menu
-        anchorEl={profileAnchorEl}
-        open={Boolean(profileAnchorEl)}
-        onClose={handleProfileClose}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        transformOrigin={{ vertical: "top", horizontal: "right" }}
-      >
+      {/* Profile Menu */}
+      <Menu anchorEl={profileAnchorEl} open={Boolean(profileAnchorEl)} onClose={handleProfileClose}>
         <MenuItem component={Link} href="/profile" onClick={handleProfileClose}>
           Profile
         </MenuItem>
@@ -357,7 +281,7 @@ export default function TopNavbar() {
           My Account
         </MenuItem>
         <Divider />
-        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+        <MenuItem onClick={logout}>Logout</MenuItem>
       </Menu>
 
       {/* Drawer */}
@@ -367,21 +291,33 @@ export default function TopNavbar() {
 
       {/* Auth Modals */}
       <SignupModal
-       open={openSignup} 
-       onClose={() => setOpenSignup(false)} 
-       onSwitchToLogin={() => {
-        setOpenSignup(false);
-        setOpenLogin(true);
-       }}
-      />
-      <LoginModal
-       open={openLogin} 
-       onClose={() => setOpenLogin(false)} 
-        onSwitchToSignup={() => {
-        setOpenLogin(false);
-        setOpenSignup(true);
+        open={openSignup}
+        onClose={() => setOpenSignup(false)}
+        onSwitchToLogin={() => {
+          setOpenSignup(false);
+          setOpenLogin(true);
         }}
       />
+      <LoginModal
+        open={openLogin}
+        onClose={() => setOpenLogin(false)}
+        onSwitchToSignup={() => {
+          setOpenLogin(false);
+          setOpenSignup(true);
+        }}
+      />
+      <Snackbar
+        open={alert.open}
+        autoHideDuration={3000}
+        onClose={closeAlert}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert onClose={closeAlert} severity={alert.type} sx={{ width: "100%" }}>
+          {alert.message.messageEn}
+        </Alert>
+      </Snackbar>
+
     </>
+    
   );
 }
