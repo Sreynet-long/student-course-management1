@@ -72,7 +72,7 @@ export default function LoginModal({ open, onClose, onSwitchToSignup }) {
     },
   });
 
-  const { values, handleChange, handleBlur, handleSubmit, touched, errors, resetForm } = formik;
+  const { values, handleChange, handleBlur, handleSubmit, touched, errors, resetForm, helperText } = formik;
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="xs" fullWidth>

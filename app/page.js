@@ -26,8 +26,6 @@ function HomePage() {
       <SpecialOffer />
       <CustomerReviews />
       <Newsletter />
-
-      
     </main>
   );
 }

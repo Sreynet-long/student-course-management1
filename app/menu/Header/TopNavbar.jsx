@@ -41,6 +41,7 @@ import { useAuth } from "../../context/AuthContext";
 import { Snackbar, Alert } from "@mui/material";
 import LoginModal from "@/app/components/auth/LoginModal";
 import SignupModal from "@/app/components/auth/SignupModal";
+import MiniCart from "@/app/components/Cartbox/MiniCart";
 
 export default function TopNavbar() {
   const pathname = usePathname();
@@ -166,9 +167,6 @@ export default function TopNavbar() {
         ) : (
           <>
             <ListItemButton component={Link} href="/profile" selected={pathname === "/profile"}>
-              <ListItemText primary="Profile" />
-            </ListItemButton>
-            <ListItemButton component={Link} href="/account" selected={pathname === "/account"}>
               <ListItemText primary="My Account" />
             </ListItemButton>
             <ListItemButton onClick={logout}>
@@ -263,7 +261,7 @@ export default function TopNavbar() {
                   <ShoppingCartIcon />
                 </Badge>
               </IconButton>
-
+              
               <IconButton edge="end" color="inherit" sx={{ display: { sm: "none" } }} onClick={toggleDrawer(true)}>
                 <MenuIcon />
               </IconButton>
@@ -274,13 +272,13 @@ export default function TopNavbar() {
 
       {/* Profile Menu */}
       <Menu anchorEl={profileAnchorEl} open={Boolean(profileAnchorEl)} onClose={handleProfileClose}>
-        <MenuItem component={Link} href="/profile" onClick={handleProfileClose}>
+        {/* <MenuItem component={Link} href="/profile" onClick={handleProfileClose}>
           Profile
-        </MenuItem>
-        <MenuItem component={Link} href="/account" onClick={handleProfileClose}>
+        </MenuItem> */}
+        <MenuItem component={Link} href="/profile" onClick={handleProfileClose}>
           My Account
         </MenuItem>
-        <Divider />
+        <Divider/>
         <MenuItem onClick={logout}>Logout</MenuItem>
       </Menu>
 

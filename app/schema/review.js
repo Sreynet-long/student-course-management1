@@ -44,3 +44,23 @@ export const CREATE_REVIEW = gql`
     }
   }
 `;
+
+export const GET_REVIEW_BY_PRODUCT = gql`
+  query GetReviewsByProduct($productId: ID!) {
+    getReviewsByProduct(productId: $productId) {
+      id
+      name
+      rating
+      comment
+      product {
+        id
+        productName
+        category
+        imageUrl
+        desc
+        price
+      }
+      createdAt
+    }
+  }
+`;

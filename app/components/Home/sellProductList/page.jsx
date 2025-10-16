@@ -10,6 +10,7 @@ import {
   CardMedia,
   CardContent,
   Skeleton,
+  Rating,
 } from "@mui/material";
 import styles from "@/app/components/styles/sellProduct.module.css";
 import { GET_PRODUCT_WITH_PAGINATION } from "@/app/schema/Product";
@@ -148,7 +149,7 @@ export default function SellProductList() {
                     alt={product.productName}
                     sx={{ objectFit: "contain", p: 1 }}
                   />
-                  <CardContent sx={{ textAlign: "center", flexGrow: 1 }}>
+                  <CardContent sx={{ textAlign: "justify", flexGrow: 1 }}>
                     <Typography variant="subtitle1" fontWeight="bold">
                       {product.productName}
                     </Typography>
@@ -161,6 +162,7 @@ export default function SellProductList() {
                         ? Number(product.price).toFixed(2)
                         : "0.00"}
                     </Typography>
+                    <Rating />
                   </CardContent>
                   <Box sx={{p:1}}>
                     <Button

@@ -33,8 +33,16 @@ export default function CartPage() {
   );
 
   return (
-    <Box sx={{ p: { xs: 2, md: 6 }, maxWidth: "lg", mx: "auto", display: "flex", flexDirection: { xs: "column", md: "row" }, gap: 4 }}>
-      
+    <Box
+      sx={{
+        p: { xs: 2, md: 6 },
+        maxWidth: "lg",
+        mx: "auto",
+        display: "flex",
+        flexDirection: { xs: "column", md: "row" },
+        gap: 4,
+      }}
+    >
       {/* Product List */}
       <Box sx={{ flex: 2 }}>
         <Typography variant="h5" gutterBottom>
@@ -58,11 +66,10 @@ export default function CartPage() {
                   sx={{
                     display: "flex",
                     alignItems: "center",
-                    mb: 2,
+                    // mb: 2,
                     p: 2,
-                    borderRadius: 3,
-                    boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
                   }}
+                  
                 >
                   <CardMedia
                     component="img"
@@ -84,47 +91,53 @@ export default function CartPage() {
                     <Typography color="text.secondary">
                       ${item.product.price.toFixed(2)} each
                     </Typography>
+                    <Box
+                      mt={1}
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 1,
+                        flex: 1,
+                        justifyContent: "center",
+                        border: "1px solid #ccc",
+                        width: "100px",
+                        height: "30px",
+                        borderRadius: "45px",
+                        fontWeight: "bold",
+                        color: "black",
+                      }}
+                    >
+                      <IconButton
+                        size=""
+                        color="primary"
+                        onClick={() =>
+                          updateQuantity(item.product.id, item.quantity - 1)
+                        }
+                      >
+                        <RemoveIcon />
+                      </IconButton>
+
+                      <motion.span
+                        key={item.quantity}
+                        initial={{ scale: 0.8 }}
+                        animate={{ scale: 1 }}
+                        transition={{ type: "spring", stiffness: 300 }}
+                        style={{ fontWeight: 600, fontSize: "1rem" }}
+                      >
+                        {item.quantity}
+                      </motion.span>
+
+                      <IconButton
+                        size="small"
+                        color="primary"
+                        onClick={() =>
+                          updateQuantity(item.product.id, item.quantity + 1)
+                        }
+                      >
+                        <AddIcon />
+                      </IconButton>
+                    </Box>
                   </CardContent>
-
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 1,
-                      flex: 1,
-                      justifyContent: "center",
-                    }}
-                  >
-                    <IconButton
-                      size="small"
-                      color="primary"
-                      onClick={() =>
-                        updateQuantity(item.product.id, item.quantity - 1)
-                      }
-                    >
-                      <RemoveIcon />
-                    </IconButton>
-
-                    <motion.span
-                      key={item.quantity}
-                      initial={{ scale: 0.8 }}
-                      animate={{ scale: 1 }}
-                      transition={{ type: "spring", stiffness: 300 }}
-                      style={{ fontWeight: 600, fontSize: "1rem" }}
-                    >
-                      {item.quantity}
-                    </motion.span>
-
-                    <IconButton
-                      size="small"
-                      color="primary"
-                      onClick={() =>
-                        updateQuantity(item.product.id, item.quantity + 1)
-                      }
-                    >
-                      <AddIcon />
-                    </IconButton>
-                  </Box>
 
                   <Typography sx={{ flex: 1, textAlign: "right", mr: 2 }}>
                     ${(item.product.price * item.quantity).toFixed(2)}
@@ -164,18 +177,10 @@ export default function CartPage() {
         </Typography>
 
         <Box sx={{ mt: 4, display: "flex", flexDirection: "column", gap: 2 }}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={checkout}
-          >
+          <Button variant="contained" color="primary" onClick={checkout}>
             Checkout
           </Button>
-          <Button
-            variant="outlined"
-            color="success"
-            onClick={clearCart}
-          >
+          <Button variant="outlined" color="success" onClick={clearCart}>
             Clear Cart
           </Button>
         </Box>

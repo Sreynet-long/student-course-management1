@@ -78,7 +78,7 @@ export default function AddToCart() {
                       alt={product.productName}
                       sx={{ objectFit: "contain", p: 1 }}
                     />
-                    <CardContent sx={{ p: 1, textAlign: "center", flexGrow: 1 }}>
+                    <CardContent sx={{ p: 1, textAlign: "justify", flexGrow: 1 }}>
                       <Typography variant="subtitle1" fontWeight="bold">
                         {product.productName}
                       </Typography>

@@ -1,13 +1,13 @@
 "use client";
 import { useContext } from "react";
-import { AuthContext } from "@/app/context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 import { Box, Typography, Button, Avatar,Divider , Breadcrumbs ,Stack } from "@mui/material";
 import Link from "next/link";
 import HomeIcon from '@mui/icons-material/Home';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 export default function ProfilePage() {
-  const { user, logout } = useContext(AuthContext);
+  const { user, logout } = useAuth();
 
   if (!user) {
     return (
@@ -63,7 +63,9 @@ export default function ProfilePage() {
       <Typography variant="body1" sx={{ mb: 1 }}>
         <strong>Username:</strong> {user.username}
       </Typography>
-
+      <Typography variant="body1" sx={{ mb: 1 }}>
+        <strong>Phone Number:</strong> {user.phoneNumber || "N/A"}
+      </Typography>
       <Typography variant="body1" sx={{ mb: 1 }}>
         <strong>Email:</strong> {user.email}
       </Typography>
