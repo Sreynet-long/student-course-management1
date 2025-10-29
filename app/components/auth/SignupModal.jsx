@@ -32,6 +32,7 @@ export default function SignupModal({ open, onClose, onSwitchToLogin }) {
 
   const [signupUserForm] = useMutation(SIGN_UP_USER_FORM, {
     onCompleted: ({ signupUserForm }) => {
+      console.log("signup", signupUserForm);
       setLoading(false);
       if (signupUserForm?.isSuccess) {
         login(signupUserForm.data);

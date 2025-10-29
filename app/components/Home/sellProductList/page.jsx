@@ -15,7 +15,7 @@ import {
 import styles from "@/app/components/styles/sellProduct.module.css";
 import { GET_PRODUCT_WITH_PAGINATION } from "@/app/schema/Product";
 import { useQuery } from "@apollo/client/react";
-import {useCart} from "../../../context/CartContext";
+import { useCart } from "../../../context/CartContext";
 
 const categories = [
   "Vegetable",
@@ -73,7 +73,7 @@ export default function SellProductList() {
     : [];
 
   return (
-    <Box sx={{ py: 6, px: { xs: 2, sm: 4 }, bgcolor: "background.paper" }}>
+    <Box sx={{ py: 3, px: { xs: 2, sm: 4 }, bgcolor: "background.paper" }}>
       <Stack sx={{ maxWidth: "1200px", mx: "auto" }}>
         <Typography
           variant="h5"
@@ -132,47 +132,55 @@ export default function SellProductList() {
                     borderRadius: 2,
                     boxShadow: 2,
                     "&:hover": { boxShadow: 4 },
-                    height: "100%",
                     display: "flex",
                     flexDirection: "column",
                     justifyContent: "space-between",
                     textAlign: "center",
                     p: 1,
+                    height: 300,
                     width: 170,
-                    height: 300, 
                   }}
                 >
                   <CardMedia
                     component="img"
                     height="130"
-                    image={product.imageUrl || "/placeholder.png"}
+                    image={product.imageUrl}
                     alt={product.productName}
                     sx={{ objectFit: "contain", p: 1 }}
                   />
-                  <CardContent sx={{ textAlign: "justify", flexGrow: 1 }}>
+                  <CardContent sx={{ p: 1, textAlign: "justify", flexGrow: 1 }}>
                     <Typography variant="subtitle1" fontWeight="bold">
                       {product.productName}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{
+                        display: "-webkit-box",
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: "vertical",
+                        overflow: "hidden",
+                      }}
+                    >
                       {product.desc}
-                   </Typography>
-                    <Typography fontSize="16px" variant="h6" mt={1}>
-                      $
-                      {product.price != null
-                        ? Number(product.price).toFixed(2)
-                        : "0.00"}
                     </Typography>
-                    <Rating />
+                    <Typography fontSize="16px" variant="h6" mt={1}>
+                      ${product.price?.toFixed(2) ?? "0.00"}
+                    </Typography>
                   </CardContent>
-                  <Box sx={{p:1}}>
+                  <Box sx={{ p: 1 }}>
                     <Button
                       color="success"
                       variant="contained"
                       size="small"
-                      sx={{ mt: 1, borderRadius: "20px", textTransform: "none" }}
+                      sx={{
+                        mt: 1,
+                        borderRadius: "20px",
+                        textTransform: "none",
+                      }}
                       onClick={() => addToCart(product)}
                     >
-                      Add to Cart
+                      🛒 Add to Cart
                     </Button>
                   </Box>
                 </Card>

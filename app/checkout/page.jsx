@@ -1,178 +1,325 @@
 "use client";
 import React, { useState } from "react";
 import {
-  Container,
-  Typography,
-  TextField,
   Grid,
   Paper,
+  Typography,
+  TextField,
+  Button,
+  Divider,
+  Box,
+  FormControl,
   RadioGroup,
   FormControlLabel,
   Radio,
-  Button,
-  Divider,
   Stack,
-  useMediaQuery,
+  Breadcrumbs,
 } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
-import { useCart } from "../../context/CartContext";
+import {
+  styled,
+  createTheme,
+  keyframes,
+  ThemeProvider,
+} from "@mui/material/styles";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import Link from "next/link";
+import { useMutation } from "@apollo/client/react";
+import { CREATE_ORDER } from "../schema/Order";
+import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/navigation";
 
+// Steps
+const steps = ["Cart", "Shipping", "Checkout"];
+
+// Styled components
+const CardPaper = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(4),
+  borderRadius: theme.spacing(2),
+  boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
+}));
+
+const PayButtonBox = styled(Box)(({ theme }) => ({
+  position: "sticky",
+  bottom: 0,
+  background: "inherit",
+  paddingTop: theme.spacing(2),
+  paddingBottom: theme.spacing(2),
+  marginTop: theme.spacing(2),
+}));
+
+const AnimatedButton = styled(Button)(({ theme }) => ({
+  transition: "0.3s",
+  "&:hover": {
+    transform: "translateY(-3px)",
+    boxShadow: "0 4px 15px rgba(0,0,0,0.2)",
+  },
+}));
+
 export default function CheckoutPage() {
-  const { cart, clearCart } = useCart();
-  const [paymentMethod, setPaymentMethod] = useState("cod");
   const router = useRouter();
+  const { cart, totalPrice, clearCart } = useCart();
+  const { user, setAlert } = useAuth();
+  const [createOrder] = useMutation(CREATE_ORDER);
 
-  // Responsive helper
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const [activeStep, setActiveStep] = useState(0);
+  const [darkMode, setDarkMode] = useState(false);
 
-  // Calculate totals
-  const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-  const shipping = cart.length > 0 ? 5 : 0;
-  const total = subtotal + shipping;
+  // Shipping info state
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
+  const [country, setCountry] = useState("Cambodia");
 
-  const handlePlaceOrder = () => {
-    alert("✅ Order placed successfully!");
-    clearCart();
-    router.push("/order-success"); // redirect home or order success page
+  // Payment info state
+  const [paymentMethod, setPaymentMethod] = useState("cash");
+
+  const [loading, setLoading] = useState(false);
+
+  const theme = createTheme({
+    palette: {
+      mode: darkMode ? "dark" : "light",
+      primary: { main: "#1976d2" },
+    },
+  });
+
+  const nextStep = () =>
+    setActiveStep((prev) => Math.min(prev + 1, steps.length - 1));
+  const prevStep = () => setActiveStep((prev) => Math.max(prev - 0, 0));
+
+  // Shipping validation
+  const validateShipping = () => {
+    if (
+      !name.trim() ||
+      !phone.trim() ||
+      !email.trim() ||
+      !address.trim() ||
+      !country.trim()
+    ) {
+      return false;
+    }
+    if (!/\S+@\S+\.\S+/.test(email)) return false;
+    return true;
+  };
+
+  const handlePayNow = async () => {
+    if (!validateShipping()) {
+      setAlert(true, "error", {
+        messageEn: "Please fill all required shipping fields!",
+        messageKh: "សូមបំពេញវាលដឹកជញ្ជូនទាំងអស់ដែលតម្រូវឲ្យបំពេញ!",
+      });
+      return;
+    }
+    if (!user) {
+      setAlert(true, "error", {
+        messageEn: "Please login first",
+        messageKh: "",
+      });
+      return;
+    }
+    if (cart.length === 0) {
+      setAlert(true, "error", { messageEn: "Cart is empty", messageKh: "" });
+      return;
+    }
+
+    const orderInput = {
+      userId: user?.id,
+      shippingInfo: { name, phone, email, address, country },
+      items: cart.map((item) => ({
+        productId: item?.product?.id,
+        quantity: item?.quantity,
+      })),
+      paymentMethod,
+    };
+
+    try {
+      setLoading(true);
+      const { data } = await createOrder({ variables: { input: orderInput } });
+
+      if (data?.createOrder?.isSuccess) {
+        // Success alert
+        setAlert(true, "success", {
+          messageEn: "Order placed successfully! Redirecting...",
+          messageKh: "ការកម្មង់បានបង្កើតដោយជោគជ័យ! កំពុងបញ្ជូន...",
+        });
+
+        // Clear cart
+        clearCart();
+
+        // Wait 1.5s before redirect to order history
+        setTimeout(() => {
+          router.push("/orders"); // redirect to order history page
+        }, 1500);
+      } else {
+        setAlert(true, "error", {
+          messageEn: data?.createOrder?.messageEn,
+          messageKh: data?.createOrder?.messageKh,
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      setAlert(true, "error", {
+        messageEn: "Checkout failed. Please try again.",
+        messageKh: "",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <Container maxWidth="lg" sx={{ py: 6 }}>
-      <Typography variant="h4" fontWeight="bold" gutterBottom>
-        Checkout
-      </Typography>
-
-      <Grid container spacing={4} direction={isMobile ? "column" : "row"}>
-        {/* Left Side - Shipping & Payment */}
-        <Grid item xs={12} md={8}>
-          <Paper sx={{ p: 3, mb: isMobile ? 3 : 0 }}>
-            <Typography variant="h6" gutterBottom>
-              Shipping Information
-            </Typography>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField fullWidth label="Full Name" />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField fullWidth label="Phone Number" />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField fullWidth label="Email Address" />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label="Delivery Address"
-                  multiline
-                  rows={3}
-                />
-              </Grid>
-            </Grid>
-          </Paper>
-
-          <Paper sx={{ p: 3 }}>
-            <Typography variant="h6" gutterBottom>
-              Payment Method
-            </Typography>
-            <RadioGroup
-              value={paymentMethod}
-              onChange={(e) => setPaymentMethod(e.target.value)}
-            >
-              <FormControlLabel
-                value="cod"
-                control={<Radio />}
-                label="Cash on Delivery"
+    <ThemeProvider theme={theme}>
+      <Box
+        sx={{
+          p: { xs: 2, md: 6 },
+          maxWidth: "lg",
+          mx: "auto",
+          display: "flex",
+          flexDirection: { xs: "column", md: "row" },
+          gap: 4,
+        }}
+      >
+        <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 4, cursor: "pointer" }}>
+          <Link href="/cart" style={{ textDecoration: "none" }}>
+            <Stack direction="row" alignItems="center" spacing={0.5}>
+              <ArrowBackIcon
+                sx={{ mr: 0.5 }}
+                fontSize="inherit"
+                color="success"
               />
-              <FormControlLabel
-                value="card"
-                control={<Radio />}
-                label="Credit / Debit Card"
-              />
-              <FormControlLabel
-                value="paypal"
-                control={<Radio />}
-                label="PayPal"
-              />
-            </RadioGroup>
-          </Paper>
-        </Grid>
-
-        {/* Right Side - Order Summary */}
-        <Grid item xs={12} md={4}>
-          <Paper sx={{ p: 3 }}>
-            <Typography variant="h6" gutterBottom>
-              Order Summary
-            </Typography>
-            <Divider sx={{ mb: 2 }} />
-
-            {cart.length === 0 ? (
-              <Typography>Your cart is empty 🛒</Typography>
-            ) : (
-              <>
-                {cart.map((item) => (
-                  <Stack
-                    key={item.id}
-                    direction="row"
-                    justifyContent="space-between"
-                    sx={{ mb: 1 }}
-                  >
-                    <Typography>
-                      {item.name} x {item.qty}
+              <Typography color="text.secondary" variant="h6">
+                Back
+              </Typography>
+            </Stack>
+          </Link>
+        </Breadcrumbs>
+        <Divider />
+        <Box sx={{ flex: 3 }}>
+          <Grid
+            container
+            spacing={4}
+            justifyContent="center"
+            alignItems="flex-start"
+          >
+            <Grid item xs={12} md={8}>
+              <CardPaper>
+                {/* Steps */}
+                {activeStep === 0 && (
+                  <Box>
+                    <Typography variant="h6" gutterBottom>
+                      Cart
                     </Typography>
-                    <Typography>
-                      ${(item.price * item.qty).toFixed(2)}
+                    <Typography>Review your items before shipping.</Typography>
+                  </Box>
+                )}
+                {activeStep === 1 && (
+                  <Box>
+                    <Typography variant="h6" gutterBottom>
+                      Shipping Info
                     </Typography>
-                  </Stack>
-                ))}
-
-                <Divider sx={{ my: 2 }} />
-                <Stack direction="row" justifyContent="space-between">
-                  <Typography>Subtotal</Typography>
-                  <Typography>${subtotal.toFixed(2)}</Typography>
-                </Stack>
-                <Stack direction="row" justifyContent="space-between">
-                  <Typography>Shipping</Typography>
-                  <Typography>${shipping.toFixed(2)}</Typography>
-                </Stack>
-                <Stack
-                  direction="row"
-                  justifyContent="space-between"
-                  sx={{ mt: 1 }}
-                >
-                  <Typography variant="h6">Total</Typography>
-                  <Typography variant="h6">${total.toFixed(2)}</Typography>
-                </Stack>
-
-                {/* Back + Place Order Buttons */}
-                <Stack
-                  direction={isMobile ? "column" : "row"}
-                  spacing={2}
-                  sx={{ mt: 3 }}
-                >
-                  <Button
-                    fullWidth
-                    variant="outlined"
-                    color="secondary"
-                    onClick={() => router.push("/cart")}
-                  >
-                    Back to Cart
+                    <TextField
+                      fullWidth
+                      label="Full Name"
+                      margin="normal"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      required
+                    />
+                    <TextField
+                      fullWidth
+                      label="Phone"
+                      margin="normal"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      required
+                    />
+                    <TextField
+                      fullWidth
+                      label="Email"
+                      margin="normal"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                    />
+                    <TextField
+                      fullWidth
+                      label="Address"
+                      margin="normal"
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
+                      required
+                    />
+                    <TextField
+                      fullWidth
+                      label="Country"
+                      margin="normal"
+                      value={country}
+                      onChange={(e) => setCountry(e.target.value)}
+                      required
+                    />
+                  </Box>
+                )}
+                {activeStep === 2 && (
+                  <Box>
+                    <Typography variant="h6" gutterBottom>
+                      Payment Method
+                    </Typography>
+                    <FormControl component="fieldset" sx={{ mb: 3 }}>
+                      <RadioGroup
+                        row
+                        value={paymentMethod}
+                        onChange={(e) => setPaymentMethod(e.target.value)}
+                      >
+                        <FormControlLabel
+                          value="credit"
+                          control={<Radio />}
+                          label="Credit Card"
+                        />
+                        <FormControlLabel
+                          value="debit"
+                          control={<Radio />}
+                          label="Debit Card"
+                        />
+                        <FormControlLabel
+                          value="cash"
+                          control={<Radio />}
+                          label="Cash on Delivery"
+                        />
+                      </RadioGroup>
+                    </FormControl>
+                    <PayButtonBox>
+                      <AnimatedButton
+                        variant="contained"
+                        color="primary"
+                        fullWidth
+                        size="large"
+                        onClick={handlePayNow}
+                        disabled={loading || cart.length === 0}
+                      >
+                        {loading ? "Processing..." : "Pay Now"}
+                      </AnimatedButton>
+                    </PayButtonBox>
+                  </Box>
+                )}
+                {/* Navigation */}
+                <Box display="flex" justifyContent="space-between" mt={3}>
+                  <Button disabled={activeStep === 0} onClick={prevStep}>
+                    Back
                   </Button>
                   <Button
-                    fullWidth
                     variant="contained"
-                    color="primary"
-                    onClick={handlePlaceOrder}
+                    onClick={nextStep}
+                    sx={{ color: "success" }}
                   >
-                    Place Order
+                    {activeStep === steps.length - 1 ? "Finish" : "Next"}
                   </Button>
-                </Stack>
-              </>
-            )}
-          </Paper>
-        </Grid>
-      </Grid>
-    </Container>
+                </Box>
+              </CardPaper>
+            </Grid>
+          </Grid>
+        </Box>
+      </Box>
+    </ThemeProvider>
   );
 }

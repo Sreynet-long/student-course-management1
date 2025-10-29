@@ -17,41 +17,34 @@ import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
-import {GET_REVIEW_BY_PRODUCT } from "../../schema/review";
-import { useQuery, useMutation } from "@apollo/client/react";
+import { GET_REVIEW_BY_PRODUCT } from "../../schema/review";
+import { useQuery } from "@apollo/client/react";
 
 export default function CustomerReviews({ productId }) {
-  const {data, loading, error} = useQuery(GET_REVIEW_BY_PRODUCT,{
-    variables: { productId},
+  const { data, loading, error } = useQuery(GET_REVIEW_BY_PRODUCT, {
+    variables: { productId },
     skip: !productId,
   });
 
-  const reviews = Array.isArray(data?.getReviewByProduct?.data)
-    ? data.getReviewByProduct.data
+  if (loading) return <Typography>Loading reviews...</Typography>;
+  if (error) return <Typography color="error">Error loading reviews: {error.message}</Typography>;
+
+  const reviews = Array.isArray(data?.getReviewsByProduct)
+    ? data.getReviewsByProduct
     : [];
-  
-  if (loading) return <p>Loading reviews...</p>;
-  if (error) return <p>Error loading reviews: {error.message}</p>;
+
+  if (!reviews.length) return <Typography>No reviews yet for this product.</Typography>;
 
   return (
     <Container maxWidth="lg" sx={{ textAlign: "center", py: 6 }}>
       <Stack sx={{ maxWidth: "1200px", mx: "auto" }}>
         <Typography variant="h4" gutterBottom fontWeight="bold">
-           What Our Customers Say 📝
+          What Our Customers Say 📝
         </Typography>
 
-        <Box
-          sx={{
-            position: "relative",
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
+        <Box sx={{ position: "relative", width: "100%", mt: 4 }}>
           <Swiper
             loop
             autoplay={{ delay: 3000, disableOnInteraction: false }}
@@ -61,45 +54,43 @@ export default function CustomerReviews({ productId }) {
               prevEl: ".swiper-button-prev",
             }}
             breakpoints={{
-              0: {
-                direction: "horizontal",
-                slidesPerView: 1,
-              },
-              600: {
-                direction: "horizontal",
-                slidesPerView: 2,
-              },
-              1200: {
-                direction: "horizontal",
-                slidesPerView: 3,
-                spaceBetween: 20,
-              },
+              0: { slidesPerView: 1 },
+              600: { slidesPerView: 2, spaceBetween: 15 },
+              1200: { slidesPerView: 3, spaceBetween: 20 },
             }}
             modules={[Autoplay, Pagination, Navigation]}
-            style={{ height: "100%", width: "100%", padding: "20px 0" }}
           >
             {reviews.map((review) => (
               <SwiperSlide key={review.id || review._id}>
                 <Card
-                  elevation={2}
+                  elevation={3}
                   sx={{
-                  maxWidth: 400,
-                  mx: "auto",
-                  my: 2,
-                  minHeight: 240,
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
+                    mx: "auto",
+                    my: 2,
+                    minHeight: 240,
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    px: 2,
+                    py: 3,
                   }}
                 >
-                  <CardContent sx={{ flexGrow: 1, display: "flex", flexDirection: "column", alignItems: "center" }}>
+                  <CardContent
+                    sx={{
+                      flexGrow: 1,
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      textAlign: "center",
+                    }}
+                  >
                     <Avatar
-                      src={review.avatar}
+                      src={review.avatar || ""}
                       alt={review.name}
                       sx={{ width: 64, height: 64, mb: 2 }}
                     />
-                    
-                    <Typography variant="body1" gutterBottom textAlign="center">
+                    <Typography variant="body1" gutterBottom>
                       "{review.comment}"
                     </Typography>
                     <Rating
@@ -118,69 +109,44 @@ export default function CustomerReviews({ productId }) {
             ))}
           </Swiper>
 
-          {/* Navigation Arrows */}
-          {/* Vertical (mobile/tablet) */}
-          <IconButton
-            className="swiper-button-prev"
-            sx={{
-              display: { xs: "flex", lg: "none" },
-              position: "absolute",
-              top: "-30px",
-              right: "10px",
-              bgcolor: "#219721ff",
-              boxShadow: 2,
-            }}
-          >
-            <KeyboardArrowLeftIcon sx={{ color: "#fff" }}/>
-          </IconButton>
+          {/* Navigation Buttons */}
+          {["xs", "sm", "md", "lg", "xl"].map((size) => (
+            <React.Fragment key={size}>
+              <IconButton
+                className="swiper-button-prev"
+                sx={{
+                  display: { xs: "flex", lg: "flex" },
+                  position: "absolute",
+                  top: "50%",
+                  left: { xs: "-20px", lg: "-40px" },
+                  transform: "translateY(-50%)",
+                  bgcolor: "#219721ff",
+                  "&:hover": { bgcolor: "#197b1fff" },
+                  boxShadow: 2,
+                }}
+              >
+                <KeyboardArrowLeftIcon sx={{ color: "#fff" }} />
+              </IconButton>
 
-          <IconButton
-            className="swiper-button-next"
-            sx={{
-              display: { xs: "flex", lg: "none" },
-              position: "absolute",
-              bottom: "-30px",
-              right: "10px",
-              bgcolor: "#219721ff",
-              boxShadow: 2,
-            }}
-          >
-            <KeyboardArrowRightIcon sx={{ color: "#fff" }}/>
-          </IconButton>
-
-          {/* Horizontal (desktop) */}
-          <IconButton
-            className="swiper-button-prev"
-            sx={{
-              display: { xs: "none", lg: "flex" },
-              position: "absolute",
-              top: "50%",
-              left: "-30px",
-              transform: "translateY(-50%)",
-              bgcolor: "#219721ff",
-              boxShadow: 2,
-            }}
-          >
-            <KeyboardArrowLeftIcon sx={{ color: "#fff" }}/>
-          </IconButton>
-
-          <IconButton
-            className="swiper-button-next"
-            sx={{
-              display: { xs: "none", lg: "flex" },
-              position: "absolute",
-              top: "50%",
-              right: "-30px",
-              transform: "translateY(-50%)",
-              bgcolor: "#219721ff",
-              boxShadow: 2,
-            }}
-          >
-            <KeyboardArrowRightIcon sx={{ color: "#fff" }}/>
-          </IconButton>
+              <IconButton
+                className="swiper-button-next"
+                sx={{
+                  display: { xs: "flex", lg: "flex" },
+                  position: "absolute",
+                  top: "50%",
+                  right: { xs: "-20px", lg: "-40px" },
+                  transform: "translateY(-50%)",
+                  bgcolor: "#219721ff",
+                  "&:hover": { bgcolor: "#197b1fff" },
+                  boxShadow: 2,
+                }}
+              >
+                <KeyboardArrowRightIcon sx={{ color: "#fff" }} />
+              </IconButton>
+            </React.Fragment>
+          ))}
         </Box>
       </Stack>
     </Container>
   );
 }
-

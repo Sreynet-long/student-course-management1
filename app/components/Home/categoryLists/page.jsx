@@ -6,17 +6,63 @@ import CategoryCard from "../../feature/CategoryCard";
 import { useRouter } from "next/navigation";
 
 export const categoriesData = [
-  { id: "1", name: "Vegetable", icon: "/icons/vegetable.png", slug: "vegetable", enum: "Vegetable" },
-  { id: "2", name: "Snacks & Breads", icon: "/icons/croissant.png", slug: "snacks-breads", enum: "Sneack_and_Bread" },
-  { id: "3", name: "Fruits", icon: "/icons/fruit.png", slug: "fruits", enum: "Fruit" },
-  { id: "4", name: "Meats", icon: "/icons/meats.png", slug: "meats", enum: "Meats" },
-  { id: "5", name: "Milk & Dairy", icon: "/icons/milk.png", slug: "milk-dairy", enum: "Milk_and_Diary" },
-  { id: "6", name: "Seafood", icon: "/icons/seafood.png", slug: "seafood", enum: "Seafood" },
-  { id: "7", name: "Drinks", icon: "/icons/drinks.png", slug: "drinks", enum: "Drinks" },
-  { id: "8", name: "Frozen Food", icon: "/icons/frozen-food.png", slug: "frozen-food", enum: "Frozen_Food" },
+  {
+    id: "1",
+    name: "Vegetable",
+    icon: "/icons/vegetable.png",
+    slug: "vegetable",
+    enum: "Vegetable",
+  },
+  {
+    id: "2",
+    name: "Snacks & Breads",
+    icon: "/icons/croissant.png",
+    slug: "snacks-breads",
+    enum: "Sneack_and_Bread",
+  },
+  {
+    id: "3",
+    name: "Fruits",
+    icon: "/icons/fruit.png",
+    slug: "fruits",
+    enum: "Fruit",
+  },
+  {
+    id: "4",
+    name: "Meats",
+    icon: "/icons/meats.png",
+    slug: "meats",
+    enum: "Meats",
+  },
+  {
+    id: "5",
+    name: "Milk & Dairy",
+    icon: "/icons/milk.png",
+    slug: "milk-dairy",
+    enum: "Milk_and_Diary",
+  },
+  {
+    id: "6",
+    name: "Seafood",
+    icon: "/icons/seafood.png",
+    slug: "seafood",
+    enum: "Seafood",
+  },
+  {
+    id: "7",
+    name: "Drinks",
+    icon: "/icons/drinks.png",
+    slug: "drinks",
+    enum: "Drinks",
+  },
+  {
+    id: "8",
+    name: "Frozen Food",
+    icon: "/icons/frozen-food.png",
+    slug: "frozen-food",
+    enum: "Frozen_Food",
+  },
 ];
-
-
 
 export default function CategoryList() {
   const scrollRef = useRef(null);
@@ -55,9 +101,23 @@ export default function CategoryList() {
   };
 
   return (
-    <Box sx={{ bgcolor: "background.paper", py: 6, px: { xs: 2, sm: 4 }, position: "relative" }}>
+    <Box
+      sx={{
+        bgcolor: "background.paper",
+        py: 2,
+        px: { xs: 2, sm: 4 },
+        position: "relative",
+      }}
+    >
       <Box sx={{ maxWidth: "1200px", mx: "auto", position: "relative" }}>
-        <Typography variant="h5" sx={{ fontWeight: "bold", mb: 3, textAlign: { xs: "center", md: "left" } }}>
+        <Typography
+          variant="h5"
+          sx={{
+            fontWeight: "bold",
+            mb: 3,
+            textAlign: { xs: "center", md: "left" },
+          }}
+        >
           Category
         </Typography>
 
@@ -90,7 +150,12 @@ export default function CategoryList() {
             direction="row"
             spacing={2}
             ref={scrollRef}
-            sx={{ overflowX: "auto", scrollSnapType: "x mandatory", "::-webkit-scrollbar": { display: "none" }, py: 1 }}
+            sx={{
+              overflowX: "auto",
+              scrollSnapType: "x mandatory",
+              "::-webkit-scrollbar": { display: "none" },
+              py: 1,
+            }}
           >
             {categoriesData.map((category) => (
               <Box
@@ -103,9 +168,8 @@ export default function CategoryList() {
                   transition: "transform 0.25s ease",
                   "&:hover": { transform: "scale(1.05)", cursor: "pointer" },
                 }}
-                onClick={() => handleCategoryClick(category.slug)}
               >
-                <CategoryCard category={category} href={category.Link}/>
+                <CategoryCard category={category} />
               </Box>
             ))}
           </Stack>

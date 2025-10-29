@@ -41,7 +41,7 @@ const stores = [
 
 function FeatureStore() {
   return (
-    <Box sx={{ py: 6, px: { xs: 2, sm: 4 }, bgcolor: "background.paper" }}>
+    <Box sx={{ py: 3, px: { xs: 2, sm: 4 }, bgcolor: "background.paper" }}>
       <Stack sx={{ maxWidth: "1200px", mx: "auto" }}>
         {/* Header */}
         <Stack
@@ -50,14 +50,11 @@ function FeatureStore() {
           alignItems="center"
           sx={{ mb: 4 }}
         >
-          <Typography
-            variant="h5"
-            sx={{ fontWeight: "bold", fontSize: 22 }}
-          >
+          <Typography variant="h5" sx={{ fontWeight: "bold", fontSize: 22 }}>
             Delivery & Pickup 🚛
           </Typography>
 
-          <Link href="/" style={{ textDecoration: "none" }}>
+          {/* <Link href="/" style={{ textDecoration: "none" }}>
             <Stack direction="row" alignItems="center" spacing={0.5}>
               <Typography
                 variant="body2"
@@ -67,11 +64,11 @@ function FeatureStore() {
               </Typography>
               <ArrowRight size="18" color="#7b1fa2" />
             </Stack>
-          </Link>
+          </Link> */}
         </Stack>
 
         {/* Store Cards */}
-        <Grid container spacing={3} justifyContent="center">
+        <Grid container spacing={3} justifyContent="center" gap={8}>
           {stores.map((store) => (
             <Grid item xs={12} sm={6} md={4} key={store.id}>
               <Card

@@ -7,7 +7,17 @@ export const GET_USER_BY_ID = gql`
             username
             email
         }
-        }
+    }
+`;
+
+export const UPDATE_USER = gql`
+mutation UpdateUser($id: ID!, $username: String, $email: String, $phoneNumber: String) {
+  updateUser(_id: $id, username: $username, email: $email, phoneNumber: $phoneNumber) {
+    isSuccess
+    messageKh
+    messageEn
+  }
+}
 `;
 export const GET_USER_WITH_PAGINATION = gql `
     query GetUserWithPagination($page: Int, $limit: Int, $pagination: Boolean, $keyword: String) {
