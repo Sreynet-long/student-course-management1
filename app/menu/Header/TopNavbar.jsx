@@ -79,6 +79,15 @@ export default function TopNavbar({ onSearch, getSuggestions }) {
   // Auth modals
   const [openSignup, setOpenSignup] = useState(false);
   const [openLogin, setOpenLogin] = useState(false);
+  const handleSwitchToLogin = () => {
+    setOpenSignup(false);
+    setOpenLogin(true);
+  };
+
+  const handleSwitchToSignup = () => {
+    setOpenLogin(false);
+    setOpenSignup(true);
+  };
 
   // Drawer & menus
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -244,7 +253,7 @@ export default function TopNavbar({ onSearch, getSuggestions }) {
             </Link>
 
             {/* Desktop menu */}
-            <Box
+            {/* <Box
               sx={{
                 display: { xs: "none", sm: "flex" },
                 gap: 2,
@@ -269,7 +278,7 @@ export default function TopNavbar({ onSearch, getSuggestions }) {
                   </Button>
                 )
               )}
-            </Box>
+            </Box> */}
 
             {/* Right section */}
             <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
@@ -350,16 +359,25 @@ export default function TopNavbar({ onSearch, getSuggestions }) {
       </Menu>
 
       {/* Drawer */}
-      <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
+      <Drawer
+        anchor="left"
+        open={drawerOpen}
+        onClose={toggleDrawer(false)}
+        onSwitchToLogin={handleSwitchToLogin}
+      >
         {drawerList}
       </Drawer>
 
       {/* Auth Modals */}
-      <SignupModal open={openSignup} onClose={() => setOpenSignup(false)} />
+      <SignupModal
+        open={openSignup}
+        onClose={() => setOpenSignup(false)}
+         onSwitchToLogin={handleSwitchToLogin}
+      />
       <LoginModal
         open={openLogin}
         onClose={() => setOpenLogin(false)}
-        // onSwitchToSignup={handleSwitchToSignup}
+        onSwitchToSignup={handleSwitchToSignup}
       />
 
       {/* Alerts */}

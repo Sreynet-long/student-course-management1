@@ -193,9 +193,8 @@ export default function SignupModal({ open, onClose, onSwitchToLogin }) {
                 Already have an account?{" "}
                 <span
                   style={{ color: "green", cursor: "pointer" }}
-                  onClick={() => {
-                    onClose();
-                    onSwitchToLogin();
+                 onClick={() => {
+                    if (onSwitchToLogin) onSwitchToLogin();
                   }}
                 >
                   Login

@@ -154,8 +154,7 @@ export default function LoginModal({ open, onClose, onSwitchToSignup }) {
                 <span
                   style={{ color: "green", cursor: "pointer" }}
                   onClick={() => {
-                    onClose();
-                    onSwitchToSignup();
+                    if (onSwitchToSignup) onSwitchToSignup();
                   }}
                 >
                   Sign Up
