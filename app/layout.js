@@ -1,5 +1,4 @@
 "use client";
-
 import "bootstrap/dist/css/bootstrap.css";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -30,7 +29,12 @@ const geistMono = Geist_Mono({
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth">
+      <head>
+        <title>Fresh Mart</title>
+        <meta name="description" content="Fresh Mart Ecommerce Website" />
+        <link rel="icon" href="/grocery-cart.png" />
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <CacheProvider value={cache}>
           <ThemeProvider theme={theme}>

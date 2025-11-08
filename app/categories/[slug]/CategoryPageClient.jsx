@@ -13,9 +13,11 @@ import {
   CardMedia,
   Breadcrumbs,
   CardContent,
+  Stack,
 } from "@mui/material";
 import { useCart } from "@/app/context/CartContext";
 import Link from "next/link";
+import WhyShopWithUs from "@/app/components/feature/WhyShopWithUs";
 
 // Map URL slug → GraphQL enum
 const categoryMap = {
@@ -31,7 +33,7 @@ const categoryMap = {
 
 export default function CategoryPageClient({ slug }) {
   const { addToCart } = useCart();
-  
+
   const displayName = categoryMap[slug] || slug;
 
   // Convert slug to enum value
@@ -95,6 +97,7 @@ export default function CategoryPageClient({ slug }) {
             <Grid item xs={6} sm={4} md={3} key={product.id}>
               <Card
                 sx={{
+                  width: 170,
                   height: 300,
                   display: "flex",
                   flexDirection: "column",
@@ -144,6 +147,9 @@ export default function CategoryPageClient({ slug }) {
           ))
         )}
       </Grid>
+      <Stack sx={{ mt: 3}}>
+        <WhyShopWithUs />
+      </Stack>
     </Box>
   );
 }

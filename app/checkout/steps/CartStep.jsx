@@ -8,8 +8,8 @@ export default function CartStep() {
 
   return (
     <Box>
-      <Typography variant="h6" gutterBottom>
-        Cart
+      <Typography variant="h5" fontWeight="bold" gutterBottom sx={{ color: "success"}}>
+        Cart  
       </Typography>
       {cart.length === 0 ? (
         <Typography>Your cart is empty.</Typography>

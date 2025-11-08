@@ -12,6 +12,7 @@ import {
 import { useCart } from "../../context/CartContext";
 import Toast from "../../components/Toaste";
 import { useRouter } from "next/navigation";
+
 function OrderSummary() {
   const { cart, addToCart, removeFromCart, clearCart, updateQuantity } =
     useCart();

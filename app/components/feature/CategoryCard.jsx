@@ -6,7 +6,10 @@ import Link from "next/link";
 
 export default function CategoryCard({ category }) {
   return (
-    <Link href={`/categories/${category.slug}`} style={{ textDecoration: "none" }}>
+    <Link
+      href={`/categories/${category.slug}`}
+      style={{ textDecoration: "none" }}
+    >
       <Box
         sx={{
           bgcolor: "white",
@@ -25,8 +28,21 @@ export default function CategoryCard({ category }) {
           },
         }}
       >
-        <Box sx={{ width: { xs: 40, sm: 50, md: 60 }, height: { xs: 40, sm: 50, md: 60 }, position: "relative", mb: 1 }}>
-          <Image src={category.icon} alt={category.name} fill style={{ objectFit: "contain" }} />
+        <Box
+          sx={{
+            width: { xs: 40, sm: 50, md: 60 },
+            height: { xs: 40, sm: 50, md: 60 },
+            position: "relative",
+            mb: 1,
+          }}
+        >
+          <Image
+            src={category.icon}
+            alt={category.name}
+            fill
+            style={{ objectFit: "contain" }}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+          />
         </Box>
         <Typography
           variant="body2"

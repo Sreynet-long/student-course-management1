@@ -1,15 +1,17 @@
 import React from "react";
 import style from "../styles/hero.module.css";
 
-const Hero = () => {
+export default function Hero({onLearnMore}){
   return (
     <div className={style["hero-banner"]}>
       <div className={style["hero-overlay"]}>
         <div className={style["hero-content"]}>
           <div className={style["promo"]}>
-            <h1>Get 10% Cashback on Shopping $150</h1>
+            <h1>Welcome to our Freshmart 🥰</h1>
             <p>Shopping made easy with fresh groceries delivered to your door.</p>
-            <button className={style["btn-banner"]}>Learn More</button>
+            <button className={style["btn-banner"]} variant="contained" onClick={onLearnMore} >
+              Learn More
+            </button>
           </div>
           <div className={style["hero-image-container"]}>
             <img
@@ -25,4 +27,4 @@ const Hero = () => {
   );
 };
 
-export default Hero;
+

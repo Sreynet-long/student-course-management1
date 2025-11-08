@@ -12,7 +12,6 @@ import {
 import Image from "next/image";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 
-
 export default function Footer() {
   return (
     <Box component="footer" sx={{ py: 6 }} className="app-footer">
@@ -21,16 +20,24 @@ export default function Footer() {
           {/* Company */}
           <Grid item xs={12} sm={6} md={4}>
             <Stack spacing={2}>
-              <Typography variant="h6">
-                <ShoppingBasketIcon sx={{ mr: 1 }}/>
-                FreshMart
-              </Typography>
-              <Typography variant="body2" color="text.white">
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <img
+                  src="/logos/grocery-cart.png"
+                  alt="FreshMart Logo"
+                  style={{
+                    width: 48,
+                    height: 48,
+                    objectFit: "contain",
+                  }}
+                />
+                <Typography variant="h6">FreshMart</Typography>
+              </Box>
+              <Typography variant="body2" color="text.sucess">
                 Your one-stop shop for fresh groceries delivered right to your
                 door.
               </Typography>
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                <Typography variant="body2" color="text.white">
+                <Typography variant="body2" color="text.success">
                   Payment Methods:
                 </Typography>
                 <img
@@ -52,41 +59,95 @@ export default function Footer() {
             <Typography variant="h6" gutterBottom>
               Quick Links
             </Typography>
-            <Link href="/about" display="block" sx={{ textDecoration: "none", color: "white"}} gutterBottom>
+            <Link
+              href="/about"
+              display="block"
+              sx={{ textDecoration: "none", color: "rgb(0, 121, 0)" }}
+              gutterBottom
+            >
               About Us
             </Link>
-            <Link href="/contact" display="block" sx={{ textDecoration: "none",color: "white"}} gutterBottom>
+            <Link
+              href="/contact"
+              display="block"
+              sx={{ textDecoration: "none", color: "rgb(0, 121, 0)" }}
+              gutterBottom
+            >
               Contact
             </Link>
-            <Link href="/faq" display="block" sx={{ textDecoration: "none",color: "white"}} gutterBottom>
+            <Link
+              href="/faq"
+              display="block"
+              sx={{ textDecoration: "none", color: "rgb(0, 121, 0)" }}
+              gutterBottom
+            >
               FAQ
             </Link>
-            <Link href="/career" display="block" sx={{ textDecoration: "none",color: "white"}} gutterBottom>
+            <Link
+              href="/career"
+              display="block"
+              sx={{ textDecoration: "none", color: "rgb(0, 121, 0)" }}
+              gutterBottom
+            >
               Careers
             </Link>
-            <Link href="/term&condition" display="block" sx={{ textDecoration: "none",color: "white"}} gutterBottom>
+            <Link
+              href="/term&condition"
+              display="block"
+              sx={{ textDecoration: "none", color: "rgb(0, 121, 0)" }}
+              gutterBottom
+            >
               Terms & Conditions
             </Link>
-            <Link href="/privacy&policy" display="block" sx={{ textDecoration: "none",color: "white"}} gutterBottom>
+            <Link
+              href="/privacy&policy"
+              display="block"
+              sx={{ textDecoration: "none", color: "rgb(0, 121, 0)" }}
+              gutterBottom
+            >
               Privacy Policy
             </Link>
           </Grid>
 
           {/* Categories */}
           <Grid item xs={6} sm={3} md={2}>
-            <Typography variant="h6" sx={{ textDecoration: "none",color: "white"}} gutterBottom>
+            <Typography
+              variant="h6"
+              sx={{ textDecoration: "none", color: "rgb(0, 121, 0)" }}
+              gutterBottom
+            >
               Categories
             </Typography>
-            <Link href="#" display="block" sx={{ textDecoration: "none",color: "white"}} gutterBottom>
+            <Link
+              href="#"
+              display="block"
+              sx={{ textDecoration: "none", color: "rgb(0, 121, 0)" }}
+              gutterBottom
+            >
               Vegetables
             </Link>
-            <Link href="#" display="block" sx={{ textDecoration: "none", color: "white"}} gutterBottom>
+            <Link
+              href="#"
+              display="block"
+              sx={{ textDecoration: "none", color: "rgb(0, 121, 0)" }}
+              gutterBottom
+            >
               Fruits
             </Link>
-            <Link href="#" display="block" sx={{ textDecoration: "none",color: "white"}} gutterBottom>
+            <Link
+              href="#"
+              display="block"
+              sx={{ textDecoration: "none", color: "rgb(0, 121, 0)" }}
+              gutterBottom
+            >
               Dairy
             </Link>
-            <Link href="#" display="block" sx={{ textDecoration: "none",color: "white"}} gutterBottom>
+            <Link
+              href="#"
+              display="block"
+              sx={{ textDecoration: "none", color: "rgb(0, 121, 0)" }}
+              gutterBottom
+            >
               Meat & Fish
             </Link>
           </Grid>

@@ -1,16 +1,14 @@
 "use client";
 import { createContext, useState, useEffect, useContext } from "react";
 
-
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-
   const [user, setUser] = useState(null);
 
   const [alert, setAlertState] = useState({
     open: false,
-    status: "",
+    status: "Success",
     message: { messageKh: "", messageEn: "" },
   });
 
@@ -26,6 +24,10 @@ export const AuthProvider = ({ children }) => {
   const login = (userData) => {
     try {
       localStorage.setItem("user", JSON.stringify(userData));
+      setAlert(true, "success", {
+        messageEn: "Login successfully!",
+        messageKh: "ចូលប្រព័ន្ធបានជោគជ័យ!",
+      });
       setUser(userData);
     } catch (err) {
       console.error("Failed to save user to localStorage:", err);
@@ -35,18 +37,31 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     try {
       localStorage.removeItem("user");
+      setAlert(true, "success", {
+        messageEn: "Logout successfull!",
+        messageKh: "ចេញប្រព័ន្ធបានជោគជ័យ!",
+      });
     } catch (err) {
       console.error("Failed to remove user from localStorage:", err);
     }
     setUser(null);
   };
 
-  const setAlert = (open = true, status = "", message = { messageKh: "", messageEn: "" }, duration = 3000) => {
+  const setAlert = (
+    open = true,
+    status = "",
+    message = { messageKh: "", messageEn: "" },
+    duration = 3000
+  ) => {
     setAlertState({ open, status, message });
 
     if (open) {
       setTimeout(() => {
-        setAlertState({ open: false, status: "", message: { messageKh: "", messageEn: "" } });
+        setAlertState({
+          open: false,
+          status: "",
+          message: { messageKh: "", messageEn: "" },
+        });
       }, duration);
     }
   };

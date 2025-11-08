@@ -26,31 +26,32 @@ export default function WhyShopWithUs() {
 
   return (
     <Container maxWidth="md" sx={{ textAlign: "center", py: 6 }}>
-      <Typography variant="h4" gutterBottom fontWeight="bold" mb={5}>
-        Why Shop With Us 💯
-      </Typography>
-      <Stack>
-        <Grid
-          container
-          spacing={2}
+      <Stack sx={{ maxWidth: "1200px", mx: "auto" }}>
+        <Typography variant="h4" gutterBottom fontWeight="bold" mb={5}>
+          Why Shop With Us 💯
+        </Typography>
+        <Stack
+          direction="row"
           justifyContent="space-between"
-          display="flex"
-          gap={8}
+          alignItems="center"
+          sx={{ mb: 4 }}
         >
-          {reasons.map((reason, idx) => (
-            <Grid item xs={12} sm={4} key={idx}>
-              <Box>
-                {reason.icon}
-                <Typography variant="h6" sx={{ mt: 2 }}>
-                  {reason.title}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {reason.desc}
-                </Typography>
-              </Box>
-            </Grid>
-          ))}
-        </Grid>
+          <Grid container spacing={3} justifyContent="center" gap={8}>
+            {reasons.map((reason, idx) => (
+              <Grid item xs={12} sm={4} key={idx}>
+                <Box>
+                  {reason.icon}
+                  <Typography variant="h6" sx={{ mt: 2 }}>
+                    {reason.title}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {reason.desc}
+                  </Typography>
+                </Box>
+              </Grid>
+            ))}
+          </Grid>
+        </Stack>
       </Stack>
     </Container>
   );

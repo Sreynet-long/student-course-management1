@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { forwardRef } from "react";
 import {
   Box,
   Typography,
@@ -15,7 +15,8 @@ import { useCart } from "../../context/CartContext";
 import { useQuery } from "@apollo/client/react";
 import { GET_PRODUCT_WITH_PAGINATION } from "@/app/schema/Product";
 
-export default function AddToCart({ searchKeyword }) {
+// Wrap component with forwardRef
+const AddToCart = forwardRef(({ searchKeyword }, ref) => {
   const { addToCart } = useCart();
 
   const { loading, error, data } = useQuery(GET_PRODUCT_WITH_PAGINATION, {
@@ -35,6 +36,7 @@ export default function AddToCart({ searchKeyword }) {
 
   return (
     <Box
+      ref={ref} // ✅ attach ref here
       sx={{ py: 2, px: { xs: 2, md: 4 }, bgcolor: "background.paper", mt: 0 }}
     >
       <Stack sx={{ maxWidth: "1200px", mx: "auto" }}>
@@ -107,11 +109,7 @@ export default function AddToCart({ searchKeyword }) {
                       color="success"
                       variant="contained"
                       size="small"
-                      sx={{
-                        mt: 1,
-                        borderRadius: "20px",
-                        textTransform: "none",
-                      }}
+                      sx={{ mt: 1, borderRadius: "20px", textTransform: "none" }}
                       onClick={() => addToCart(product)}
                     >
                       🛒 Add to Cart
@@ -125,4 +123,6 @@ export default function AddToCart({ searchKeyword }) {
       </Stack>
     </Box>
   );
-}
+});
+
+export default AddToCart;

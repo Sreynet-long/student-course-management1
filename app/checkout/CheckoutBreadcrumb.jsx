@@ -1,45 +1,57 @@
 "use client";
-import React from "react";
-import { Breadcrumbs, Typography, Link as MuiLink } from "@mui/material";
-import Link from "next/link";
+import { Box, Stack, Typography } from "@mui/material";
 
 export default function CheckoutBreadcrumb({ activeStep }) {
-  const steps = ["Cart", "Shipping", "Checkout"];
+  const steps = ["Cart", "Shipping", "Payment"];
 
   return (
-    <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 3 }}>
-      <MuiLink
-        component={Link}
-        href="/"
-        underline="hover"
-        color="inherit"
-        sx={{ fontWeight: 500 }}
-      >
-        Home
-      </MuiLink>
+    <Stack direction="row" alignItems="center" spacing={3} sx={{ mb: 4 }}>
+      {steps.map((label, index) => {
+        const isActive = index === activeStep;
+        const isCompleted = index < activeStep;
 
-      {steps.map((step, index) => {
-        if (index < activeStep) {
-          return (
-            <MuiLink
-              key={step}
-              component={Link}
-              href={`#`} // optional: can add real links to steps if needed
-              underline="hover"
-              color="inherit"
+        return (
+          <Stack key={label} direction="row" alignItems="center" spacing={1.5}>
+            {/* circle number */}
+            <Box
+              sx={{
+                width: 32,
+                height: 32,
+                borderRadius: "50%",
+                border: "2px solid green",
+                bgcolor: isActive || isCompleted ? "green" : "transparent",
+                color: isActive || isCompleted ? "#fff" : "green",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontWeight: "bold",
+                fontSize: 14,
+              }}
             >
-              {step}
-            </MuiLink>
-          );
-        } else if (index === activeStep) {
-          return (
-            <Typography key={step} color="text.primary">
-              {step}
+              {index + 1}
+            </Box>
+
+            {/* label */}
+            <Typography
+              fontWeight={isActive ? "bold" : 500}
+              color={isActive || isCompleted ? "green" : "text.secondary"}
+            >
+              {label}
             </Typography>
-          );
-        }
-        return null;
+
+            {/* line connector (except last) */}
+            {index < steps.length - 1 && (
+              <Box
+                sx={{
+                  width: 36,
+                  height: 2,
+                  bgcolor: index < activeStep ? "green" : "#ccc",
+                }}
+              />
+            )}
+          </Stack>
+        );
       })}
-    </Breadcrumbs>
+    </Stack>
   );
 }

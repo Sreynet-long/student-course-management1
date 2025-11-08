@@ -11,8 +11,8 @@ export const GET_USER_BY_ID = gql`
 `;
 
 export const UPDATE_USER = gql`
-mutation UpdateUser($id: ID!, $username: String, $email: String, $phoneNumber: String) {
-  updateUser(_id: $id, username: $username, email: $email, phoneNumber: $phoneNumber) {
+mutation UpdateUser($id: ID!, $input: UserUpdateInput) {
+  updateUser(_id: $id, input: $input) {
     isSuccess
     messageKh
     messageEn

@@ -16,6 +16,7 @@ export default function SpecialOffer() {
         </Typography>
         <Stack className="banner-image-offer">
           {/* <img src="/" alt="offer" /> */}
+          <Typography>Coming Soon...</Typography>
           <Button variant="contained" color="success" sx={{ width: 200, alignSelf: "center", borderRadius: "20px"}}>
           🔖 Shop Offers
           </Button>

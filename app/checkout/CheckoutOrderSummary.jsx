@@ -14,12 +14,13 @@ import {
 } from "@mui/material";
 import { useCart } from "../context/CartContext";
 import { useRouter } from "next/navigation";
+import OrderSummary from "../components/page/OrderSummary";
 
 // Steps
 const steps = ["Cart", "Shipping", "Checkout"];
 
 // Sticky order summary
-function OrderSummary({ cart }) {
+function CheckoutOrderSummary({ cart }) {
   const router = useRouter();
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
   const subtotal = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);

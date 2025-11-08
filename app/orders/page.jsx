@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Box,
   Typography,
@@ -16,43 +16,43 @@ import {
   Stack,
   Divider,
   Chip,
+  Tooltip,
 } from "@mui/material";
 import { useAuth } from "../context/AuthContext";
 import { useQuery } from "@apollo/client/react";
-import { GET_ORDER_WITH_PAGINATION } from "../schema/Order";
+import { GET_ORDER_BY_USER } from "../schema/Order";
 import jsPDF from "jspdf";
+import { useSearchParams } from "next/navigation";
 
-// Helper to get color based on status
+// Helper: status color mapping
 const statusColor = (status) => {
   switch (status?.toLowerCase()) {
-    case "pending":
-      return "warning";
-    case "processing":
-      return "info";
-    case "completed":
-      return "success";
-    case "cancelled":
-      return "error";
-    default:
-      return "default";
+    case "pending": return "warning";
+    case "processing": return "info";
+    case "completed": return "success";
+    case "cancelled": return "error";
+    default: return "default";
   }
 };
 
 export default function OrdersPage() {
   const { user, setAlert } = useAuth();
+  const [mounted, setMounted] = useState(false); // Prevent SSR mismatch
   const [open, setOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
-  const [page, setPage] = useState(1);
-  const limit = 5;
+  const searchParams = useSearchParams();
+  const highlightId = searchParams?.get("highlight");
+  const orderRefs = useRef({});
 
-  const { data, loading, error, refetch } = useQuery(
-    GET_ORDER_WITH_PAGINATION,
-    {
-      variables: { page, limit, pagination: true, keyword: user?.id || "" },
-      skip: !user,
-      fetchPolicy: "network-only",
-    }
-  );
+  // Fetch orders for the logged-in user
+  const { data, loading, error, refetch } = useQuery(GET_ORDER_BY_USER, {
+    variables: { userId: user?.id },
+    skip: !user,
+    fetchPolicy: "network-only",
+  });
+
+  // Prevent hydration mismatch
+  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     if (!user) {
@@ -62,6 +62,13 @@ export default function OrdersPage() {
       });
     }
   }, [user]);
+
+  // Scroll to highlighted order
+  useEffect(() => {
+    if (highlightId && orderRefs.current[highlightId]) {
+      orderRefs.current[highlightId].scrollIntoView({ behavior: "smooth" });
+    }
+  }, [highlightId, data]);
 
   const handleOpen = (order) => {
     setSelectedOrder(order);
@@ -73,43 +80,6 @@ export default function OrdersPage() {
     setSelectedOrder(null);
   };
 
-  if (!user) return null;
-
-  if (loading)
-    return (
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 10 }}>
-        <CircularProgress />
-      </Box>
-    );
-
-  if (error)
-    return (
-      <Box sx={{ p: 4 }}>
-        <Typography color="error">Failed to load orders.</Typography>
-      </Box>
-    );
-
-  const orders = data?.getOrdersWithPagination?.data || [];
-  const paginator = data?.getOrdersWithPagination?.paginator || {};
-
-  const handlePrevPage = () => {
-    if (paginator.hasPrevPage) {
-      setPage((prev) => prev - 1);
-      refetch({ page: page - 1, limit });
-    }
-  };
-
-  const handleNextPage = () => {
-    if (paginator.hasNextPage) {
-      setPage((prev) => prev + 1);
-      refetch({ page: page + 1, limit });
-    }
-  };
-
-  const handlePageClick = (pageNum) => {
-    setPage(pageNum);
-    refetch({ page: pageNum, limit });
-  };
   const formatOrderId = (id) => `#FM-${id.slice(-6).toUpperCase()}`;
 
   const toDataURL = async (url) =>
@@ -130,7 +100,6 @@ export default function OrdersPage() {
 
   const handleDownloadPDF = async () => {
     if (!selectedOrder) return;
-
     const doc = new jsPDF({ unit: "pt", format: "a4" });
     const margin = 40;
     let y = 50;
@@ -165,14 +134,13 @@ export default function OrdersPage() {
     y += 15;
     doc.setFont(undefined, "normal");
     const ship = selectedOrder.shippingInfo;
-    const shippingLines = [
+    [
       `Name: ${ship?.name || ""}`,
       `Phone: ${ship?.phone || ""}`,
       `Email: ${ship?.email || ""}`,
       `Address: ${ship?.address || ""}`,
       `Country: ${ship?.country || ""}`,
-    ];
-    shippingLines.forEach((line) => {
+    ].forEach((line) => {
       doc.text(line, margin, y);
       y += 15;
     });
@@ -190,18 +158,17 @@ export default function OrdersPage() {
     doc.setFont(undefined, "normal");
     for (let i = 0; i < selectedOrder.items.length; i++) {
       const item = selectedOrder.items[i];
-
       const imgData = await toDataURL(item.product.imageUrl);
       if (imgData) {
         doc.addImage(imgData, "PNG", margin + 5, y - 5, 30, 30);
       }
-
-      doc.text(`${i + 1}`, margin + 40, y + 15);
+      doc.setFont(undefined, "bold");
       doc.text(item.product.productName || "", margin + 50, y + 15);
+      doc.setFont(undefined, "normal");
+      doc.text(`${i + 1}`, margin + 40, y + 15);
       doc.text(`${item.quantity}`, margin + 360, y + 15);
       doc.text(`${Number(item.price).toFixed(2)}`, margin + 420, y + 15);
       y += 40;
-
       if (y > 750) {
         doc.addPage();
         y = 50;
@@ -213,13 +180,31 @@ export default function OrdersPage() {
     doc.setTextColor(255, 255, 255);
     doc.setFont(undefined, "bold");
     doc.text(
-      `Total: $${Number(selectedOrder.totalPrice).toFixed(2)}`,
+      `Total: $${Number(selectedOrder.totalPrice).toLocaleString()}`,
       margin + 310,
       y + 17
     );
 
     doc.save(`Order_${selectedOrder.id}.pdf`);
   };
+
+  if (!mounted || !user) return null; // Wait until client
+
+  if (loading)
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 10 }}>
+        <CircularProgress />
+      </Box>
+    );
+
+  if (error)
+    return (
+      <Box sx={{ p: 4 }}>
+        <Typography color="error">Failed to load orders.</Typography>
+      </Box>
+    );
+
+  const orders = data?.getOrders || [];
 
   return (
     <Box sx={{ p: 4 }}>
@@ -231,37 +216,38 @@ export default function OrdersPage() {
 
       <Grid container spacing={2}>
         {orders.map((order) => (
-          <Grid item xs={12} md={6} key={order.id}>
+          <Grid
+            item
+            xs={12}
+            md={6}
+            key={order.id}
+            ref={(el) => (orderRefs.current[order.id] = el)}
+          >
             <Card
               sx={{
                 boxShadow: 3,
                 transition: "0.3s",
-                "&:hover": { transform: "scale(1.02)" }, 
+                "&:hover": { transform: "scale(1.03)" },
+                border:
+                  highlightId === order.id ? "2px solid green" : "1px solid #ddd",
+                bgcolor: highlightId === order.id ? "rgba(0,255,0,0.05)" : "white",
               }}
             >
               <CardContent>
                 <Typography variant="h6" fontWeight="bold">
                   Order ID: {formatOrderId(order.id)}
                 </Typography>
-                <Stack
-                  direction="row"
-                  spacing={1}
-                  alignItems="center"
-                  sx={{ mt: 0.5, mb: 1 }}
-                >
+                <Stack direction="row" spacing={1} alignItems="center" sx={{ mt: 0.5, mb: 1 }}>
                   <Typography>
-                    Total: ${Number(order.totalPrice).toFixed(2)}
+                    Total: ${Number(order.totalPrice).toLocaleString()}
                   </Typography>
-                  <Chip
-                    label={order.status}
-                    color={statusColor(order.status)}
-                    size="small"
-                    sx={{ ml: 2 }}
-                  />
+                  <Tooltip title={`Order is ${order.status}`}>
+                    <Chip label={order.status} color={statusColor(order.status)} size="small" sx={{ ml: 2 }} />
+                  </Tooltip>
                 </Stack>
                 <Button
                   variant="outlined"
-                  sx={{ mt: 1 }}
+                  sx={{ mt: 1, cursor: "pointer" }}
                   onClick={() => handleOpen(order)}
                 >
                   View Detail
@@ -272,120 +258,44 @@ export default function OrdersPage() {
         ))}
       </Grid>
 
-      {/* Pagination */}
-      {paginator.totalPages > 1 && (
-        <Stack
-          direction="row"
-          spacing={1}
-          justifyContent="center"
-          sx={{ mt: 3 }}
-        >
-          <Button
-            variant="contained"
-            disabled={!paginator.hasPrevPage}
-            onClick={handlePrevPage}
-          >
-            Prev
-          </Button>
-
-          {[...Array(paginator.totalPages)].map((_, idx) => (
-            <Button
-              key={idx}
-              variant={page === idx + 1 ? "contained" : "outlined"}
-              onClick={() => handlePageClick(idx + 1)}
-            >
-              {idx + 1}
-            </Button>
-          ))}
-
-          <Button
-            variant="contained"
-            disabled={!paginator.hasNextPage}
-            onClick={handleNextPage}
-          >
-            Next
-          </Button>
-        </Stack>
-      )}
-
       {/* Detail Modal */}
       <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
         <DialogTitle>Order Detail</DialogTitle>
         <DialogContent>
           {selectedOrder && (
             <>
-              <Stack
-                direction="row"
-                spacing={1}
-                alignItems="center"
-                sx={{ mb: 1 }}
-              >
+              <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1 }}>
                 <Typography variant="subtitle1" fontWeight="bold">
                   Status:
                 </Typography>
-                <Chip
-                  label={selectedOrder.status}
-                  color={statusColor(selectedOrder.status)}
-                />
+                <Chip label={selectedOrder.status} color={statusColor(selectedOrder.status)} />
               </Stack>
 
-              <Typography variant="subtitle1" gutterBottom fontWeight="bold">
-                Shipping Info:
-              </Typography>
+              <Typography variant="subtitle1" gutterBottom fontWeight="bold">Shipping Info:</Typography>
               <Typography>Name: {selectedOrder?.shippingInfo?.name}</Typography>
-              <Typography>
-                Phone: {selectedOrder?.shippingInfo?.phone}
-              </Typography>
-              <Typography>
-                Email: {selectedOrder?.shippingInfo?.email}
-              </Typography>
-              <Typography>
-                Address: {selectedOrder?.shippingInfo?.address}
-              </Typography>
-              <Typography>
-                Country: {selectedOrder?.shippingInfo?.country}
-              </Typography>
+              <Typography>Phone: {selectedOrder?.shippingInfo?.phone}</Typography>
+              <Typography>Email: {selectedOrder?.shippingInfo?.email}</Typography>
+              <Typography>Address: {selectedOrder?.shippingInfo?.address}</Typography>
+              <Typography>Country: {selectedOrder?.shippingInfo?.country}</Typography>
 
-              <Typography
-                variant="subtitle1"
-                gutterBottom
-                sx={{ mt: 2 }}
-                fontWeight="bold"
-              >
-                Products:
-              </Typography>
+              <Typography variant="subtitle1" gutterBottom sx={{ mt: 2 }} fontWeight="bold">Products:</Typography>
               {selectedOrder.items.map((item) => (
                 <Card key={item.product?.id} sx={{ display: "flex", mb: 1 }}>
-                  <CardMedia
-                    component="img"
-                    sx={{ width: 80 }}
-                    image={item.product?.imageUrl}
-                    alt={item.product?.productName}
-                  />
+                  <CardMedia component="img" sx={{ width: 80 }} image={item.product?.imageUrl} alt={item.product?.productName} />
                   <CardContent>
-                    <Typography>{item.product?.productName}</Typography>
+                    <Typography fontWeight="bold">{item.product?.productName}</Typography>
                     <Typography>Qty: {item.quantity}</Typography>
-                    <Typography>
-                      Price: ${Number(item.price).toFixed(2)}
-                    </Typography>
+                    <Typography>Price: ${Number(item.price).toFixed(2)}</Typography>
                   </CardContent>
                 </Card>
               ))}
 
-              <Divider sx={{ my: 3, fontSize: "bold" }} />
-              <Stack
-                direction="row"
-                justifyContent="space-between"
-                alignItems="center"
-              >
+              <Divider sx={{ my: 3 }} />
+              <Stack direction="row" justifyContent="space-between" alignItems="center">
                 <Typography variant="h6" fontWeight="bold">
-                  TOTAL: ${Number(selectedOrder.totalPrice || 0).toFixed(2)}
+                  TOTAL: ${Number(selectedOrder.totalPrice || 0).toLocaleString()}
                 </Typography>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleDownloadPDF}
-                >
+                <Button variant="contained" color="primary" onClick={handleDownloadPDF}>
                   Download Invoice PDF
                 </Button>
               </Stack>

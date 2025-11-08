@@ -7,6 +7,7 @@ import { useMutation } from "@apollo/client/react";
 import { CREATE_ORDER } from "../schema/Order";
 import { useRouter } from "next/navigation";
 import CheckoutBreadcrumb from "./CheckoutBreadcrumb";
+import OrderSuccess from "./OrderSuccess";
 
 const CartStep = lazy(() => import("./steps/CartStep"));
 const ShippingStep = lazy(() => import("./steps/ShippingStep"));
@@ -30,6 +31,7 @@ export default function CheckoutPage() {
   });
   const [paymentMethod, setPaymentMethod] = useState("cash");
   const [loading, setLoading] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const nextStep = () =>
     setActiveStep((prev) => Math.min(prev + 1, steps.length - 1));
@@ -63,11 +65,14 @@ export default function CheckoutPage() {
           messageKh: "",
         });
         clearCart();
-        router.push("/orders");
+        setShowSuccess(true);
       }
     } catch (err) {
       console.error(err);
-      setAlert(true, "error", { messageEn: "Checkout failed.", messageKh: "" });
+      setAlert(true, "error", {
+        messageEn: "Checkout failed.",
+        messageKh: "",
+      });
     } finally {
       setLoading(false);
     }
@@ -103,20 +108,24 @@ export default function CheckoutPage() {
       {/* Breadcrumb */}
       <CheckoutBreadcrumb activeStep={activeStep} />
 
-      {/* Step content */}
-      <Suspense fallback={<CircularProgress />}>{renderStep()}</Suspense>
+      {/* Step content or Success page */}
+      <Suspense fallback={<CircularProgress />}>
+        {showSuccess ? <OrderSuccess /> : renderStep()}
+      </Suspense>
 
-      {/* Navigation buttons */}
-      <Stack direction="row" spacing={2} mt={3}>
-        <Button disabled={activeStep === 0} onClick={prevStep}>
-          Back
-        </Button>
-        {activeStep < steps.length - 1 && (
+      {/* Navigation buttons (hide if success) */}
+      {!showSuccess && (
+        <Stack direction="row" spacing={2} mt={3}>
+          <Button disabled={activeStep === 0} onClick={prevStep}>
+            Back
+          </Button>
+          {activeStep < steps.length - 1 && (
           <Button variant="contained" onClick={nextStep}>
             Next
           </Button>
-        )}
-      </Stack>
+          )}
+        </Stack>
+      )}
     </Box>
   );
 }

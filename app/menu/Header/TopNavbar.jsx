@@ -23,7 +23,6 @@ import {
   InputAdornment,
   Snackbar,
   Alert,
-  InputBase,
 } from "@mui/material";
 import {
   Menu as MenuIcon,
@@ -44,24 +43,28 @@ import { useAuth } from "../../context/AuthContext";
 import debounce from "lodash.debounce";
 import SignupModal from "@/app/components/auth/SignupModal";
 import LoginModal from "@/app/components/auth/LoginModal";
+import { useRouter } from "next/navigation";
 
-export default function TopNavbar({ onSearch, getSuggestions }) {
+export default function TopNavbar({ onSearch }) {
+  const router = useRouter();
   const pathname = usePathname();
   const { cart } = useCart();
   const { user, logout, alert, closeAlert } = useAuth();
-
+  const [profileAnchorEl, setProfileAnchorEl] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchText, setSearchText] = useState("");
   const [options, setOptions] = useState([]);
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
 
-  // Debounce search (wait 500ms before calling backend)
+  // Debounced search
   const debouncedSearch = useMemo(
     () =>
       debounce((query) => {
         if (onSearch && typeof onSearch === "function") {
-          onSearch(query);
+          onSearch(query, selectedCategory);
         }
       }, 500),
-    [onSearch]
+    [onSearch, selectedCategory]
   );
 
   const handleChange = (e) => {
@@ -83,7 +86,6 @@ export default function TopNavbar({ onSearch, getSuggestions }) {
     setOpenSignup(false);
     setOpenLogin(true);
   };
-
   const handleSwitchToSignup = () => {
     setOpenLogin(false);
     setOpenSignup(true);
@@ -92,23 +94,22 @@ export default function TopNavbar({ onSearch, getSuggestions }) {
   // Drawer & menus
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [drawerCollapse, setDrawerCollapse] = useState({});
-  const [profileAnchorEl, setProfileAnchorEl] = useState(null);
 
   const navItems = [
-    {
-      label: "Products",
-      path: "/products",
-      icon: <StoreIcon />,
-      subItems: [
-        { label: "Vegetables", path: "/products/vegetables" },
-        { label: "Fruits", path: "/products/fruits" },
-        { label: "Frozen Foods", path: "/products/frozen-foods" },
-        { label: "Drinks", path: "/products/drinks" },
-        { label: "Snacks & Breads", path: "/products/snacks-bread" },
-        { label: "Meats", path: "/products/meats" },
-        { label: "Seafoods", path: "/products/seafoods" },
-      ],
-    },
+    // {
+    //   label: "Products",
+    //   path: "/products",
+    //   icon: <StoreIcon />,
+    //   subItems: [
+    //     { label: "Vegetables", path: "/products/vegetables" },
+    //     { label: "Fruits", path: "/products/fruits" },
+    //     { label: "Frozen Foods", path: "/products/frozen-foods" },
+    //     { label: "Drinks", path: "/products/drinks" },
+    //     { label: "Snacks & Breads", path: "/products/snacks-bread" },
+    //     { label: "Meats", path: "/products/meats" },
+    //     { label: "Seafoods", path: "/products/seafoods" },
+    //   ],
+    // },
     { label: "About", path: "/about", icon: <InfoIcon /> },
     { label: "Contact", path: "/contact", icon: <ContactPageIcon /> },
   ];
@@ -118,39 +119,73 @@ export default function TopNavbar({ onSearch, getSuggestions }) {
     setDrawerCollapse((prev) => ({ ...prev, [label]: !prev[label] }));
   const handleProfileOpen = (event) => setProfileAnchorEl(event.currentTarget);
   const handleProfileClose = () => setProfileAnchorEl(null);
+  const handleLogoutClick = () => {
+    handleProfileClose();
+    logout();
+    router.push("/");
+  };
 
+  // Drawer content
   // Drawer content
   const drawerList = (
     <Box sx={{ width: 250 }} role="presentation">
-      <Typography
-        variant="h6"
-        sx={{ m: 2, display: "flex", alignItems: "center" }}
-      >
-        <ShoppingBasketIcon sx={{ mr: 1 }} /> FreshMart
-      </Typography>
-
-      {/* Mobile search */}
-      <InputBase
-        value={searchText}
-        onChange={handleChange}
-        placeholder="Search products..."
-        sx={{
-          bgcolor: "white",
-          borderRadius: 2,
-          width: { xs: "90%", sm: "60%", md: "40%" },
-          px: 2,
-          py: 0.5,
-          boxShadow: 1,
-          color: "black",
+      <Link
+        href="/"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          textDecoration: "none",
         }}
-        startAdornment={
-          <InputAdornment position="start">
-            <IconButton>
-              <SearchIcon sx={{ color: "green" }} />
-            </IconButton>
-          </InputAdornment>
-        }
-      />
+      >
+        <img
+          spacing={3}
+          src="/logos/grocery-cart.png"
+          alt="FreshMart Logo"
+          style={{
+            width: 48,
+            height: 48,
+            objectFit: "contain",
+            marginRight: 8,
+          }}
+        />
+        <Typography
+          variant="h6"
+          sx={{ m: 2, display: "flex", alignItems: "center" }}
+        >
+          FreshMart
+        </Typography>
+      </Link>
+      {/* Mobile search inside drawer */}
+      <Box sx={{ px: 2, pb: 2 }}>
+        <TextField
+          select
+          size="small"
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+          sx={{ width: "100%", mb: 1 }}
+        >
+          {["All", "Fruits", "Vegetables", "Drinks", "Snacks"].map((cat) => (
+            <MenuItem key={cat} value={cat}>
+              {cat}
+            </MenuItem>
+          ))}
+        </TextField>
+        <TextField
+          fullWidth
+          size="small"
+          placeholder="Search products..."
+          value={searchText}
+          onChange={handleChange}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <SearchIcon sx={{ color: "green", cursor: "pointer" }} />
+              </InputAdornment>
+            ),
+          }}
+        />
+      </Box>
+
       <Divider />
 
       <List>
@@ -169,35 +204,31 @@ export default function TopNavbar({ onSearch, getSuggestions }) {
               >
                 <List component="div" disablePadding>
                   {item.subItems.map((sub) => (
-                    <Link
+                    <ListItemButton
                       key={sub.path}
+                      component={Link}
                       href={sub.path}
-                      style={{ textDecoration: "none", color: "inherit" }}
+                      sx={{ pl: 4 }}
+                      selected={pathname === sub.path}
                       onClick={toggleDrawer(false)}
                     >
-                      <ListItemButton
-                        sx={{ pl: 4 }}
-                        selected={pathname === sub.path}
-                      >
-                        <ListItemText primary={sub.label} />
-                      </ListItemButton>
-                    </Link>
+                      <ListItemText primary={sub.label} />
+                    </ListItemButton>
                   ))}
                 </List>
               </Collapse>
             </Box>
           ) : (
-            <Link
+            <ListItemButton
               key={item.path}
+              component={Link}
               href={item.path}
-              style={{ textDecoration: "none", color: "inherit" }}
+              selected={pathname === item.path}
               onClick={toggleDrawer(false)}
             >
-              <ListItemButton selected={pathname === item.path}>
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.label} />
-              </ListItemButton>
-            </Link>
+              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.label} />
+            </ListItemButton>
           )
         )}
 
@@ -218,11 +249,12 @@ export default function TopNavbar({ onSearch, getSuggestions }) {
               component={Link}
               href="/profile"
               selected={pathname === "/profile"}
+              onClick={toggleDrawer(false)}
             >
               <ListItemText primary="My Account" />
             </ListItemButton>
             <ListItemButton onClick={logout}>
-              <ListItemText primary="Logout" />
+              <ListItemText />
             </ListItemButton>
           </>
         )}
@@ -242,68 +274,102 @@ export default function TopNavbar({ onSearch, getSuggestions }) {
             }}
           >
             {/* Logo */}
-            <Link href="/" style={{ textDecoration: "none" }}>
+            <Link
+              href="/"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                textDecoration: "none",
+              }}
+            >
+              <img
+                src="/logos/grocery-cart.png"
+                alt="FreshMart Logo"
+                style={{
+                  width: 48,
+                  height: 48,
+                  objectFit: "contain",
+                  marginRight: 8,
+                }}
+              />
               <Typography
                 variant="h6"
                 color="white"
                 sx={{ display: "flex", alignItems: "center" }}
               >
-                <ShoppingBasketIcon sx={{ mr: 1 }} /> FreshMart
+                FreshMart
               </Typography>
             </Link>
 
-            {/* Desktop menu */}
-            {/* <Box
+            {/* Desktop search */}
+            <Box
               sx={{
                 display: { xs: "none", sm: "flex" },
-                gap: 2,
-                flexGrow: 1,
-                justifyContent: "center",
+                alignItems: "center",
+                bgcolor: "white",
+                borderRadius: 2,
+                px: 1,
+                py: 0.5,
+                boxShadow: 1,
+                width: { sm: 320, md: 400 },
+                mr: 2,
               }}
             >
-              {navItems.map((item) =>
-                item.subItems ? (
-                  <Box key={item.label}>
-                    <Button sx={{ color: "white" }}>{item.label}</Button>
-                  </Box>
-                ) : (
-                  <Button
-                    key={item.path}
-                    component={Link}
-                    href={item.path}
-                    sx={{ color: "white" }}
-                    variant={pathname === item.path ? "outlined" : "text"}
-                  >
-                    {item.label}
-                  </Button>
-                )
-              )}
-            </Box> */}
-
-            {/* Right section */}
-            <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-              {/* Desktop search */}
-              <InputBase
-                value={searchText}
-                onChange={handleChange}
-                placeholder="Search products..."
+              <TextField
+                select
+                size="small"
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
                 sx={{
-                  bgcolor: "white",
-                  borderRadius: 2,
-                  width: "260px",
-                  px: 2,
-                  py: 0.5,
-                  boxShadow: 1,
-                  color: "black",
+                  width: 100,
+                  "& .MuiOutlinedInput-notchedOutline": { border: "none" },
+                  mr: 1,
                 }}
-                startAdornment={
-                  <InputAdornment position="start">
-                    <IconButton>
-                      <SearchIcon sx={{ color: "green" }} />
-                    </IconButton>
-                  </InputAdornment>
-                }
+              >
+                {["All", "Fruits", "Vegetables", "Drinks", "Snacks"].map(
+                  (cat) => (
+                    <MenuItem key={cat} value={cat}>
+                      {cat}
+                    </MenuItem>
+                  )
+                )}
+              </TextField>
+
+              <Autocomplete
+                freeSolo
+                options={options}
+                inputValue={searchText}
+                onInputChange={(event, newValue) => {
+                  setSearchText(newValue);
+                  debouncedSearch(newValue);
+                }}
+                sx={{ flex: 1 }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    placeholder="Search products..."
+                    size="small"
+                    InputProps={{
+                      ...params.InputProps,
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <SearchIcon sx={{ color: "green" }} />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                )}
               />
+            </Box>
+
+            {/* Mobile search icon */}
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <IconButton
+                sx={{ display: { xs: "flex", sm: "none" } }}
+                onClick={() => setMobileSearchOpen(true)}
+              >
+                <SearchIcon sx={{ color: "white" }} />
+              </IconButton>
 
               {!user ? (
                 <>
@@ -345,6 +411,85 @@ export default function TopNavbar({ onSearch, getSuggestions }) {
         </Container>
       </AppBar>
 
+      {/* Mobile slide-down search */}
+      {mobileSearchOpen && (
+        <Box
+          sx={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            bgcolor: "white",
+            zIndex: 1400,
+            p: 1,
+            display: "flex",
+            alignItems: "center",
+            gap: 1,
+            animation: "slideDown 0.3s ease",
+            "@keyframes slideDown": {
+              from: { transform: "translateY(-100%)" },
+              to: { transform: "translateY(0)" },
+            },
+          }}
+        >
+          <IconButton onClick={() => setMobileSearchOpen(false)}>
+            <MenuIcon />
+          </IconButton>
+
+          <TextField
+            select
+            size="small"
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+            sx={{ width: 100 }}
+          >
+            {["All", "Fruits", "Vegetables", "Drinks", "Snacks"].map((cat) => (
+              <MenuItem key={cat} value={cat}>
+                {cat}
+              </MenuItem>
+            ))}
+          </TextField>
+
+          <Autocomplete
+            freeSolo
+            options={options}
+            inputValue={searchText}
+            onInputChange={(event, newValue) => {
+              setSearchText(newValue);
+              debouncedSearch(newValue);
+            }}
+            sx={{ flex: 1 }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                placeholder="Search products..."
+                size="small"
+                fullWidth
+                InputProps={{
+                  ...params.InputProps,
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon sx={{ color: "green" }} />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            )}
+          />
+
+          <Button
+            variant="contained"
+            sx={{ bgcolor: "green" }}
+            onClick={() => {
+              debouncedSearch(searchText);
+              setMobileSearchOpen(false);
+            }}
+          >
+            Search
+          </Button>
+        </Box>
+      )}
+
       {/* Profile menu */}
       <Menu
         anchorEl={profileAnchorEl}
@@ -355,16 +500,11 @@ export default function TopNavbar({ onSearch, getSuggestions }) {
           My Account
         </MenuItem>
         <Divider />
-        <MenuItem onClick={logout}>Logout</MenuItem>
+        <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>
       </Menu>
 
       {/* Drawer */}
-      <Drawer
-        anchor="left"
-        open={drawerOpen}
-        onClose={toggleDrawer(false)}
-        onSwitchToLogin={handleSwitchToLogin}
-      >
+      <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
         {drawerList}
       </Drawer>
 
@@ -372,7 +512,7 @@ export default function TopNavbar({ onSearch, getSuggestions }) {
       <SignupModal
         open={openSignup}
         onClose={() => setOpenSignup(false)}
-         onSwitchToLogin={handleSwitchToLogin}
+        onSwitchToLogin={handleSwitchToLogin}
       />
       <LoginModal
         open={openLogin}
@@ -389,10 +529,10 @@ export default function TopNavbar({ onSearch, getSuggestions }) {
       >
         <Alert
           onClose={closeAlert}
-          severity={alert.type}
+          severity={alert.status}
           sx={{ width: "100%" }}
         >
-          {alert.message.messageEn}
+          {alert?.message?.messageEn || alert?.message?.messageKh}
         </Alert>
       </Snackbar>
     </>

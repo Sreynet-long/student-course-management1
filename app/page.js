@@ -1,12 +1,9 @@
 "use client";
-import { Button } from "@mui/material";
-import { main } from "@popperjs/core";
-import React, { useState } from "react";
+
+import React, { useState, useRef } from "react";
 import CategoryList from "./components/Home/categoryLists/page";
 import Hero from "./components/Home/page";
 import AddToCard from "./components/feature/AddToCart";
-import { Add } from "@mui/icons-material";
-import ProductCart from "./components/Cartbox/ProductCart";
 import FeatureStore from "./components/feature/FeatureStore";
 import SellProductList from "./components/Home/sellProductList/page";
 import WhyShopWithUs from "./components/feature/WhyShopWithUs";
@@ -18,13 +15,24 @@ import TopNavbar from "./menu/Header/TopNavbar";
 
 function HomePage() {
   const [searchKeyword, setSearchKeyword] = useState("");
+  const youMightNeedRef = useRef(null); 
+
+  // Scroll function
+  const scrollToYouMightNeed = () => {
+    if (youMightNeedRef.current) {
+      youMightNeedRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <main>
       <TopNavbar onSearch={(keyword) => setSearchKeyword(keyword)} />
-      <Hero />
+      {/* Pass scroll function to Hero */}
+      <Hero onLearnMore={scrollToYouMightNeed} />
       <CategoryList />
-      <AddToCard searchKeyword={searchKeyword} />
-      <SellProductList />
+      {/* Attach ref to AddToCard */}
+      <AddToCard ref={youMightNeedRef} searchKeyword={searchKeyword} />
+      {/* <SellProductList /> */}
       <FeatureStore />
       <WhyShopWithUs />
       <SpecialOffer />

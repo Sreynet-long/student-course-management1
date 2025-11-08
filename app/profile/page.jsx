@@ -87,14 +87,14 @@ export default function ProfilePage() {
         <Typography variant="h6" color="error">
           You are not logged in
         </Typography>
-        <Button
+        {/* <Button
           variant="contained"
           component={Link}
           href="/auth"
           sx={{ mt: 2, bgcolor: "green" }}
         >
           Login
-        </Button>
+        </Button> */}
       </Box>
     );
   }
@@ -228,7 +228,7 @@ export default function ProfilePage() {
           >
             Edit Profile
           </Button>
-           <Button variant="contained" color="error" onClick={logout}>
+          <Button variant="contained" color="error" onClick={logout}>
             Logout
           </Button>
         </Stack>

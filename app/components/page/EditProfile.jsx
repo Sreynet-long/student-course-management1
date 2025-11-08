@@ -16,6 +16,7 @@ import {
 import { useAuth } from "../../context/AuthContext";
 import { useMutation } from "@apollo/client/react";
 import { UPDATE_USER } from "../../schema/User";
+import Link from "next/link";
 
 function EditProfile() {
   const { user, setUser } = useAuth();
@@ -104,6 +105,25 @@ function EditProfile() {
   return (
     <Box p={3} display="flex" justifyContent="center">
       <Paper sx={{ p: 4, maxWidth: 500, width: "100%", borderRadius: 3 }}>
+        <Stack justifyContent="flex-end" mb={2}>
+          <Link href="/profile" passHref style={{ textDecoration: "none" }}>
+            <Box
+              display="flex"
+              alignItems="center"
+              gap={0.5}
+              sx={{ cursor: "pointer" }}
+            >
+              <Typography variant="body1" color="success">
+               ← Back
+              </Typography>
+              {/* <img
+                src="/right-arrow.png"
+                alt="right-arrow"
+                style={{ width: "10px", height: "10px" }}
+              /> */}
+            </Box>
+          </Link>
+        </Stack>
         <Typography variant="h5" fontWeight="bold" mb={3}>
           Edit Profile
         </Typography>
