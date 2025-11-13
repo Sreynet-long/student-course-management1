@@ -1,6 +1,6 @@
 import React from 'react';
 import SideNavbar from "./SideNavbar";
-import TopNavbar from "./TopNavbr";
+import TopNavbar from "./TopNavbar";
 import Footer from './Footer/page';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
