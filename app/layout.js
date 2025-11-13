@@ -5,7 +5,7 @@ import "./globals.css";
 import { Box, CssBaseline } from "@mui/material";
 import TopNavbar from "./menu/Header/TopNavbar";
 import Hero from "./components/Home/page";
-import Footer from "./menu/Footer/page";
+import Footer from "./components/Footer";
 import ScrollToTop from "./components/scroll/ScrollToTop";
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/AuthContext";
