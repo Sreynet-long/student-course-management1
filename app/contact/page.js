@@ -111,7 +111,7 @@ export default function ContactPage() {
         </Grid>
         <Grid item sx={12} md={4}>
           <Stack spacing={5} sx={{mt: 12}}>
-            <Image src="/icons/contact.png" alt='contact' style={{ width: 310 , height: 310}}/> 
+            <Image src="/icons/contact.png" alt='contact' width= {310}  height= {310}/> 
           </Stack>
         </Grid>
       </Grid>

@@ -10,45 +10,38 @@ import {
   Stack,
 } from "@mui/material";
 import Image from "next/image";
-import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 
 export default function Footer() {
   return (
-    <Box component="footer" sx={{ py: 6 }} className="app-footer">
+    <Box component="footer" sx={{ py: 6, backgroundColor: "#cafcbdff" }}>
       <Container maxWidth="lg">
         <Grid container spacing={4}>
           {/* Company */}
           <Grid item xs={12} sm={6} md={4}>
             <Stack spacing={2}>
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                <img
+                <Image
                   src="/logos/grocery-cart.png"
                   alt="FreshMart Logo"
-                  style={{
-                    width: 48,
-                    height: 48,
-                    objectFit: "contain",
-                  }}
+                  width={48}
+                  height={48}
                 />
                 <Typography variant="h6">FreshMart</Typography>
               </Box>
-              <Typography variant="body2" color="text.sucess">
+              <Typography variant="body2" color="text.secondary">
                 Your one-stop shop for fresh groceries delivered right to your
                 door.
               </Typography>
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                <Typography variant="body2" color="text.success">
+                <Typography variant="body2" color="text.secondary">
                   Payment Methods:
                 </Typography>
-                <img
-                  src="/payments/visa.png"
-                  alt="Visa"
-                  style={{ height: 25, width: 25 }}
-                />
-                <img
+                <Image src="/payments/visa.png" alt="Visa" width={25} height={25} />
+                <Image
                   src="/payments/card.png"
                   alt="Mastercard"
-                  style={{ height: 25, width: 25 }}
+                  width={25}
+                  height={25}
                 />
               </Box>
             </Stack>
@@ -56,147 +49,65 @@ export default function Footer() {
 
           {/* Links */}
           <Grid item xs={6} sm={3} md={2}>
-            <Typography variant="h6" gutterBottom>
+            <Typography variant="h6" gutterBottom color="text.primary">
               Quick Links
             </Typography>
-            <Link
-              href="/about"
-              display="block"
-              sx={{ textDecoration: "none", color: "rgb(0, 121, 0)" }}
-              gutterBottom
-            >
-              About Us
-            </Link>
-            <Link
-              href="/contact"
-              display="block"
-              sx={{ textDecoration: "none", color: "rgb(0, 121, 0)" }}
-              gutterBottom
-            >
-              Contact
-            </Link>
-            <Link
-              href="/faq"
-              display="block"
-              sx={{ textDecoration: "none", color: "rgb(0, 121, 0)" }}
-              gutterBottom
-            >
-              FAQ
-            </Link>
-            <Link
-              href="/career"
-              display="block"
-              sx={{ textDecoration: "none", color: "rgb(0, 121, 0)" }}
-              gutterBottom
-            >
-              Careers
-            </Link>
-            <Link
-              href="/term&condition"
-              display="block"
-              sx={{ textDecoration: "none", color: "rgb(0, 121, 0)" }}
-              gutterBottom
-            >
-              Terms & Conditions
-            </Link>
-            <Link
-              href="/privacy&policy"
-              display="block"
-              sx={{ textDecoration: "none", color: "rgb(0, 121, 0)" }}
-              gutterBottom
-            >
-              Privacy Policy
-            </Link>
+            {[
+              { href: "/about", label: "About Us" },
+              { href: "/contact", label: "Contact" },
+              { href: "/faq", label: "FAQ" },
+              { href: "/career", label: "Careers" },
+              { href: "/term&condition", label: "Terms & Conditions" },
+              { href: "/privacy&policy", label: "Privacy Policy" },
+            ].map((link) => (
+              <Typography key={link.href} variant="body2" sx={{ mb: 1 }}>
+                <Link
+                  href={link.href}
+                  sx={{ textDecoration: "none", color: "rgb(0, 121, 0)" }}
+                >
+                  {link.label}
+                </Link>
+              </Typography>
+            ))}
           </Grid>
 
           {/* Categories */}
           <Grid item xs={6} sm={3} md={2}>
-            <Typography
-              variant="h6"
-              sx={{ textDecoration: "none", color: "rgb(0, 121, 0)" }}
-              gutterBottom
-            >
+            <Typography variant="h6" gutterBottom color="text.primary">
               Categories
             </Typography>
-            <Link
-              href="#"
-              display="block"
-              sx={{ textDecoration: "none", color: "rgb(0, 121, 0)" }}
-              gutterBottom
-            >
-              Vegetables
-            </Link>
-            <Link
-              href="#"
-              display="block"
-              sx={{ textDecoration: "none", color: "rgb(0, 121, 0)" }}
-              gutterBottom
-            >
-              Fruits
-            </Link>
-            <Link
-              href="#"
-              display="block"
-              sx={{ textDecoration: "none", color: "rgb(0, 121, 0)" }}
-              gutterBottom
-            >
-              Dairy
-            </Link>
-            <Link
-              href="#"
-              display="block"
-              sx={{ textDecoration: "none", color: "rgb(0, 121, 0)" }}
-              gutterBottom
-            >
-              Meat & Fish
-            </Link>
+            {["Vegetables", "Fruits", "Dairy", "Meat & Fish"].map((cat) => (
+              <Typography key={cat} variant="body2" sx={{ mb: 1 }}>
+                <Link href="#" sx={{ textDecoration: "none", color: "rgb(0, 121, 0)" }}>
+                  {cat}
+                </Link>
+              </Typography>
+            ))}
           </Grid>
 
           {/* Social */}
           <Grid item xs={12} sm={12} md={4}>
-            <Typography variant="h6" gutterBottom>
+            <Typography variant="h6" gutterBottom color="text.primary">
               Connect with Us
             </Typography>
-            <Box>
-              <IconButton>
-                <Image
-                  src="/media/facebook.png"
-                  alt="Facebook"
-                  width={24}
-                  height={24}
-                />
-              </IconButton>
-              <IconButton>
-                <Image
-                  src="/media/twitter.png"
-                  alt="Twitter"
-                  width={24}
-                  height={24}
-                />
-              </IconButton>
-              <IconButton>
-                <Image
-                  src="/media/instagram.png"
-                  alt="Instagram"
-                  width={24}
-                  height={24}
-                />
-              </IconButton>
-              <IconButton>
-                <Image
-                  src="/media/telegram.png"
-                  alt="Telegram"
-                  width={24}
-                  height={24}
-                />
-              </IconButton>
+            <Box sx={{ display: "flex", gap: 1 }}>
+              {[
+                { src: "/media/facebook.png", alt: "Facebook" },
+                { src: "/media/twitter.png", alt: "Twitter" },
+                { src: "/media/instagram.png", alt: "Instagram" },
+                { src: "/media/telegram.png", alt: "Telegram" },
+              ].map((social) => (
+                <IconButton key={social.alt}>
+                  <Image src={social.src} alt={social.alt} width={24} height={24} />
+                </IconButton>
+              ))}
             </Box>
           </Grid>
         </Grid>
 
         <Divider sx={{ my: 4 }} />
 
-        <Typography variant="body2" color="text.white" textAlign="center">
+        <Typography variant="body2" color="text.secondary" textAlign="center">
           &copy; {new Date().getFullYear()} FreshMart. All Rights Reserved.
         </Typography>
       </Container>
