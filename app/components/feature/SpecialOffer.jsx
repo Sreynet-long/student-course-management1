@@ -15,7 +15,7 @@ export default function SpecialOffer() {
         <Typography variant="body1" sx={{ mb: 3 }}>
           Grab your favorite groceries at discounted prices!
         </Typography>
-        <Stack className="banner-image-offer">
+        <Stack>
           {/* <img src="/" alt="offer" /> */}
           <Typography>Coming Soon...</Typography>
           <Button
