@@ -72,7 +72,7 @@ export default function AboutPage() {
             <Box>
                 <Typography variant="h6" gutterBottom>Local & Sustainable Sourcing</Typography>
                 <Typography>We proudly partner with local farms, supporting our community and reducing the carbon footprint of your groceries.
-                   Look for our 'Local Grown' tag!
+                   Look for our &apos;Local Grown&apos; tag!
                 </Typography>
             </Box>
         </Stack>
@@ -80,7 +80,7 @@ export default function AboutPage() {
             <CheckCircleOutlineIcon color="success" sx={{ mt: 0.5 }} />
             <Box>
                 <Typography variant="h6" gutterBottom>The Zero-Wilt Guarantee</Typography>
-                <Typography>If any product doesn't meet our strict quality standards upon arrival, we will replace it or refund you, **no questions asked.**</Typography>
+                <Typography>If any product doesn&apos;t meet our strict quality standards upon arrival, we will replace it or refund you, **no questions asked.**</Typography>
             </Box>
         </Stack>
       </Stack>
