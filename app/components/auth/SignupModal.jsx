@@ -130,6 +130,7 @@ export default function SignupModal({ open, onClose, onSwitchToLogin }) {
                 helperText={touched.phoneNumber && errors.phoneNumber}
               />
               <TextField
+                label="Email"
                 name="email"
                 fullWidth
                 value={values.email}
