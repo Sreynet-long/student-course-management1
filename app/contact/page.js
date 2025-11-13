@@ -12,6 +12,7 @@ import PublicIcon from '@mui/icons-material/Public';
 import PermContactCalendarRoundedIcon from '@mui/icons-material/PermContactCalendarRounded';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import Contact from './Contact';
+import Image from 'next/image';
 
 export default function ContactPage() {
   
@@ -110,7 +111,7 @@ export default function ContactPage() {
         </Grid>
         <Grid item sx={12} md={4}>
           <Stack spacing={5} sx={{mt: 12}}>
-            <img src="/icons/contact.png" style={{ width: 310 , height: 310}}/> 
+            <Image src="/icons/contact.png" alt='contact' style={{ width: 310 , height: 310}}/> 
           </Stack>
         </Grid>
       </Grid>

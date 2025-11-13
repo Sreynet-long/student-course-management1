@@ -7,6 +7,7 @@ import LocalFloristIcon from '@mui/icons-material/LocalFlorist';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
 import InfoOutlineIcon from '@mui/icons-material/InfoOutline';
+import Image from 'next/image';
 
 export default function AboutPage() {
   return (
@@ -92,7 +93,7 @@ export default function AboutPage() {
 
       <Stack direction={{ xs: 'column', md: 'row' }} spacing={4} alignItems="center" mb={6}>
         {/* <PeopleOutlineIcon sx={{ fontSize: 80, color: 'text.secondary' }} /> */}
-        <img src="/images/team-work.jpg" style={{width: 500, height: 500}}/>
+        <Image src="/images/team-work.jpg" alt='teamwork' style={{width: 500, height: 500}}/>
         <Box>
           <Typography variant="body1" mb={2} sx={{ fontSize: 18}}>
             FreshMart is powered by a small team of passionate food lovers, logistics experts,
