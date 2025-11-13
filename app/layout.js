@@ -35,7 +35,9 @@ export default function RootLayout({ children }) {
         <meta name="description" content="Fresh Mart Ecommerce Website" />
         <link rel="icon" href="/grocery-cart.png" />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
         <CacheProvider value={cache}>
           <ThemeProvider theme={theme}>
             <CssBaseline />

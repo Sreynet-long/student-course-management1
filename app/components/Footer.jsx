@@ -1,4 +1,4 @@
-"use client"; // ✅ must be the FIRST line
+"use client";
 
 import React from "react";
 import {
@@ -32,7 +32,8 @@ export default function Footer() {
         spacing={isMobile ? 1 : 4}
         alignItems="center"
         justifyContent="center"
-      >2
+      >
+        2
         <Container maxWidth="lg">
           <Grid container spacing={4}>
             {/* Company */}
