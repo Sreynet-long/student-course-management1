@@ -126,7 +126,6 @@ export default function TopNavbar({ onSearch }) {
   };
 
   // Drawer content
-  // Drawer content
   const drawerList = (
     <Box sx={{ width: 250 }} role="presentation">
       <Link
@@ -315,7 +314,7 @@ export default function TopNavbar({ onSearch }) {
                 mr: 2,
               }}
             >
-              <TextField
+              {/* <TextField
                 select
                 size="small"
                 value={selectedCategory}
@@ -333,7 +332,7 @@ export default function TopNavbar({ onSearch }) {
                     </MenuItem>
                   )
                 )}
-              </TextField>
+              </TextField> */}
 
               <Autocomplete
                 freeSolo
