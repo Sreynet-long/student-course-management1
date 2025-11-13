@@ -1,6 +1,6 @@
 import React from 'react';
-import SideNavbar from "./SideNavbar";
-import TopNavbar from "./TopNavbar";
+// import SideNavbar from "./SideNavbar";
+import TopNavbar from './Header/TopNavbar';
 import Footer from './Footer/page';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -35,7 +35,7 @@ function Layout({ children }) {
           zIndex: theme.zIndex.drawer, 
         }}
       >
-        <SideNavbar />
+        {/* <SideNavbar /> */}
       </Box>
       
       {/* Main content area */}
