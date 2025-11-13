@@ -16,6 +16,7 @@
     "@mui/joy": "^5.0.0-beta.52",
     "@mui/material": "^7.3.4",
     "@popperjs/core": "^2.11.8",
+    "@tailwindcss/postcss": "^4.1.17",
     "apollo-server-micro": "^3.13.0",
     "axios": "^1.12.2",
     "bcryptjs": "^3.0.2",
