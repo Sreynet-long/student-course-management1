@@ -1,7 +1,7 @@
 import React from 'react';
 import SideNavbar from "./SideNavbar";
 import TopNavbar from "./TopNavbr";
-import Footer from './footer/page';
+import Footer from './Footer/page';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Box } from '@mui/material';
