@@ -287,7 +287,7 @@ export default function ProfilePage() {
         </Stack>
 
         <Typography variant="h6" sx={{ mb: 1 }}>
-          Purchase History
+          Orders History
         </Typography>
 
         {loading ? (

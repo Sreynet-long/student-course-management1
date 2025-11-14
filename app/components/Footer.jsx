@@ -33,7 +33,6 @@ export default function Footer() {
         alignItems="center"
         justifyContent="center"
       >
-        2
         <Container maxWidth="lg">
           <Grid container spacing={4}>
             {/* Company */}
