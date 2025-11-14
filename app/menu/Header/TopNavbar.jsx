@@ -154,9 +154,10 @@ export default function TopNavbar({ onSearch }) {
           FreshMart
         </Typography>
       </Link>
+      <Divider/>
       {/* Mobile search inside drawer */}
-      <Box sx={{ px: 2, pb: 2 }}>
-        <TextField
+      <Box sx={{ px: 2, pb: 2 , mt: 3}}>
+        {/* <TextField
           select
           size="small"
           value={selectedCategory}
@@ -168,7 +169,7 @@ export default function TopNavbar({ onSearch }) {
               {cat}
             </MenuItem>
           ))}
-        </TextField>
+        </TextField> */}
         <TextField
           fullWidth
           size="small"

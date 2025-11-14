@@ -5,7 +5,6 @@ import {
   Container,
   Grid,
   Typography,
-  Link,
   Box,
   IconButton,
   Divider,
@@ -14,6 +13,19 @@ import {
 import Image from "next/image";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import Link from "next/link";
+
+// Map display names → slugs
+const categories = [
+  { name: "Vegetables", slug: "vegetable" },
+  { name: "Fruits", slug: "fruits" },
+  { name: "Dairy", slug: "milk-dairy" },
+  { name: "Meat & Fish", slug: "meats" },
+  { name: "Snacks & Breads", slug: "snacks-breads" },
+  { name: "Seafood", slug: "seafood" },
+  { name: "Drinks", slug: "drinks" },
+  { name: "Frozen Food", slug: "frozen-food" },
+];
 
 export default function Footer() {
   const theme = useTheme();
@@ -35,7 +47,7 @@ export default function Footer() {
       >
         <Container maxWidth="lg">
           <Grid container spacing={4}>
-            {/* Company */}
+            {/* Company Info */}
             <Grid item xs={12} sm={6} md={4}>
               <Stack spacing={2}>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
@@ -55,23 +67,13 @@ export default function Footer() {
                   <Typography variant="body2" color="text.secondary">
                     Payment Methods:
                   </Typography>
-                  <Image
-                    src="/payments/visa.png"
-                    alt="Visa"
-                    width={25}
-                    height={25}
-                  />
-                  <Image
-                    src="/payments/card.png"
-                    alt="Mastercard"
-                    width={25}
-                    height={25}
-                  />
+                  <Image src="/payments/visa.png" alt="Visa" width={25} height={25} />
+                  <Image src="/payments/card.png" alt="Mastercard" width={25} height={25} />
                 </Box>
               </Stack>
             </Grid>
 
-            {/* Links */}
+            {/* Quick Links */}
             <Grid item xs={6} sm={3} md={2}>
               <Typography variant="h6" gutterBottom color="text.primary">
                 Quick Links
@@ -85,10 +87,7 @@ export default function Footer() {
                 { href: "/privacy&policy", label: "Privacy Policy" },
               ].map((link) => (
                 <Typography key={link.href} variant="body2" sx={{ mb: 1 }}>
-                  <Link
-                    href={link.href}
-                    sx={{ textDecoration: "none", color: "rgb(0, 121, 0)" }}
-                  >
+                  <Link href={link.href} style={{ textDecoration: "none", color: "rgb(0, 121, 0)" }}>
                     {link.label}
                   </Link>
                 </Typography>
@@ -100,19 +99,19 @@ export default function Footer() {
               <Typography variant="h6" gutterBottom color="text.primary">
                 Categories
               </Typography>
-              {["Vegetables", "Fruits", "Dairy", "Meat & Fish"].map((cat) => (
-                <Typography key={cat} variant="body2" sx={{ mb: 1 }}>
+              {categories.map((cat) => (
+                <Typography key={cat.slug} variant="body2" sx={{ mb: 1 }}>
                   <Link
-                    href="#"
-                    sx={{ textDecoration: "none", color: "rgb(0, 121, 0)" }}
+                    href={`/category/${cat.slug}`}
+                    style={{ textDecoration: "none", color: "rgb(0, 121, 0)" }}
                   >
-                    {cat}
+                    {cat.name}
                   </Link>
                 </Typography>
               ))}
             </Grid>
 
-            {/* Social */}
+            {/* Social Media */}
             <Grid item xs={12} sm={12} md={4}>
               <Typography variant="h6" gutterBottom color="text.primary">
                 Connect with Us
@@ -125,12 +124,7 @@ export default function Footer() {
                   { src: "/media/telegram.png", alt: "Telegram" },
                 ].map((social) => (
                   <IconButton key={social.alt}>
-                    <Image
-                      src={social.src}
-                      alt={social.alt}
-                      width={24}
-                      height={24}
-                    />
+                    <Image src={social.src} alt={social.alt} width={24} height={24} />
                   </IconButton>
                 ))}
               </Box>
