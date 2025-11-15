@@ -35,8 +35,9 @@ export default function CategoryPageClient({ slug }) {
   const { addToCart } = useCart();
 
   const categoryEnum = categoryMap[slug];
-  const displayName =
-    slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+  const displayName = slug
+    .replace(/-/g, " ")
+    .replace(/\b\w/g, (c) => c.toUpperCase());
 
   const { loading, error, data, refetch } = useQuery(
     GET_PRODUCT_WITH_PAGINATION,
@@ -141,6 +142,9 @@ export default function CategoryPageClient({ slug }) {
                 "&:hover": { boxShadow: 4, transform: "scale(1.02)" },
                 display: "flex",
                 flexDirection: "column",
+                p: 1,
+                height: 300,
+                width: 170,
               }}
             >
               <CardMedia
@@ -148,7 +152,7 @@ export default function CategoryPageClient({ slug }) {
                 image={product.imageUrl}
                 alt={product.productName}
                 sx={{
-                  height: 150,
+                  // height: 150,
                   objectFit: "contain",
                   p: 1,
                 }}
