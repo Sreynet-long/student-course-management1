@@ -97,11 +97,13 @@ export default function CategoryPageClient({ slug }) {
             <Grid item xs={6} sm={6} md={4} lg={3} key={product.id}>
               <Card
                 sx={{
-                  width: 170,
-                  height: 300,
+                  width: "100%",
+                  height: "100%",
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "space-between",
+                  borderRadius: 2,
+                  boxShadow: 2,
                 }}
               >
                 <CardMedia
@@ -136,7 +138,6 @@ export default function CategoryPageClient({ slug }) {
                     color="success"
                     variant="contained"
                     size="small"
-                    fullWidth
                     sx={{ mt: 1, borderRadius: "20px", textTransform: "none" }}
                     onClick={() => addToCart(product)}
                   >
@@ -148,7 +149,7 @@ export default function CategoryPageClient({ slug }) {
           ))
         )}
       </Grid>
-      <Stack sx={{ mt: 3}}>
+      <Stack sx={{ mt: 3 }}>
         <WhyShopWithUs />
       </Stack>
     </Box>
