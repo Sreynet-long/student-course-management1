@@ -67,8 +67,18 @@ export default function Footer() {
                   <Typography variant="body2" color="text.secondary">
                     Payment Methods:
                   </Typography>
-                  <Image src="/payments/visa.png" alt="Visa" width={25} height={25} />
-                  <Image src="/payments/card.png" alt="Mastercard" width={25} height={25} />
+                  <Image
+                    src="/payments/visa.png"
+                    alt="Visa"
+                    width={20}
+                    height={25}
+                  />
+                  <Image
+                    src="/payments/card.png"
+                    alt="Mastercard"
+                    width={20}
+                    height={25}
+                  />
                 </Box>
               </Stack>
             </Grid>
@@ -87,7 +97,10 @@ export default function Footer() {
                 { href: "/privacy&policy", label: "Privacy Policy" },
               ].map((link) => (
                 <Typography key={link.href} variant="body2" sx={{ mb: 1 }}>
-                  <Link href={link.href} style={{ textDecoration: "none", color: "rgb(0, 121, 0)" }}>
+                  <Link
+                    href={link.href}
+                    style={{ textDecoration: "none", color: "rgb(0, 121, 0)" }}
+                  >
                     {link.label}
                   </Link>
                 </Typography>
@@ -124,7 +137,12 @@ export default function Footer() {
                   { src: "/media/telegram.png", alt: "Telegram" },
                 ].map((social) => (
                   <IconButton key={social.alt}>
-                    <Image src={social.src} alt={social.alt} width={24} height={24} />
+                    <Image
+                      src={social.src}
+                      alt={social.alt}
+                      width={24}
+                      height={24}
+                    />
                   </IconButton>
                 ))}
               </Box>
