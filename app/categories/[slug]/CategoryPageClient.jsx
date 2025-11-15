@@ -94,7 +94,7 @@ export default function CategoryPageClient({ slug }) {
           <Typography>No products found in this category.</Typography>
         ) : (
           products.map((product) => (
-            <Grid item xs={6} sm={4} md={3} key={product.id}>
+            <Grid item xs={6} sm={6} md={4} lg={3} key={product.id}>
               <Card
                 sx={{
                   width: 170,
@@ -137,6 +137,7 @@ export default function CategoryPageClient({ slug }) {
                     variant="contained"
                     size="small"
                     fullWidth
+                    sx={{ mt: 1, borderRadius: "20px", textTransform: "none" }}
                     onClick={() => addToCart(product)}
                   >
                     🛒 Add to Cart
