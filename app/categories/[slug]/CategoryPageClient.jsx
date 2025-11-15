@@ -97,13 +97,14 @@ export default function CategoryPageClient({ slug }) {
             <Grid item xs={6} sm={6} md={4} lg={3} key={product.id}>
               <Card
                 sx={{
-                  width: "100%",
-                  height: "100%",
+                  height: 300,
+                  width: 170,
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "space-between",
                   borderRadius: 2,
                   boxShadow: 2,
+                  "&:hover": { boxShadow: 4 },
                 }}
               >
                 <CardMedia
