@@ -102,6 +102,7 @@ export default function CategoryPageClient({ slug }) {
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "space-between",
+                  p: 1,
                   borderRadius: 2,
                   boxShadow: 2,
                   "&:hover": { boxShadow: 4 },
