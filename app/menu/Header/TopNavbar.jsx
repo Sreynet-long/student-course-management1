@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState, useEffect, useMemo } from "react";
 import {
   AppBar,
@@ -8,6 +7,9 @@ import {
   IconButton,
   Box,
   Button,
+  Menu,
+  MenuItem,
+  Badge,
   Drawer,
   List,
   ListItemButton,
@@ -21,29 +23,26 @@ import {
   InputAdornment,
   Snackbar,
   Alert,
-  Menu,
-  MenuItem,
-  Badge,
 } from "@mui/material";
 import {
   Menu as MenuIcon,
   Search as SearchIcon,
   AccountCircle,
   ShoppingCart as ShoppingCartIcon,
+  Store as StoreIcon,
   Info as InfoIcon,
   ContactPage as ContactPageIcon,
   ExpandLess,
   ExpandMore,
+  ShoppingBasket as ShoppingBasketIcon,
 } from "@mui/icons-material";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCart } from "@/app/context/CartContext";
-import { useAuth } from "@/app/context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import debounce from "lodash.debounce";
 import SignupModal from "@/app/components/auth/SignupModal";
 import LoginModal from "@/app/components/auth/LoginModal";
-import { useTheme } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import { useRouter } from "next/navigation";
 
 export default function TopNavbar({ onSearch }) {
@@ -52,34 +51,65 @@ export default function TopNavbar({ onSearch }) {
   const { cart } = useCart();
   const { user, logout, alert, closeAlert } = useAuth();
   const [profileAnchorEl, setProfileAnchorEl] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchText, setSearchText] = useState("");
   const [options, setOptions] = useState([]);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const [drawerCollapse, setDrawerCollapse] = useState({});
-  const [openSignup, setOpenSignup] = useState(false);
-  const [openLogin, setOpenLogin] = useState(false);
-
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   // Debounced search
   const debouncedSearch = useMemo(
     () =>
       debounce((query) => {
-        if (onSearch) onSearch(query);
+        if (onSearch && typeof onSearch === "function") {
+          onSearch(query, selectedCategory);
+        }
       }, 500),
-    [onSearch]
+    [onSearch, selectedCategory]
   );
 
   const handleChange = (e) => {
-    setSearchText(e.target.value);
-    debouncedSearch(e.target.value);
+    const value = e.target.value;
+    setSearchText(value);
+    debouncedSearch(value);
   };
 
-  const totalItems = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const totalItems = mounted
+    ? cart.reduce((acc, item) => acc + (item.quantity || 1), 0)
+    : 0;
+
+  // Auth modals
+  const [openSignup, setOpenSignup] = useState(false);
+  const [openLogin, setOpenLogin] = useState(false);
+  const handleSwitchToLogin = () => {
+    setOpenSignup(false);
+    setOpenLogin(true);
+  };
+  const handleSwitchToSignup = () => {
+    setOpenLogin(false);
+    setOpenSignup(true);
+  };
+
+  // Drawer & menus
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [drawerCollapse, setDrawerCollapse] = useState({});
 
   const navItems = [
+    // {
+    //   label: "Products",
+    //   path: "/products",
+    //   icon: <StoreIcon />,
+    //   subItems: [
+    //     { label: "Vegetables", path: "/products/vegetables" },
+    //     { label: "Fruits", path: "/products/fruits" },
+    //     { label: "Frozen Foods", path: "/products/frozen-foods" },
+    //     { label: "Drinks", path: "/products/drinks" },
+    //     { label: "Snacks & Breads", path: "/products/snacks-bread" },
+    //     { label: "Meats", path: "/products/meats" },
+    //     { label: "Seafoods", path: "/products/seafoods" },
+    //   ],
+    // },
     { label: "About", path: "/about", icon: <InfoIcon /> },
     { label: "Contact", path: "/contact", icon: <ContactPageIcon /> },
   ];
@@ -94,45 +124,52 @@ export default function TopNavbar({ onSearch }) {
     logout();
     router.push("/");
   };
-  const handleSwitchToLogin = () => {
-    setOpenSignup(false);
-    setOpenLogin(true);
-  };
-  const handleSwitchToSignup = () => {
-    setOpenLogin(false);
-    setOpenSignup(true);
-  };
 
   // Drawer content
   const drawerList = (
-    <Box sx={{ width: { xs: 220, sm: 250 } }} role="presentation">
+    <Box sx={{ width: 250 }} role="presentation">
       <Link
         href="/"
         style={{
           display: "flex",
           alignItems: "center",
           textDecoration: "none",
-          padding: "16px",
         }}
       >
         <img
+          spacing={3}
           src="/logos/grocery-cart.png"
           alt="FreshMart Logo"
           style={{
-            width: 40,
-            height: 40,
+            width: 48,
+            height: 48,
             objectFit: "contain",
             marginRight: 8,
           }}
         />
-        <Typography variant="h6" color="var(--primary-color)">
+        <Typography
+          variant="h6"
+          sx={{ m: 2, display: "flex", alignItems: "center" }}
+        >
           FreshMart
         </Typography>
       </Link>
-      <Divider />
-
-      {/* Mobile Search */}
-      <Box sx={{ px: 2, py: 2 }}>
+      <Divider/>
+      {/* Mobile search inside drawer */}
+      <Box sx={{ px: 2, pb: 2 , mt: 3}}>
+        {/* <TextField
+          select
+          size="small"
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+          sx={{ width: "100%", mb: 1 }}
+        >
+          {["All", "Fruits", "Vegetables", "Drinks", "Snacks"].map((cat) => (
+            <MenuItem key={cat} value={cat}>
+              {cat}
+            </MenuItem>
+          ))}
+        </TextField> */}
         <TextField
           fullWidth
           size="small"
@@ -150,6 +187,7 @@ export default function TopNavbar({ onSearch }) {
       </Box>
 
       <Divider />
+
       <List>
         {navItems.map((item) =>
           item.subItems ? (
@@ -171,6 +209,7 @@ export default function TopNavbar({ onSearch }) {
                       component={Link}
                       href={sub.path}
                       sx={{ pl: 4 }}
+                      selected={pathname === sub.path}
                       onClick={toggleDrawer(false)}
                     >
                       <ListItemText primary={sub.label} />
@@ -193,7 +232,8 @@ export default function TopNavbar({ onSearch }) {
           )
         )}
 
-        <Divider sx={{ my: 1 }} />
+        <Divider />
+
         {!user ? (
           <>
             <ListItemButton onClick={() => setOpenSignup(true)}>
@@ -213,8 +253,8 @@ export default function TopNavbar({ onSearch }) {
             >
               <ListItemText primary="My Account" />
             </ListItemButton>
-            <ListItemButton onClick={handleLogoutClick}>
-              <ListItemText primary="Logout" />
+            <ListItemButton onClick={logout}>
+              <ListItemText />
             </ListItemButton>
           </>
         )}
@@ -224,17 +264,13 @@ export default function TopNavbar({ onSearch }) {
 
   return (
     <>
-      <AppBar
-        position="sticky"
-        sx={{ bgcolor: "var(--primary-color)", zIndex: 1300 }}
-      >
+      <AppBar position="fixed" sx={{ bgcolor: "green" }}>
         <Container maxWidth="lg">
           <Toolbar
             sx={{
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
-              p: 0.5,
             }}
           >
             {/* Logo */}
@@ -250,68 +286,90 @@ export default function TopNavbar({ onSearch }) {
                 src="/logos/grocery-cart.png"
                 alt="FreshMart Logo"
                 style={{
-                  width: isMobile ? 36 : 48,
-                  height: isMobile ? 36 : 48,
+                  width: 48,
+                  height: 48,
                   objectFit: "contain",
                   marginRight: 8,
                 }}
               />
-              <Typography variant={isMobile ? "subtitle1" : "h6"} color="white">
+              <Typography
+                variant="h6"
+                color="white"
+                sx={{ display: "flex", alignItems: "center" }}
+              >
                 FreshMart
               </Typography>
             </Link>
 
-            {/* Desktop Search */}
-            {!isMobile && (
-              <Box
+            {/* Desktop search */}
+            <Box
+              sx={{
+                display: { xs: "none", sm: "flex" },
+                alignItems: "center",
+                bgcolor: "white",
+                borderRadius: 2,
+                px: 1,
+                py: 0.5,
+                boxShadow: 1,
+                width: { sm: 320, md: 400 },
+                mr: 2,
+              }}
+            >
+              {/* <TextField
+                select
+                size="small"
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
                 sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  bgcolor: "white",
-                  borderRadius: 2,
-                  px: 1,
-                  py: 0.5,
-                  boxShadow: 1,
-                  width: { sm: 300, md: 400 },
-                  mr: 2,
+                  width: 100,
+                  "& .MuiOutlinedInput-notchedOutline": { border: "none" },
+                  mr: 1,
                 }}
               >
-                <Autocomplete
-                  freeSolo
-                  options={options}
-                  inputValue={searchText}
-                  onInputChange={(event, newValue) => {
-                    setSearchText(newValue);
-                    debouncedSearch(newValue);
-                  }}
-                  sx={{ flex: 1 }}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      placeholder="Search products..."
-                      size="small"
-                      InputProps={{
-                        ...params.InputProps,
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <SearchIcon sx={{ color: "green" }} />
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                  )}
-                />
-              </Box>
-            )}
+                {["All", "Fruits", "Vegetables", "Drinks", "Snacks"].map(
+                  (cat) => (
+                    <MenuItem key={cat} value={cat}>
+                      {cat}
+                    </MenuItem>
+                  )
+                )}
+              </TextField> */}
 
-            {/* Right actions */}
+              <Autocomplete
+                freeSolo
+                options={options}
+                inputValue={searchText}
+                onInputChange={(event, newValue) => {
+                  setSearchText(newValue);
+                  debouncedSearch(newValue);
+                }}
+                sx={{ flex: 1 }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    placeholder="Search products..."
+                    size="small"
+                    InputProps={{
+                      ...params.InputProps,
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <SearchIcon sx={{ color: "green" }} />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                )}
+              />
+            </Box>
+
+            {/* Mobile search icon */}
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              {/* Mobile search icon */}
-              {isMobile && (
-                <IconButton onClick={() => setMobileSearchOpen(true)}>
-                  <SearchIcon sx={{ color: "white" }} />
-                </IconButton>
-              )}
+              <IconButton
+                sx={{ display: { xs: "flex", sm: "none" } }}
+                onClick={() => setMobileSearchOpen(true)}
+              >
+                <SearchIcon sx={{ color: "white" }} />
+              </IconButton>
 
               {!user ? (
                 <>
@@ -335,17 +393,19 @@ export default function TopNavbar({ onSearch }) {
               )}
 
               <IconButton color="inherit" component={Link} href="/cart">
-                <Badge badgeContent={totalItems} max={99} color="error">
+                <Badge badgeContent={totalItems} color="error">
                   <ShoppingCartIcon />
                 </Badge>
               </IconButton>
 
-              {/* Drawer toggle */}
-              {isMobile && (
-                <IconButton color="inherit" onClick={toggleDrawer(true)}>
-                  <MenuIcon />
-                </IconButton>
-              )}
+              <IconButton
+                edge="end"
+                color="inherit"
+                sx={{ display: { sm: "none" } }}
+                onClick={toggleDrawer(true)}
+              >
+                <MenuIcon />
+              </IconButton>
             </Box>
           </Toolbar>
         </Container>
@@ -375,20 +435,58 @@ export default function TopNavbar({ onSearch }) {
           <IconButton onClick={() => setMobileSearchOpen(false)}>
             <MenuIcon />
           </IconButton>
+
           <TextField
-            fullWidth
+            select
             size="small"
-            placeholder="Search products..."
-            value={searchText}
-            onChange={handleChange}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon sx={{ color: "green" }} />
-                </InputAdornment>
-              ),
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+            sx={{ width: 100 }}
+          >
+            {["All", "Fruits", "Vegetables", "Drinks", "Snacks"].map((cat) => (
+              <MenuItem key={cat} value={cat}>
+                {cat}
+              </MenuItem>
+            ))}
+          </TextField>
+
+          <Autocomplete
+            freeSolo
+            options={options}
+            inputValue={searchText}
+            onInputChange={(event, newValue) => {
+              setSearchText(newValue);
+              debouncedSearch(newValue);
             }}
+            sx={{ flex: 1 }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                placeholder="Search products..."
+                size="small"
+                fullWidth
+                InputProps={{
+                  ...params.InputProps,
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon sx={{ color: "green" }} />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            )}
           />
+
+          <Button
+            variant="contained"
+            sx={{ bgcolor: "green" }}
+            onClick={() => {
+              debouncedSearch(searchText);
+              setMobileSearchOpen(false);
+            }}
+          >
+            Search
+          </Button>
         </Box>
       )}
 
