@@ -102,6 +102,7 @@ export default function CategoryPageClient({ slug }) {
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "space-between",
+                  textAlign: "center",
                   p: 1,
                   borderRadius: 2,
                   boxShadow: 2,
@@ -113,9 +114,9 @@ export default function CategoryPageClient({ slug }) {
                   height="130"
                   image={product.imageUrl}
                   alt={product.productName}
-                  sx={{ objectFit: "contain" }}
+                  sx={{ objectFit: "contain", p: 1}}
                 />
-                <CardContent sx={{ flexGrow: 1, p: 1 }}>
+                <CardContent sx={{ p: 1, textAlign: "justify", flexGrow: 1 }}>
                   <Typography variant="subtitle1" fontWeight="bold">
                     {product.productName}
                   </Typography>
